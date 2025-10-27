@@ -4,9 +4,10 @@ export function setup() {
 
   const resultsContainer = form.querySelector('.ajax-results-js');
   const filterOptions = form.querySelectorAll('.filter-option-js');
+  const createSelectedLabelOptions = form.querySelectorAll('.create-selected-label-js');
   const selectedFiltersWrap = form.querySelector('.selected-filters-js');
   const resetBtns = form.querySelectorAll('.reset-js');
-  const defaultSortJs = form.querySelector('.default-sort-js');
+  const defaultRadios = form.querySelectorAll('.default-radio-js');
   let currentController = null;
 
   updSelectedFiltersLabels();
@@ -53,6 +54,7 @@ export function setup() {
 
       if (relatedOption) {
         relatedOption.checked = false;
+        setDefaultRadioOptions();
         relatedOption.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
@@ -61,16 +63,16 @@ export function setup() {
   // handle reset
   resetBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      form.reset(); // reset search
+      // form.reset(); // reset search
 
-      // uncheck all filter options except the default sort
+      // uncheck all filter options except the default radio
       filterOptions.forEach(input => {
-        if (input.classList.contains('default-sort-js')) return;
+        if (input.classList.contains('default-radio-js')) return;
 
         input.checked = false;
       });
 
-      setDefaultSortOption();
+      setDefaultRadioOptions();
       triggerSubmit();
 
     });
@@ -124,12 +126,10 @@ export function setup() {
 
     let selectedFiltersHTML = '';
 
-    filterOptions.forEach(option => {
-      const defaultSortOption = option.classList.contains('default-sort-js');
-      const allOption = option.classList.contains('all-labels-js');
+    createSelectedLabelOptions.forEach(option => {
       const isChecked = option.checked;
 
-      if (!defaultSortOption && !allOption && isChecked) {
+      if (isChecked) {
         const optionId = option.getAttribute('data-option');
         const optionText = option.getAttribute('data-text');
         selectedFiltersHTML += createLabel(optionText, optionId);
@@ -159,7 +159,7 @@ export function setup() {
         class="remove-filter-js"
         aria-label="Remove filter"
         data-option="${label}"
-      >Remove filter</button>
+      >Remove ${text} filter</button>
     </div>`;
   }
 
@@ -206,10 +206,31 @@ export function setup() {
     allOption.checked = allChecked;
   }
 
-  function setDefaultSortOption() {
-    if (defaultSortJs) {
-      defaultSortJs.checked = true;
-    }
+  function setDefaultRadioOptions() {
+
+    const radioGroups = {};
+
+    form.querySelectorAll('input[type="radio"]').forEach(input => {
+      const name = input.getAttribute('name');
+      if (!radioGroups[name]) {
+        radioGroups[name] = [];
+      }
+      radioGroups[name].push(input);
+    });
+
+    Object.values(radioGroups).forEach(group => {
+      const anyChecked = group.some(radio => radio.checked);
+
+      // if none checked, select default radio
+      if (!anyChecked) {
+        const defaultOption = group.find(radio =>
+          radio.classList.contains('default-radio-js')
+        );
+        if (defaultOption) {
+          defaultOption.checked = true;
+        }
+      }
+    });
   }
 
 }

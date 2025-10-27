@@ -31,43 +31,66 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 
     if ($slug === 'work-archive') {
         $featured_post = $context['fields']['featured_work'] ?? null;
+        $posts_per_page = $context['fields']['posts_per_page'] ?? 12;
         $paged = get_query_var('paged') ?: 1;
 
         $result = limerock_get_work_query_args([
-            'featured_post' => $featured_post,
-            'paged'         => $paged,
-            'search'   => $_GET['search'] ?? '',
-            'type'          => $_GET['type'] ?? [],
-            'research_area' => $_GET['research_area'] ?? [],
-            'sort'          => $_GET['sort'] ?? '',
+            'featured_post'  => $featured_post,
+            'paged'          => $paged,
+            'posts_per_page' => $posts_per_page,
+            'search'         => $_GET['search'] ?? '',
+            'type'           => $_GET['type'] ?? [],
+            'research_area'  => $_GET['research_area'] ?? [],
+            'sort'           => $_GET['sort'] ?? '',
         ]);
 
+        $post_type_options = [
+            [ 'value' => 'post', 'label' => 'Post' ],
+            [ 'value' => 'project', 'label' => 'Project' ],
+            [ 'value' => 'publication', 'label' => 'Publication' ]
+        ];
+
         $wp_query = new WP_Query($result['query_args']);
+
         $context['posts'] = new Timber\PostQuery($wp_query);
         $context['hide_featured'] = $result['hide_featured'];
         $context['ajax_url'] = esc_url(get_permalink());
+        $context['type_options'] = $post_type_options;
         $context['research_terms'] = get_research_terms_for_work();
+        $context['sort_options'] = get_archive_sort_options();
     }
 
     if ($slug === 'people-archive') {
         $paged = get_query_var('paged') ?: 1;
+        $posts_per_page = $context['fields']['posts_per_page'] ?? 30;
+        $leadership_ids = get_people_leadership_ids();
+        $leadership_people = !empty($leadership_ids)
+        ? Timber::get_posts($leadership_ids)
+        : [];
+        $appointment_terms = get_terms([
+            'taxonomy'   => 'appointment-type',
+            'hide_empty' => true,
+        ]);
 
         $result = limerock_get_people_query_args([
             'paged'          => $paged,
+            'posts_per_page' => $posts_per_page,
             'search'         => $_GET['search'] ?? '',
             'research_area'  => $_GET['research_area'] ?? [],
             'appointment'    => $_GET['appointment'] ?? [],
             'sort'           => $_GET['sort'] ?? '',
+            'leadership_ids' => $leadership_ids,
         ]);
 
         $wp_query = new WP_Query($result['query_args']);
+
         $context['posts'] = new Timber\PostQuery($wp_query);
+        $context['hide_featured'] = $result['hide_featured'];
         $context['ajax_url'] = esc_url(get_permalink());
         $context['research_terms'] = get_research_terms_for_people();
-        $context['appointment_terms'] = get_terms([
-            'taxonomy'   => 'appointment-type',
-            'hide_empty' => true,
-        ]);
+        $context['appointment_terms'] = $appointment_terms;
+        $context['sort_options'] = get_archive_sort_options();
+        $context['leadership_people'] = $leadership_people;
     }
 
 	if (! empty($block['data']['is_example'])) {
@@ -90,12 +113,18 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 function limerock_get_work_query_args($args = []) {
     $featured_post = $args['featured_post'] ?? null;
     $paged         = $args['paged'] ?? 1;
+    $featured_id   = $featured_post ? [$featured_post->ID] : [];
 
-    $featured_id = $featured_post ? [$featured_post->ID] : [];
+    $search_query    = sanitize_text_field($args['search'] ?? '');
+    $type_filter     = array_filter((array) ($args['type'] ?? []));
+    $research_filter = array_filter((array) ($args['research_area'] ?? []));
+    $sort_raw        = $args['sort'] ?? '';
+    $sort_filter     = is_array($sort_raw) ? reset($sort_raw) : $sort_raw;
+    $sort_filter     = sanitize_text_field($sort_filter);
 
     $query_args = [
         'post_type'      => ['post', 'project', 'publication'],
-        'posts_per_page' => 12,
+        'posts_per_page' => $args['posts_per_page'],
         'paged'          => $paged,
         'orderby'        => 'date',
         'order'          => 'DESC',
@@ -113,11 +142,6 @@ function limerock_get_work_query_args($args = []) {
             ],
         ],
     ];
-
-    $search_query    = sanitize_text_field($args['search'] ?? '');
-    $type_filter     = array_filter((array) ($args['type'] ?? []));
-    $research_filter = array_filter((array) ($args['research_area'] ?? []));
-    $sort_filter     = sanitize_text_field($args['sort'] ?? '');
 
     $hide_featured = false;
 
@@ -146,11 +170,7 @@ function limerock_get_work_query_args($args = []) {
     }
 
     // Apply sorting
-    $sort_options = [
-        'oldest' => ['orderby' => 'date',  'order' => 'ASC'],
-        'a_z'    => ['orderby' => 'title', 'order' => 'ASC'],
-        'z_a'    => ['orderby' => 'title', 'order' => 'DESC'],
-    ];
+    $sort_options = get_archive_sort_query_options();
     if (isset($sort_options[$sort_filter])) {
         $query_args = array_merge($query_args, $sort_options[$sort_filter]);
         $hide_featured = true; // Hide featured if not "newest" default sorting
@@ -161,7 +181,10 @@ function limerock_get_work_query_args($args = []) {
         unset($query_args['post__not_in']);
     }
 
-    return ['query_args' => $query_args, 'hide_featured' => $hide_featured];
+    return [
+        'query_args' => $query_args,
+        'hide_featured' => $hide_featured
+    ];
 }
 
 function limerock_get_people_query_args($args = []) {
@@ -169,14 +192,17 @@ function limerock_get_people_query_args($args = []) {
     $search_query       = sanitize_text_field($args['search'] ?? '');
     $research_filter    = array_filter((array) ($args['research_area'] ?? []));
     $appointment_filter = array_filter((array) ($args['appointment'] ?? []));
-    $sort_filter        = sanitize_text_field($args['sort'] ?? '');
+    $sort_raw           = $args['sort'] ?? '';
+    $sort_filter        = is_array($sort_raw) ? reset($sort_raw) : $sort_raw;
+    $sort_filter        = sanitize_text_field($sort_filter);
 
     $query_args = [
         'post_type'      => ['person'],
-        'posts_per_page' => 2,
+        'posts_per_page' => $args['posts_per_page'],
         'paged'          => $paged,
         'orderby'        => 'date',
         'order'          => 'DESC',
+        'post__not_in'   => $args['leadership_ids'],
         'meta_query'     => [
             [
                 'key'     => 'display_on_archive',
@@ -187,9 +213,12 @@ function limerock_get_people_query_args($args = []) {
         'tax_query' => ['relation' => 'AND'],
     ];
 
+    $hide_featured_leadership = false;
+
     // Apply search
     if ($search_query) {
         $query_args['s'] = $search_query;
+        $hide_featured_leadership = true;
     }
 
     // Apply research area filter
@@ -199,28 +228,60 @@ function limerock_get_people_query_args($args = []) {
             'field'    => 'slug',
             'terms'    => $research_filter,
         ];
+        $hide_featured_leadership = true;
     }
 
     // Apply appointment type filter
-    if ($appointment_filter) {
+    if (!empty($appointment_filter) && !in_array('all', $appointment_filter, true)) {
         $query_args['tax_query'][] = [
             'taxonomy' => 'appointment-type',
             'field'    => 'slug',
             'terms'    => $appointment_filter,
         ];
+        $hide_featured_leadership = true;
     }
 
     // Apply sorting
-    $sort_options = [
-        'oldest' => ['orderby' => 'date',  'order' => 'ASC'],
-        'a_z'    => ['orderby' => 'title', 'order' => 'ASC'],
-        'z_a'    => ['orderby' => 'title', 'order' => 'DESC'],
-    ];
+    $sort_options = get_archive_sort_query_options();
     if (isset($sort_options[$sort_filter])) {
         $query_args = array_merge($query_args, $sort_options[$sort_filter]);
+        $hide_featured_leadership = true; // Hide featured if not "newest" default sorting
     }
 
-    return ['query_args' => $query_args];
+    // Remove featured if needed
+    if ($hide_featured_leadership) {
+        unset($query_args['post__not_in']);
+    }
+
+    return [
+        'query_args' => $query_args,
+        'hide_featured' => $hide_featured_leadership
+    ];
+}
+
+function get_people_leadership_ids() {
+    $leadership_args = [
+        'post_type'      => ['person'],
+        'posts_per_page' => -1,
+        'tax_query' => [
+            [
+                'taxonomy' => 'appointment-type',
+                'field'    => 'slug',
+                'terms'    => ['leadership'],
+            ],
+        ],
+        'meta_query' => [
+            [
+                'key'     => 'display_on_archive',
+                'value'   => '1',
+                'compare' => '=',
+            ],
+        ],
+        'fields'  => 'ids',
+    ];
+
+    $leadership_query = new WP_Query($leadership_args);
+    return $leadership_query->posts;
 }
 
 function get_research_terms_for_work() {
@@ -257,6 +318,23 @@ function get_research_terms_for_people() {
         'hide_empty' => true,
         'object_ids' => $posts,
     ]);
+}
+
+function get_archive_sort_options() {
+    return [
+        [ 'value' => 'newest', 'label' => 'Newest' ],
+        [ 'value' => 'oldest', 'label' => 'Oldest' ],
+        [ 'value' => 'a_z',    'label' => 'A to Z' ],
+        [ 'value' => 'z_a',    'label' => 'Z to A' ],
+    ];
+}
+
+function get_archive_sort_query_options() {
+    return [
+        'oldest' => ['orderby' => 'date',  'order' => 'ASC'],
+        'a_z'    => ['orderby' => 'title', 'order' => 'ASC'],
+        'z_a'    => ['orderby' => 'title', 'order' => 'DESC'],
+    ];
 }
 
 add_filter('timber/context', 'add_to_context');

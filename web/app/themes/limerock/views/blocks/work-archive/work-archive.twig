@@ -8,9 +8,9 @@
       {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
       <div class="works-wrap">
         <div class="container">
-          {% include '@blocks/work-archive/work-archive-filters.twig' with { fields: fields } %}
+          {% include '@blocks/work-archive/filters.twig' with { fields: fields } %}
           <div class="ajax-results-js">
-            {% include '@blocks/work-archive/work-archive-results.twig' with {
+            {% include '@blocks/work-archive/results.twig' with {
               fields: fields,
               posts: posts,
               hide_featured: hide_featured
