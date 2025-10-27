@@ -40,6 +40,12 @@ body:has(.hero) {
   opacity: 0.5;
 }
 
+.ajax-results-js {
+  position: relative;
+  overflow: hidden;
+  min-height: 100px;
+}
+
 .loader-wrap {
   position: absolute;
   top: 0;
