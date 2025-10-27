@@ -2,43 +2,47 @@
   // Add your custom styles here
   position: relative;
 
+  .full-bleed-cta-large {
+    h5 {
+      font-size: 32px;
+      line-height: 36px;
+      margin-bottom: 15px;
+      font-weight: 350;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 40px;
+        line-height: 48px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        font-size: 75px;
+        line-height: 81px;
+        margin-bottom: 49px;
+      }
+    }
+  }
+
   figure {
-    position: relative;
-    padding: 0 0 60%;
-    margin: 0 7px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    padding: 0;
+    margin: 0;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 100%;
-      padding: 0;
-      margin: 0;
       border: 7px solid $white;
     }
 
     &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 148px;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: linear-gradient(360deg,rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        content: '';
-        position: absolute;
-        display: block;
-        top: 148px;
-        bottom: 0;
-        right: 0;
-        left: 0;
         background: linear-gradient(360deg,rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
-      }
-    }
-
-    & ~ .container {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        min-height: 897px;
-      }
-
-      h5 {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          color: $white;
-        }
       }
     }
 
@@ -52,18 +56,31 @@
     }
   }
 
+  .image {
+    & ~ .container {
+      min-height: 530px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-height: 897px;
+      }
+
+      h5 {
+        color: $white;
+      }
+    }
+  }
+
   .container {
     position: relative;
     z-index: 1;
     padding-top: 35px;
-    padding-bottom: 30px;
+    padding-bottom: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding-top: 56px;
       padding-bottom: 34px;
       min-height: 594px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
     }
   }
 

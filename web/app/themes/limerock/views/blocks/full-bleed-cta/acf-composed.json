@@ -5,12 +5,32 @@
     {
       "label": "Background Image",
       "name": "background_image",
-      "type": "image"
+      "type": "image",
+      "wrapper": {
+        "width": 50
+      }
+    },
+    {
+      "label": "Mobile Image",
+      "name": "mobile_image",
+      "type": "image",
+      "wrapper": {
+        "width": 50
+      }
     },
     {
       "label": "Text",
       "name": "text",
       "type": "textarea"
+    },
+    {
+      "label": "Text Size",
+      "name": "text_size",
+      "type": "select",
+      "choices": {
+        "large": "Large",
+        "small": "Small"
+      }
     },
     {
       "label": "Buttons",
