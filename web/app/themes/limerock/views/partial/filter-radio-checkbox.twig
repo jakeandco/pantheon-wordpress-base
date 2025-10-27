@@ -17,7 +17,6 @@
     {% if title is defined %}
       <div class="filter-title">{{ title }}</div>
     {% endif %}
-
     <div class="filters">
       {% for option in options %}
         {% set value =
@@ -47,7 +46,6 @@
           <span>{{ label }}</span>
         </label>
       {% endfor %}
-
       {% if add_all %}
         <label class="filter-all">
           <input
