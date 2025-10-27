@@ -1,3 +1,185 @@
 .block_image-and-contact-list {
   // Add your custom styles here
+  overflow: hidden;
+
+  .image-holder {
+    margin-bottom: 26px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 0;
+      position: relative;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      min-height: 788px;
+    }
+
+    figure {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 50vw;
+        left: 0;
+        transform: none;
+        top: 0;
+        position: absolute;
+        height: 100%;
+      }
+    }
+
+    .media-item_caption {
+      display: none;
+    }
+
+    .media-item_holder {
+      position: relative;
+      padding-bottom: 109.5%;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 0;
+        height: 100%;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .row {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .text-holder {
+    padding-bottom: 11px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      min-height: 788px;
+      padding-top: 105px;
+      padding-bottom: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+      padding-left: 40px;
+    }
+  }
+
+  h2 {
+    font-family: 'Season';
+    font-weight: 470;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 19px;
+    letter-spacing: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 44px;
+      line-height: 50px;
+      margin-bottom: 30px;
+    }
+  }
+
+  h5 {
+    font-family: 'FT System Grotesk';
+    font-size: 16px;
+    line-height: 22px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 22px;
+      line-height: 30px;
+      margin-bottom: 37px;
+      max-width: 429px;
+    }
+  }
+
+  .contacts-list {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 400;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      width: 100%;
+      max-width: 507px;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    li {
+      margin-bottom: 45px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 50%;
+        padding-right: 20px;
+        padding-bottom: 42px;
+        margin-bottom: 36px;
+        border-bottom: 1px solid $green-dark;
+      }
+
+      &:nth-child(even) {
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+          padding-left: 26px;
+        }
+
+        &:last-child {
+          @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            border-bottom: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      &:nth-child(odd) {
+        &:nth-last-child(2) {
+          @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            border-bottom: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .label {
+    font-family: 'FT System Grotesk';
+    opacity: 0.6;
+    margin-bottom: 1px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 7px;
+    }
+  }
+
+  .contact-name {
+    font-family: 'Season';
+    font-weight: 470;
+    margin-bottom: 6px;
+    font-size: 24px;
+    line-height: 28px;
+    padding-top: 5px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 18px;
+      line-height: 22px;
+      padding-top: 0;
+      margin-bottom: 4px;
+    }
+  }
+
+  .mail-link {
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

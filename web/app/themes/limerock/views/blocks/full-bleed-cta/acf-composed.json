@@ -10,7 +10,7 @@
     {
       "label": "Text",
       "name": "text",
-      "type": "wysiwyg"
+      "type": "textarea"
     },
     {
       "label": "Text Size",
