@@ -1,7 +1,7 @@
-{% set display_featured = posts.pagination.current == 1 and not hide_featured ? 'block' : 'none' %}
+{% set display_featured = posts.pagination.current == 1 and not hide_featured %}
 
-{% if fields.featured_work is not empty %}
-  <div class="featured-post-wrap" style="display: {{ display_featured }};">
+{% if fields.featured_work is not empty and display_featured %}
+  <div class="featured-post-wrap">
     {% if fields.featured_label %}
       <div>{{ fields.featured_label }}</div>
     {% endif %}
@@ -15,7 +15,7 @@
   {% endif %}
   <div class="all-posts-grid">
     {% if posts|length %}
-      {% include '@partial/post-repeater.twig' with { posts: posts } only %}
+      {% include '@partial/post-repeater.twig' with { posts: posts, variant: 'card' } only %}
     {% else %}
       <div class="no-results">No works found matching your criteria.</div>
     {% endif %}

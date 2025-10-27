@@ -1,0 +1,67 @@
+{#
+  Expected parameters:
+  - title: string (optional)
+  - name: string (required) – form field name (e.g. "research_area")
+  - type: string (optional, 'checkbox' or 'radio', default 'checkbox')
+  - options: array of objects/arrays with {value, label} or WP_Term objects
+  - selected: array of selected values
+  - add_all: bool (optional, adds 'All' checkbox/radio)
+  - all_label: string (optional, default 'All')
+  - default_all: bool (optional, makes 'All' checked if none selected)
+  - default_option: string (optional, value that gets 'default-radio-js' class)
+  - create_labels: bool (optional, adds 'create-selected-label-js' class)
+  - extra_classes: string (optional, additional wrapper classes)
+#}
+<div class="filter-block labels-js {{ extra_classes|default('') }}">
+  {% if title is defined %}
+    <div class="filter-title">{{ title }}</div>
+  {% endif %}
+
+  <div class="filters">
+    {% if options is defined and options|length %}
+      {% for option in options %}
+        {% set value =
+          option.value is defined ? option.value :
+          (option.slug is defined ? option.slug : option)
+        %}
+        {% set label =
+          option.label is defined ? option.label :
+          (option.name is defined ? option.name : value)
+        %}
+        {% set enable_create_labels =
+          create_labels and not (type == 'radio' and default_option == value)
+        %}
+        {% set checked = value in selected or ('all' in selected and add_all) %}
+        <label class="filter-{{ value }}">
+          <input
+            class="filter-option-js
+              {{ enable_create_labels ? 'create-selected-label-js' : '' }}
+              {{ default_option == value ? 'default-radio-js' : '' }}"
+            type="{{ type|default('checkbox') }}"
+            name="{{ name }}[]"
+            value="{{ value }}"
+            data-option="{{ name }}-{{ value }}"
+            data-text="{{ label | e('html_attr') }}"
+            {% if checked %}checked{% endif %}
+          >
+          <span>{{ label }}</span>
+        </label>
+      {% endfor %}
+    {% endif %}
+
+    {% if add_all %}
+      <label class="filter-all">
+        <input
+          class="filter-option-js
+            {% if type|default('checkbox') == 'checkbox' %}all-labels-js{% endif %}
+            {{ default_option == 'all' ? 'default-radio-js' : '' }}"
+          type="{{ type|default('checkbox') }}"
+          name="{{ name }}[]"
+          value="all"
+          {% if 'all' in selected or (default_all and selected is empty) %}checked{% endif %}
+        >
+        <span>{{ all_label|default('All') }}</span>
+      </label>
+    {% endif %}
+  </div>
+</div>
