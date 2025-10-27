@@ -12,13 +12,13 @@
   - create_labels: bool (optional, adds 'create-selected-label-js' class)
   - extra_classes: string (optional, additional wrapper classes)
 #}
-<div class="filter-block labels-js {{ extra_classes|default('') }}">
-  {% if title is defined %}
-    <div class="filter-title">{{ title }}</div>
-  {% endif %}
+{% if options is defined and options|length %}
+  <div class="filter-block labels-js {{ extra_classes|default('') }}">
+    {% if title is defined %}
+      <div class="filter-title">{{ title }}</div>
+    {% endif %}
 
-  <div class="filters">
-    {% if options is defined and options|length %}
+    <div class="filters">
       {% for option in options %}
         {% set value =
           option.value is defined ? option.value :
@@ -47,21 +47,21 @@
           <span>{{ label }}</span>
         </label>
       {% endfor %}
-    {% endif %}
 
-    {% if add_all %}
-      <label class="filter-all">
-        <input
-          class="filter-option-js
-            {% if type|default('checkbox') == 'checkbox' %}all-labels-js{% endif %}
-            {{ default_option == 'all' ? 'default-radio-js' : '' }}"
-          type="{{ type|default('checkbox') }}"
-          name="{{ name }}[]"
-          value="all"
-          {% if 'all' in selected or (default_all and selected is empty) %}checked{% endif %}
-        >
-        <span>{{ all_label|default('All') }}</span>
-      </label>
-    {% endif %}
+      {% if add_all %}
+        <label class="filter-all">
+          <input
+            class="filter-option-js
+              {% if type|default('checkbox') == 'checkbox' %}all-labels-js{% endif %}
+              {{ default_option == 'all' ? 'default-radio-js' : '' }}"
+            type="{{ type|default('checkbox') }}"
+            name="{{ name }}[]"
+            value="all"
+            {% if 'all' in selected or (default_all and selected is empty) %}checked{% endif %}
+          >
+          <span>{{ all_label|default('All') }}</span>
+        </label>
+      {% endif %}
+    </div>
   </div>
-</div>
+{% endif %}

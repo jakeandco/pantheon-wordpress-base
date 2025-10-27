@@ -28,7 +28,7 @@
                 {% if posts|length %}
                   {% include '@partial/people-cards.twig' with { people: posts, items_per_row: 6 } only %}
                 {% else %}
-                  <div class="no-results">No works found matching your criteria.</div>
+                  <div class="no-results">No people found matching your criteria.</div>
                 {% endif %}
               </div>
 
