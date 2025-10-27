@@ -1,6 +1,7 @@
 .block_full-bleed-cta {
   // Add your custom styles here
   position: relative;
+  overflow: hidden;
 
   .full-bleed-cta-large {
     h5 {
@@ -21,15 +22,34 @@
   }
 
   figure {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    padding: 0;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
     margin: 0;
+    border: 7px solid $white;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      border: 7px solid $white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0;
+      transform: none;
+    }
+
+    & ~ .container {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-height: 897px;
+      }
+
+      h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          color: $white;
+        }
+      }
     }
 
     &:before {
@@ -47,24 +67,13 @@
     }
 
     img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .image {
-    & ~ .container {
-      min-height: 530px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        min-height: 897px;
-      }
-
-      h5 {
-        color: $white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
   }

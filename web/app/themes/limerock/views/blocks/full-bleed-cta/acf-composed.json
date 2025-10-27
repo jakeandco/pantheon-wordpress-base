@@ -5,18 +5,7 @@
     {
       "label": "Background Image",
       "name": "background_image",
-      "type": "image",
-      "wrapper": {
-        "width": 50
-      }
-    },
-    {
-      "label": "Mobile Image",
-      "name": "mobile_image",
-      "type": "image",
-      "wrapper": {
-        "width": 50
-      }
+      "type": "image"
     },
     {
       "label": "Text",

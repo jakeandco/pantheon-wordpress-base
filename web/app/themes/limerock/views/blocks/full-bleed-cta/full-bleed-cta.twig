@@ -1,16 +1,6 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_full-bleed-cta' } %}
   {% block content %}
-    {% if fields.background_image %}
-      <div class="{% if fields.mobile_image %}d-none{% endif %} d-md-block image">
-        {% include '@partial/media-item.twig' with { image: fields.background_image } only %}
-      </div>
-    {% endif %}
-
-    {% if fields.mobile_image %}
-      <div class="d-md-none image">
-        {% include '@partial/media-item.twig' with { image: fields.mobile_image } only %}
-      </div>
-    {% endif %}
+    {% include '@partial/media-item.twig' with { image: fields.background_image } only %}
 
     <div class="container full-bleed-cta full-bleed-cta-{{fields.text_size}}">
       <div class="row">
