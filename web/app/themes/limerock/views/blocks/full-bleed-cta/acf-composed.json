@@ -10,16 +10,7 @@
     {
       "label": "Text",
       "name": "text",
-      "type": "wysiwyg"
-    },
-    {
-      "label": "Text Size",
-      "name": "text_size",
-      "type": "select",
-      "choices": {
-        "large": "Large",
-        "small": "Small"
-      }
+      "type": "textarea"
     },
     {
       "label": "Buttons",
