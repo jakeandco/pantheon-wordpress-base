@@ -1,3 +1,133 @@
 .block_full-bleed-cta {
   // Add your custom styles here
+  position: relative;
+  overflow: hidden;
+
+  .full-bleed-cta-large {
+    h5 {
+      font-size: 32px;
+      line-height: 36px;
+      margin-bottom: 15px;
+      font-weight: 350;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 40px;
+        line-height: 48px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        font-size: 75px;
+        line-height: 81px;
+        margin-bottom: 49px;
+      }
+    }
+  }
+
+  figure {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    border: 7px solid $white;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0;
+      transform: none;
+    }
+
+    & ~ .container {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-height: 897px;
+      }
+
+      h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          color: $white;
+        }
+      }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 148px;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: linear-gradient(360deg,rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background: linear-gradient(360deg,rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+      }
+    }
+
+    img {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    padding-top: 35px;
+    padding-bottom: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 56px;
+      padding-bottom: 34px;
+      min-height: 594px;
+    }
+  }
+
+  h5 {
+    font-family: 'FT System Grotesk';
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    margin-bottom: 29px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-weight: 300;
+      font-size: 40px;
+      line-height: 48px;
+      margin-bottom: 34px;
+      letter-spacing: 0;
+    }
+  }
+
+  .buttons-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      margin-bottom: 10px;
+      margin-right: 10px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-right: 35px;
+      }
+    }
+  }
+
+  .btn-primary {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding: 19px 20px;
+      line-height: 1;
+      font-size: 18px;
+      background: rgba($white,0.3);
+    }
+  }
 }

@@ -40,6 +40,7 @@ class Shortcodes
           'label' => esc_attr(Util::array_value($attributes, 'label')) ?: '',
           'aria-label' => esc_attr(Util::array_value($attributes, 'aria-label')) ?: '',
           'title' => wp_kses_post(Util::array_value($attributes, 'title')) ?: '',
+          'text' => wp_kses_post(Util::array_value($attributes, 'text')) ?: '',
         ]
       ]
     ));

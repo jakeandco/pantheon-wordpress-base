@@ -8,11 +8,6 @@
       "type": "image"
     },
     {
-      "label": "Headline",
-      "name": "headline",
-      "type": "text"
-    },
-    {
       "label": "Title",
       "name": "title",
       "type": "text"
@@ -20,7 +15,7 @@
     {
       "label": "Subtitle",
       "name": "subtitle",
-      "type": "wysiwyg"
+      "type": "textarea"
     },
     {
       "label": "Contacts",

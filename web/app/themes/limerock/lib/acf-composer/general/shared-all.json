@@ -3,10 +3,9 @@
   "title": "Shared: All",
   "fields": [
     {
-      "type": "repeater",
-      "name": "jump_links",
-      "label": "Jump Links",
-      "sub_fields": [{ "type": "link", "name": "link", "label": "Link" }]
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/theme-color",
+      "name": "header_background",
+      "label": "Header Background"
     }
   ],
   "location": [
