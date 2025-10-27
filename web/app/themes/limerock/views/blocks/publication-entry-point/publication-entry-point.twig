@@ -1,28 +1,28 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_publication-entry-point' } %}
   {% block content %}
+    {% set post = get_post(fields.publication) %}
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 img-holder">
+          {% if post and post.thumbnail %}
+            {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}
+          {% endif %}
+        </div>
+        <div class="col-12 col-md-6 quote-holder">
 
+          <div class="quote h5">
+            {{fields.quote['content']}}
+          </div>
 
-    {% include '@partial/tease_switcher.twig' with { post: get_post(fields.publication) } only %}
+          <div class="entry-point-attribution">
+            <p class="title">{{fields.quote['attribution']['title']}}</p>
 
-    <p>{{fields.read_more_text}}</p>
+            <p>{{fields.quote['attribution']['subtitle']}}</p>
+          </div>
 
-    <div>
-      <h3>Field Group: quote</h3>
-
-
-      {{fields.quote['content']}}
-
-      <div>
-        <h3>Field Group: attribution</h3>
-
-
-        <p>{{fields.quote['attribution']['title']}}</p>
-
-        <p>{{fields.quote['attribution']['subtitle']}}</p>
-
+          <a href="{{ post.link }}" class="btn btn-primary">{{fields.read_more_text}}</a>
+        </div>
       </div>
-
     </div>
-
   {% endblock %}
 {% endembed %}

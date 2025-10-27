@@ -1,3 +1,91 @@
 .block_publication-entry-point {
   // Add your custom styles here
+  overflow: hidden;
+
+  .row {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .quote {
+    margin-bottom: 44px;
+    position: relative;
+    &:before {
+      content: '“';
+      position: absolute;
+      top: 0;
+      right: 100%;
+    }
+    &:after {
+      content: '”';
+    }
+  }
+
+  .entry-point-attribution {
+    font-size: 14px;
+    line-height: 18px;
+    opacity: 0.6;
+
+    .title {
+      margin-bottom: 0;
+      font-weight: 700;
+    }
+  }
+
+  .btn {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-top: auto;
+    }
+  }
+
+  .quote-holder {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 62px;
+      padding-bottom: 60px;
+      min-height: 788px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+      padding-right: 9%;
+    }
+  }
+
+  .img-holder {
+    position: relative;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      min-height: 788px;
+    }
+
+    figure {
+      position: relative;
+      margin: 0;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50vw;
+        bottom: 0;
+        transform: none
+      }
+
+      img {
+        width: 100%;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
 }
