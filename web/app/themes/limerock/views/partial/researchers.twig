@@ -1,0 +1,20 @@
+{% set researchers = post.meta('researchers') %}
+{% set authors = post.meta('authors') %}
+{% set people = researchers|length ? researchers : (authors|length ? authors : []) %}
+{% set label = researchers|length ? 'Researchers' : (authors|length ? 'Authors' : '') %}
+
+{% if people|length %}
+  <div class="researchers">
+    <div>{{ label|lower }}:</div>
+    <ul class="researchers-list list-unstyled">
+      {% for person in people %}
+        {% set person_post = get_post(person) %}
+        <li>
+          <a href="{{ person_post.link }}" class="btn btn-secondary">
+            {{ person_post.post_title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
