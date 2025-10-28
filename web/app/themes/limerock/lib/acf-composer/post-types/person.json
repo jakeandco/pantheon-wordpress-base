@@ -13,6 +13,11 @@
       "type": "text"
     },
     {
+      "label": "Affiliation",
+      "name": "affiliation",
+      "type": "text"
+    },
+    {
       "label": "Title(s)",
       "name": "titles",
       "type": "repeater",

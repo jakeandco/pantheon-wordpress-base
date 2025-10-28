@@ -27,11 +27,24 @@ define( 'AIRTABLE_SYNC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  * Initialize the plugin.
  */
 function airtable_sync_init() {
+	// Load configuration class
+	require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-sync-config.php';
+
+	// Load sync engine classes
+	require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-api.php';
+	require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-field-transformer.php';
+	require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-sync-engine.php';
+
 	// Load admin functionality
 	if ( is_admin() ) {
 		require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-sync-admin.php';
 		$admin = new Airtable_Sync_Admin();
 		$admin->init();
+	}
+
+	// Load WP-CLI commands
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		require_once AIRTABLE_SYNC_PLUGIN_DIR . 'includes/class-airtable-sync-cli.php';
 	}
 }
 add_action( 'plugins_loaded', 'airtable_sync_init' );
@@ -40,12 +53,11 @@ add_action( 'plugins_loaded', 'airtable_sync_init' );
  * Activation hook.
  */
 function airtable_sync_activate() {
-	// Set default options on activation
+	// Set default options on activation (only API credentials, not mappings)
 	if ( ! get_option( 'airtable_sync_settings' ) ) {
 		add_option( 'airtable_sync_settings', array(
 			'api_key' => '',
 			'base_id' => '',
-			'table_mappings' => array()
 		) );
 	}
 }

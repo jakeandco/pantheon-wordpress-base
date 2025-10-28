@@ -2,12 +2,30 @@
  * Admin styles for Airtable Sync plugin
  */
 
-/* Settings page container */
+/* General */
 .wrap h1 {
 	margin-bottom: 20px;
 }
 
-/* API Section */
+.airtable-sync-intro {
+	padding: 15px;
+	background: #f0f6fc;
+	border-left: 4px solid #0073aa;
+	margin-bottom: 20px;
+}
+
+.airtable-sync-intro p {
+	margin: 5px 0;
+}
+
+.airtable-sync-intro code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 13px;
+}
+
+/* API Configuration Section */
 #airtable_sync_api_key {
 	width: 100%;
 	max-width: 500px;
@@ -23,226 +41,367 @@
 	margin-left: 10px;
 }
 
-/* Table Mappings */
-#airtable_sync_table_mappings {
-	max-width: 100%;
+/* Configuration Status Section */
+.airtable-sync-status {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
-#airtable_sync_mappings_container {
-	margin-bottom: 15px;
+.airtable-sync-status .notice {
+	margin: 0 !important;
+	padding: 8px 12px !important;
 }
 
-.airtable-sync-mapping-row {
-	margin-bottom: 15px;
-	padding: 20px;
+.airtable-sync-status .notice .dashicons {
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
+.airtable-sync-status ul {
+	margin: 5px 0 0 25px;
+}
+
+/* Field ID Inspector */
+.airtable-sync-inspector {
+	max-width: 1200px;
+}
+
+.inspector-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+	padding: 15px;
 	background: #f9f9f9;
 	border: 1px solid #ddd;
 	border-radius: 4px;
 }
 
-.airtable-sync-mapping-row .mapping-header {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	margin-bottom: 15px;
-}
-
-.mapping-selects {
-	display: flex;
-	align-items: flex-end;
-	gap: 15px;
-	flex-wrap: wrap;
-}
-
-.mapping-select-group {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-	flex: 1;
-	min-width: 200px;
-}
-
-.mapping-select-group label {
+.inspector-controls label {
 	font-weight: 600;
-	font-size: 13px;
-	color: #23282d;
+	margin-right: 5px;
+}
+
+.inspector-controls select {
+	min-width: 250px;
+}
+
+#airtable_inspector_loading {
+	float: none;
 	margin: 0;
 }
 
-.mapping-select-group select {
-	width: 100%;
+#airtable_inspector_results {
+	margin-top: 20px;
 }
 
-.mapping-selects .mapping-arrow {
-	font-size: 24px;
+#airtable_inspector_results h4 {
+	margin-top: 0;
 	color: #0073aa;
-	font-weight: bold;
-	margin-bottom: 8px;
-	flex-shrink: 0;
+	font-size: 16px;
 }
 
-.mapping-actions {
-	display: flex;
-	gap: 10px;
-	justify-content: flex-end;
+#airtable_inspector_results .description {
+	margin-bottom: 10px;
+	color: #666;
 }
 
-.mapping-actions .configure-fields {
-	white-space: nowrap;
-}
-
-.mapping-actions .remove-mapping {
-	color: #b32d2e;
-	white-space: nowrap;
-}
-
-.mapping-actions .remove-mapping:hover {
-	color: #dc3232;
-	border-color: #dc3232;
-}
-
-#airtable_sync_add_mapping {
+#airtable_inspector_results table {
 	margin-top: 10px;
 }
 
-/* Field Mappings Container */
-.field-mappings-container {
-	margin-top: 15px;
-	padding: 15px;
+.airtable-field-id {
+	background: #f0f0f0;
+	padding: 4px 8px;
+	border-radius: 3px;
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 12px;
+	color: #0073aa;
+	user-select: all;
+}
+
+.copy-field-id {
+	font-size: 11px;
+	height: 24px;
+	line-height: 22px;
+	padding: 0 10px;
+	vertical-align: middle;
+}
+
+.field-type-badge {
+	display: inline-block;
+	padding: 3px 8px;
+	background: #646970;
+	color: #fff;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Table Mappings Display (Read-Only) */
+.airtable-sync-mappings {
+	max-width: 1200px;
+}
+
+.airtable-sync-mapping-display {
+	margin-bottom: 30px;
+	padding: 20px;
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.field-mappings-header {
+.airtable-sync-mapping-display .mapping-header {
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #0073aa;
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 15px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid #0073aa;
+	align-items: flex-start;
+	gap: 20px;
 }
 
-.field-mappings-header h4 {
-	margin: 0;
-	color: #0073aa;
+.airtable-sync-mapping-display .mapping-header-left {
+	flex: 1;
 }
 
-.field-mappings-list {
-	margin-bottom: 15px;
-}
-
-/* Field Mapping Row */
-.field-mapping-row {
-	display: grid;
-	grid-template-columns: 2fr auto 3fr auto;
-	align-items: center;
-	gap: 15px;
-	padding: 15px;
-	margin-bottom: 10px;
-	background: #f9f9f9;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	transition: background-color 0.2s;
-}
-
-.field-mapping-row:hover {
-	background: #f0f0f0;
-}
-
-.field-mapping-airtable {
+.airtable-sync-mapping-display .mapping-header-right {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	align-items: flex-end;
+	gap: 10px;
 }
 
-.field-mapping-airtable strong {
+.airtable-sync-mapping-display h3 {
+	margin: 0 0 10px 0;
+	font-size: 18px;
 	color: #23282d;
-	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
-.field-mapping-airtable .field-type {
-	font-size: 12px;
-	color: #666;
-	font-style: italic;
-}
-
-.field-mapping-arrow {
+.airtable-sync-mapping-display h3 .dashicons {
 	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.airtable-sync-mapping-display h3 .mapping-arrow {
 	color: #0073aa;
 	font-weight: bold;
+	margin: 0 5px;
 }
 
-.field-mapping-destination {
+.airtable-sync-mapping-display .mapping-meta {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 10px;
-	align-items: center;
-}
-
-.field-mapping-destination select {
-	flex: 1;
-	min-width: 150px;
-}
-
-.destination-type-select {
-	max-width: 180px;
-}
-
-.remove-field-mapping {
-	width: 32px;
-	height: 32px;
-	font-size: 20px;
-	line-height: 1;
-	padding: 0;
-	color: #b32d2e;
-	border-color: #ddd;
-}
-
-.remove-field-mapping:hover {
-	color: #dc3232;
-	border-color: #dc3232;
-	background: #fee;
-}
-
-.field-mappings-empty {
-	padding: 30px;
-	text-align: center;
 	color: #666;
-	background: #fafafa;
-	border: 2px dashed #ddd;
+	font-size: 13px;
+}
+
+.airtable-sync-mapping-display .mapping-meta code {
+	background: #f0f0f0;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 12px;
+}
+
+.airtable-sync-mapping-display table {
+	width: 100%;
+	margin-top: 15px;
+}
+
+.airtable-sync-mapping-display table th {
+	text-align: left;
+	font-weight: 600;
+	color: #23282d;
+	padding: 10px !important;
+}
+
+.airtable-sync-mapping-display table td {
+	padding: 12px 10px !important;
+	vertical-align: top;
+}
+
+.airtable-sync-mapping-display table td strong {
+	display: block;
+	margin-bottom: 4px;
+	color: #23282d;
+}
+
+.airtable-sync-mapping-display table code {
+	background: #f0f0f0;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 11px;
+	color: #666;
+}
+
+.airtable-sync-mapping-display table code.small {
+	font-size: 10px;
+}
+
+/* Destination type badges */
+.badge {
+	display: inline-block;
+	padding: 4px 8px;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.badge-core {
+	background: #2271b1;
+	color: #fff;
+}
+
+.badge-taxonomy {
+	background: #00a32a;
+	color: #fff;
+}
+
+.badge-acf {
+	background: #8c54ff;
+	color: #fff;
+}
+
+/* Buttons */
+#airtable_sync_validate {
+	margin-top: 10px;
+}
+
+/* Sync Now Button */
+.airtable-sync-now-btn {
+	white-space: nowrap;
+}
+
+.airtable-sync-now-btn .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+/* Sync Status */
+.sync-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #f0f6fc;
+	border-radius: 4px;
+	font-size: 13px;
+	color: #0073aa;
+}
+
+.sync-status .sync-spinner {
+	float: none;
+	margin: 0;
+}
+
+/* Sync Results */
+.sync-results {
+	margin-top: 20px;
+	padding: 15px;
+	background: #f9f9f9;
+	border-left: 4px solid #0073aa;
 	border-radius: 4px;
 }
 
-.field-mappings-empty p {
+.sync-results.has-errors {
+	border-left-color: #d63638;
+	background: #fcf0f1;
+}
+
+.sync-results.has-success {
+	border-left-color: #00a32a;
+	background: #f0f6fc;
+}
+
+.sync-results-header {
+	margin-bottom: 10px;
+}
+
+.sync-results-header h4 {
 	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #23282d;
+}
+
+.sync-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-bottom: 10px;
+}
+
+.stat-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px;
+	background: #fff;
+	border-radius: 3px;
+	border: 1px solid #ddd;
+}
+
+.stat-label {
+	font-size: 12px;
+	font-weight: 600;
+	color: #666;
+}
+
+.stat-value {
+	font-size: 16px;
+	font-weight: bold;
+	color: #23282d;
+}
+
+.stat-created .stat-value {
+	color: #00a32a;
+}
+
+.stat-updated .stat-value {
+	color: #2271b1;
+}
+
+.stat-unpublished .stat-value {
+	color: #dba617;
+}
+
+.stat-errors .stat-value {
+	color: #d63638;
+}
+
+.sync-message-box {
+	display: none; /* Hidden by default, can be shown for detailed error messages */
+	margin-top: 10px;
+	padding: 10px;
+	background: #fff;
+	border-radius: 3px;
+	font-size: 13px;
+	color: #666;
+}
+
+.sync-message-box:not(:empty) {
+	display: block; /* Only show if it has content */
 }
 
 /* Loading states */
-.airtable-sync-loading {
-	opacity: 0.6;
-	pointer-events: none;
-}
-
-/* Error messages */
-.airtable-sync-error {
-	color: #dc3232;
-	font-weight: bold;
-	margin-top: 10px;
-	padding: 10px;
-	background: #fee;
-	border-left: 4px solid #dc3232;
-	border-radius: 2px;
-}
-
-/* Success messages */
-.airtable-sync-success {
-	color: #46b450;
-	font-weight: bold;
-	margin-top: 10px;
-	padding: 10px;
-	background: #efe;
-	border-left: 4px solid #46b450;
-	border-radius: 2px;
+.spinner.is-active {
+	display: inline-block;
+	float: none;
+	vertical-align: middle;
 }
 
 /* Disabled state */
@@ -257,48 +416,61 @@ input:disabled {
 .description {
 	margin-top: 5px;
 	margin-bottom: 0;
+	color: #646970;
+}
+
+/* Notice adjustments */
+.notice.inline {
+	display: block;
+	margin: 5px 0 15px;
+	padding: 10px 15px;
 }
 
 /* Responsive adjustments */
-@media screen and (max-width: 1200px) {
-	.field-mapping-row {
-		grid-template-columns: 1fr;
-		gap: 10px;
-	}
-
-	.field-mapping-arrow {
-		display: none;
-	}
-
-	.field-mapping-destination {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.field-mapping-destination select {
-		width: 100%;
-	}
-}
-
 @media screen and (max-width: 782px) {
-	.mapping-selects {
+	.inspector-controls {
 		flex-direction: column;
 		align-items: stretch;
 	}
 
-	.mapping-selects .mapping-arrow {
-		display: none;
-	}
-
-	.mapping-select-group {
+	.inspector-controls select {
+		width: 100%;
 		min-width: 100%;
 	}
 
-	.mapping-actions {
+	.inspector-controls button {
+		width: 100%;
+	}
+
+	.airtable-sync-mapping-display .mapping-header {
 		flex-direction: column;
 	}
 
-	.mapping-actions button {
+	.airtable-sync-mapping-display .mapping-header-right {
 		width: 100%;
+		align-items: stretch;
+	}
+
+	.airtable-sync-now-btn {
+		width: 100%;
+	}
+
+	.airtable-sync-mapping-display table {
+		font-size: 12px;
+	}
+
+	.airtable-sync-mapping-display table th,
+	.airtable-sync-mapping-display table td {
+		padding: 8px !important;
+	}
+
+	.sync-stats {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.stat-item {
+		width: 100%;
+		justify-content: space-between;
 	}
 }

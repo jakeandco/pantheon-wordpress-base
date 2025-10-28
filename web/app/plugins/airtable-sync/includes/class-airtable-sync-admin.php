@@ -22,10 +22,10 @@ class Airtable_Sync_Admin {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 		add_action( 'wp_ajax_airtable_sync_get_bases', array( $this, 'ajax_get_bases' ) );
+		add_action( 'wp_ajax_airtable_sync_validate_config', array( $this, 'ajax_validate_config' ) );
 		add_action( 'wp_ajax_airtable_sync_get_tables', array( $this, 'ajax_get_tables' ) );
-		add_action( 'wp_ajax_airtable_sync_get_views', array( $this, 'ajax_get_views' ) );
 		add_action( 'wp_ajax_airtable_sync_get_table_schema', array( $this, 'ajax_get_table_schema' ) );
-		add_action( 'wp_ajax_airtable_sync_get_wp_fields', array( $this, 'ajax_get_wp_fields' ) );
+		add_action( 'wp_ajax_airtable_sync_run_sync', array( $this, 'ajax_run_sync' ) );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Airtable_Sync_Admin {
 			array( $this, 'sanitize_settings' )
 		);
 
-		// API Key Section
+		// API Configuration Section
 		add_settings_section(
 			'airtable_sync_api_section',
 			__( 'API Configuration', 'airtable-sync' ),
@@ -77,20 +77,28 @@ class Airtable_Sync_Admin {
 			'airtable_sync_api_section'
 		);
 
-		// Table Mappings Section
+		// Configuration Status Section
 		add_settings_section(
-			'airtable_sync_mappings_section',
-			__( 'Table to Post Type Mappings', 'airtable-sync' ),
-			array( $this, 'render_mappings_section' ),
+			'airtable_sync_status_section',
+			__( 'Configuration Status', 'airtable-sync' ),
+			array( $this, 'render_status_section' ),
 			'airtable-sync'
 		);
 
-		add_settings_field(
-			'table_mappings',
-			__( 'Mappings', 'airtable-sync' ),
-			array( $this, 'render_table_mappings_field' ),
-			'airtable-sync',
-			'airtable_sync_mappings_section'
+		// Field ID Inspector Section
+		add_settings_section(
+			'airtable_sync_inspector_section',
+			__( 'Field ID Inspector', 'airtable-sync' ),
+			array( $this, 'render_inspector_section' ),
+			'airtable-sync'
+		);
+
+		// Table Mappings Section (Read-only display)
+		add_settings_section(
+			'airtable_sync_mappings_section',
+			__( 'Table Mappings', 'airtable-sync' ),
+			array( $this, 'render_mappings_section' ),
+			'airtable-sync'
 		);
 	}
 
@@ -109,40 +117,6 @@ class Airtable_Sync_Admin {
 
 		if ( isset( $input['base_id'] ) ) {
 			$sanitized['base_id'] = sanitize_text_field( $input['base_id'] );
-		}
-
-		if ( isset( $input['table_mappings'] ) && is_array( $input['table_mappings'] ) ) {
-			$sanitized['table_mappings'] = array();
-			foreach ( $input['table_mappings'] as $mapping ) {
-				if ( ! empty( $mapping['table_id'] ) && ! empty( $mapping['post_type'] ) ) {
-					$sanitized_mapping = array(
-						'table_id' => sanitize_text_field( $mapping['table_id'] ),
-						'table_name' => sanitize_text_field( $mapping['table_name'] ),
-						'post_type' => sanitize_text_field( $mapping['post_type'] ),
-						'view_id' => isset( $mapping['view_id'] ) ? sanitize_text_field( $mapping['view_id'] ) : '',
-						'view_name' => isset( $mapping['view_name'] ) ? sanitize_text_field( $mapping['view_name'] ) : '',
-					);
-
-					// Sanitize field mappings if present
-					if ( isset( $mapping['field_mappings'] ) && is_array( $mapping['field_mappings'] ) ) {
-						$sanitized_mapping['field_mappings'] = array();
-						foreach ( $mapping['field_mappings'] as $field_mapping ) {
-							if ( ! empty( $field_mapping['airtable_field_id'] ) && ! empty( $field_mapping['destination_type'] ) ) {
-								$sanitized_mapping['field_mappings'][] = array(
-									'airtable_field_id' => sanitize_text_field( $field_mapping['airtable_field_id'] ),
-									'airtable_field_name' => sanitize_text_field( $field_mapping['airtable_field_name'] ),
-									'airtable_field_type' => sanitize_text_field( $field_mapping['airtable_field_type'] ),
-									'destination_type' => sanitize_text_field( $field_mapping['destination_type'] ),
-									'destination_key' => sanitize_text_field( $field_mapping['destination_key'] ),
-									'destination_name' => sanitize_text_field( $field_mapping['destination_name'] ),
-								);
-							}
-						}
-					}
-
-					$sanitized['table_mappings'][] = $sanitized_mapping;
-				}
-			}
 		}
 
 		return $sanitized;
@@ -205,6 +179,12 @@ class Airtable_Sync_Admin {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+			<div class="airtable-sync-intro">
+				<p><?php esc_html_e( 'Configure your Airtable API credentials below. Table mappings are managed in code at:', 'airtable-sync' ); ?></p>
+				<code>web/app/plugins/airtable-sync/config/mappings.php</code>
+			</div>
+
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( 'airtable_sync_settings_group' );
@@ -220,7 +200,7 @@ class Airtable_Sync_Admin {
 	 * Render API section description.
 	 */
 	public function render_api_section() {
-		echo '<p>' . esc_html__( 'Configure your Airtable API credentials and select the base you want to sync.', 'airtable-sync' ) . '</p>';
+		echo '<p>' . esc_html__( 'Configure your Airtable API credentials. These are stored in the WordPress database and not committed to version control.', 'airtable-sync' ) . '</p>';
 	}
 
 	/**
@@ -236,13 +216,14 @@ class Airtable_Sync_Admin {
 			name="<?php echo esc_attr( $this->option_name ); ?>[api_key]"
 			value="<?php echo esc_attr( $api_key ); ?>"
 			class="regular-text"
+			autocomplete="off"
 		/>
 		<p class="description">
 			<?php
 			printf(
 				/* translators: %s: URL to Airtable API documentation */
-				esc_html__( 'Enter your Airtable API key. You can find it in your %s.', 'airtable-sync' ),
-				'<a href="https://airtable.com/create/tokens" target="_blank">' . esc_html__( 'Airtable account settings', 'airtable-sync' ) . '</a>'
+				esc_html__( 'Enter your Airtable Personal Access Token. Create one at %s.', 'airtable-sync' ),
+				'<a href="https://airtable.com/create/tokens" target="_blank">' . esc_html__( 'airtable.com/create/tokens', 'airtable-sync' ) . '</a>'
 			);
 			?>
 		</p>
@@ -281,171 +262,287 @@ class Airtable_Sync_Admin {
 	}
 
 	/**
-	 * Render mappings section description.
+	 * Render configuration status section.
 	 */
-	public function render_mappings_section() {
-		echo '<p>' . esc_html__( 'Map Airtable tables to WordPress post types.', 'airtable-sync' ) . '</p>';
+	public function render_status_section() {
+		$validation = Airtable_Sync_Config::validate();
+		$has_credentials = Airtable_Sync_Config::has_credentials();
+		$has_mappings = Airtable_Sync_Config::has_mappings();
+
+		echo '<div class="airtable-sync-status">';
+
+		// API Credentials Status
+		if ( $has_credentials ) {
+			echo '<div class="notice notice-success inline"><p>';
+			echo '<span class="dashicons dashicons-yes-alt"></span> ';
+			esc_html_e( 'API credentials configured', 'airtable-sync' );
+			echo '</p></div>';
+		} else {
+			echo '<div class="notice notice-warning inline"><p>';
+			echo '<span class="dashicons dashicons-warning"></span> ';
+			esc_html_e( 'API credentials not configured', 'airtable-sync' );
+			echo '</p></div>';
+		}
+
+		// Mappings Status
+		if ( $has_mappings ) {
+			echo '<div class="notice notice-success inline"><p>';
+			echo '<span class="dashicons dashicons-yes-alt"></span> ';
+			/* translators: %d: number of mappings */
+			echo esc_html( sprintf( _n( '%d table mapping configured', '%d table mappings configured', count( Airtable_Sync_Config::get_mappings() ), 'airtable-sync' ), count( Airtable_Sync_Config::get_mappings() ) ) );
+			echo '</p></div>';
+		} else {
+			echo '<div class="notice notice-warning inline"><p>';
+			echo '<span class="dashicons dashicons-warning"></span> ';
+			esc_html_e( 'No table mappings configured in config/mappings.php', 'airtable-sync' );
+			echo '</p></div>';
+		}
+
+		// Validation Status
+		if ( $has_mappings ) {
+			if ( $validation['valid'] ) {
+				echo '<div class="notice notice-success inline"><p>';
+				echo '<span class="dashicons dashicons-yes-alt"></span> ';
+				esc_html_e( 'Configuration is valid', 'airtable-sync' );
+				echo '</p></div>';
+			} else {
+				echo '<div class="notice notice-error inline"><p>';
+				echo '<span class="dashicons dashicons-no"></span> ';
+				esc_html_e( 'Configuration has errors:', 'airtable-sync' );
+				echo '</p><ul>';
+				foreach ( $validation['errors'] as $error ) {
+					echo '<li>' . esc_html( $error ) . '</li>';
+				}
+				echo '</ul></div>';
+			}
+		}
+
+		// Validate button
+		echo '<button type="button" id="airtable_sync_validate" class="button">';
+		esc_html_e( 'Revalidate Configuration', 'airtable-sync' );
+		echo '</button>';
+
+		echo '</div>';
 	}
 
 	/**
-	 * Render table mappings field.
+	 * Render field ID inspector section.
 	 */
-	public function render_table_mappings_field() {
-		$settings = get_option( $this->option_name, array() );
-		$mappings = isset( $settings['table_mappings'] ) ? $settings['table_mappings'] : array();
-		$post_types = get_post_types( array( 'public' => true ), 'objects' );
-		$base_id = isset( $settings['base_id'] ) ? $settings['base_id'] : '';
-		?>
-		<div id="airtable_sync_table_mappings">
-			<div id="airtable_sync_mappings_container">
-				<?php if ( ! empty( $mappings ) ) : ?>
-					<?php foreach ( $mappings as $index => $mapping ) : ?>
-						<div class="airtable-sync-mapping-row" data-index="<?php echo esc_attr( $index ); ?>">
-							<div class="mapping-header">
-								<div class="mapping-selects">
-									<div class="mapping-select-group">
-										<label><?php esc_html_e( 'Airtable Table', 'airtable-sync' ); ?></label>
-										<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][table_id]" class="airtable-table-select" data-index="<?php echo esc_attr( $index ); ?>">
-											<option value=""><?php esc_html_e( 'Select table...', 'airtable-sync' ); ?></option>
-											<option value="<?php echo esc_attr( $mapping['table_id'] ); ?>" selected>
-												<?php echo esc_html( isset( $mapping['table_name'] ) ? $mapping['table_name'] : $mapping['table_id'] ); ?>
-											</option>
-										</select>
-										<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][table_name]" value="<?php echo esc_attr( isset( $mapping['table_name'] ) ? $mapping['table_name'] : '' ); ?>" class="table-name-hidden" />
-									</div>
-									<div class="mapping-select-group">
-										<label><?php esc_html_e( 'View (Optional)', 'airtable-sync' ); ?></label>
-										<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][view_id]" class="airtable-view-select" data-index="<?php echo esc_attr( $index ); ?>" <?php echo empty( $mapping['table_id'] ) ? 'disabled' : ''; ?>>
-											<option value=""><?php esc_html_e( 'All records (default view)', 'airtable-sync' ); ?></option>
-											<?php if ( ! empty( $mapping['view_id'] ) ) : ?>
-												<option value="<?php echo esc_attr( $mapping['view_id'] ); ?>" selected>
-													<?php echo esc_html( isset( $mapping['view_name'] ) ? $mapping['view_name'] : $mapping['view_id'] ); ?>
-												</option>
-											<?php endif; ?>
-										</select>
-										<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][view_name]" value="<?php echo esc_attr( isset( $mapping['view_name'] ) ? $mapping['view_name'] : '' ); ?>" class="view-name-hidden" />
-									</div>
-									<span class="mapping-arrow">→</span>
-									<div class="mapping-select-group">
-										<label><?php esc_html_e( 'Post Type', 'airtable-sync' ); ?></label>
-										<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][post_type]" class="post-type-select" data-index="<?php echo esc_attr( $index ); ?>">
-											<option value=""><?php esc_html_e( 'Select post type...', 'airtable-sync' ); ?></option>
-											<?php foreach ( $post_types as $post_type ) : ?>
-												<option value="<?php echo esc_attr( $post_type->name ); ?>" <?php selected( $mapping['post_type'], $post_type->name ); ?>>
-													<?php echo esc_html( $post_type->labels->name ); ?>
-												</option>
-											<?php endforeach; ?>
-										</select>
-									</div>
-								</div>
-								<div class="mapping-actions">
-									<button type="button" class="button configure-fields" data-index="<?php echo esc_attr( $index ); ?>" <?php echo empty( $mapping['table_id'] ) || empty( $mapping['post_type'] ) ? 'disabled' : ''; ?>>
-										<?php esc_html_e( 'Configure Fields', 'airtable-sync' ); ?>
-									</button>
-									<button type="button" class="button remove-mapping"><?php esc_html_e( 'Remove', 'airtable-sync' ); ?></button>
-								</div>
-							</div>
-							<?php $this->render_field_mappings_section( $index, $mapping ); ?>
-						</div>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</div>
-			<button type="button" id="airtable_sync_add_mapping" class="button" <?php echo empty( $base_id ) ? 'disabled' : ''; ?>>
-				<?php esc_html_e( 'Add Mapping', 'airtable-sync' ); ?>
-			</button>
-		</div>
+	public function render_inspector_section() {
+		$credentials = Airtable_Sync_Config::get_credentials();
+		$has_credentials = ! empty( $credentials['api_key'] ) && ! empty( $credentials['base_id'] );
 
-		<script type="text/html" id="airtable-sync-mapping-template">
-			<div class="airtable-sync-mapping-row" data-index="{{INDEX}}">
-				<div class="mapping-header">
-					<div class="mapping-selects">
-						<div class="mapping-select-group">
-							<label><?php esc_html_e( 'Airtable Table', 'airtable-sync' ); ?></label>
-							<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][{{INDEX}}][table_id]" class="airtable-table-select" data-index="{{INDEX}}">
-								<option value=""><?php esc_html_e( 'Select table...', 'airtable-sync' ); ?></option>
-							</select>
-							<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][{{INDEX}}][table_name]" value="" class="table-name-hidden" />
-						</div>
-						<div class="mapping-select-group">
-							<label><?php esc_html_e( 'View (Optional)', 'airtable-sync' ); ?></label>
-							<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][{{INDEX}}][view_id]" class="airtable-view-select" data-index="{{INDEX}}" disabled>
-								<option value=""><?php esc_html_e( 'All records (default view)', 'airtable-sync' ); ?></option>
-							</select>
-							<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][{{INDEX}}][view_name]" value="" class="view-name-hidden" />
-						</div>
-						<span class="mapping-arrow">→</span>
-						<div class="mapping-select-group">
-							<label><?php esc_html_e( 'Post Type', 'airtable-sync' ); ?></label>
-							<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][{{INDEX}}][post_type]" class="post-type-select" data-index="{{INDEX}}">
-								<option value=""><?php esc_html_e( 'Select post type...', 'airtable-sync' ); ?></option>
-								<?php foreach ( $post_types as $post_type ) : ?>
-									<option value="<?php echo esc_attr( $post_type->name ); ?>">
-										<?php echo esc_html( $post_type->labels->name ); ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
-					<div class="mapping-actions">
-						<button type="button" class="button configure-fields" data-index="{{INDEX}}" disabled>
-							<?php esc_html_e( 'Configure Fields', 'airtable-sync' ); ?>
-						</button>
-						<button type="button" class="button remove-mapping"><?php esc_html_e( 'Remove', 'airtable-sync' ); ?></button>
-					</div>
-				</div>
-				<div class="field-mappings-container" data-index="{{INDEX}}" style="display:none;"></div>
+		if ( ! $has_credentials ) {
+			echo '<div class="notice notice-warning inline"><p>';
+			esc_html_e( 'Configure API credentials above to use the Field ID Inspector.', 'airtable-sync' );
+			echo '</p></div>';
+			return;
+		}
+
+		?>
+		<p><?php esc_html_e( 'Use this tool to discover Airtable field IDs for your configuration. Select a table to view all its fields with their IDs and types.', 'airtable-sync' ); ?></p>
+
+		<div class="airtable-sync-inspector">
+			<div class="inspector-controls">
+				<label for="airtable_inspector_table">
+					<?php esc_html_e( 'Select Table:', 'airtable-sync' ); ?>
+				</label>
+				<select id="airtable_inspector_table" class="regular-text">
+					<option value=""><?php esc_html_e( 'Select a table...', 'airtable-sync' ); ?></option>
+				</select>
+				<button type="button" id="airtable_sync_load_table_fields" class="button" disabled>
+					<?php esc_html_e( 'Load Fields', 'airtable-sync' ); ?>
+				</button>
+				<span id="airtable_inspector_loading" class="spinner" style="display:none;"></span>
 			</div>
-		</script>
+
+			<div id="airtable_inspector_results" style="display:none;">
+				<h4><?php esc_html_e( 'Table Fields', 'airtable-sync' ); ?></h4>
+				<p class="description">
+					<?php esc_html_e( 'Copy these field IDs into your config/mappings.php file.', 'airtable-sync' ); ?>
+				</p>
+				<table class="widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Field Name', 'airtable-sync' ); ?></th>
+							<th><?php esc_html_e( 'Field ID', 'airtable-sync' ); ?></th>
+							<th><?php esc_html_e( 'Field Type', 'airtable-sync' ); ?></th>
+						</tr>
+					</thead>
+					<tbody id="airtable_inspector_fields">
+						<!-- Populated via JavaScript -->
+					</tbody>
+				</table>
+			</div>
+		</div>
 		<?php
 	}
 
 	/**
-	 * Render field mappings section for a table mapping.
-	 *
-	 * @param int   $index   The index of the table mapping.
-	 * @param array $mapping The mapping data.
+	 * Render mappings section description.
 	 */
-	private function render_field_mappings_section( $index, $mapping ) {
-		$field_mappings = isset( $mapping['field_mappings'] ) ? $mapping['field_mappings'] : array();
+	public function render_mappings_section() {
+		$mappings = Airtable_Sync_Config::get_mappings();
+
+		if ( empty( $mappings ) ) {
+			echo '<div class="notice notice-info inline"><p>';
+			esc_html_e( 'No table mappings configured. Edit config/mappings.php to add mappings.', 'airtable-sync' );
+			echo '</p></div>';
+			echo '<p>';
+			/* translators: %s: file path */
+			echo wp_kses_post( sprintf( __( 'Table mappings are defined in code at <code>%s</code>', 'airtable-sync' ), 'web/app/plugins/airtable-sync/config/mappings.php' ) );
+			echo '</p>';
+			echo '<p>';
+			/* translators: %s: file path */
+			echo wp_kses_post( sprintf( __( 'See <code>%s</code> for examples.', 'airtable-sync' ), 'config/mappings.example.php' ) );
+			echo '</p>';
+			return;
+		}
+
+		echo '<p>' . esc_html__( 'Current table mappings defined in config/mappings.php:', 'airtable-sync' ) . '</p>';
+
+		echo '<div class="airtable-sync-mappings">';
+		foreach ( $mappings as $index => $mapping ) {
+			$this->render_mapping_display( $mapping, $index );
+		}
+		echo '</div>';
+	}
+
+	/**
+	 * Render a single mapping display (read-only).
+	 *
+	 * @param array $mapping The mapping configuration.
+	 * @param int   $index   The mapping index.
+	 */
+	private function render_mapping_display( $mapping, $index ) {
+		$table_name = isset( $mapping['table_name'] ) ? $mapping['table_name'] : $mapping['table_id'];
+		$post_type_obj = get_post_type_object( $mapping['post_type'] );
+		$post_type_label = $post_type_obj ? $post_type_obj->labels->name : $mapping['post_type'];
 		?>
-		<div class="field-mappings-container" data-index="<?php echo esc_attr( $index ); ?>" style="display:none;">
-			<div class="field-mappings-header">
-				<h4><?php esc_html_e( 'Field Mappings', 'airtable-sync' ); ?></h4>
-				<button type="button" class="button load-fields" data-index="<?php echo esc_attr( $index ); ?>">
-					<?php esc_html_e( 'Load Fields', 'airtable-sync' ); ?>
-				</button>
+		<div class="airtable-sync-mapping-display">
+			<div class="mapping-header">
+				<div class="mapping-header-left">
+					<h3>
+						<span class="dashicons dashicons-database"></span>
+						<?php echo esc_html( $table_name ); ?>
+						<span class="mapping-arrow">→</span>
+						<span class="dashicons dashicons-wordpress"></span>
+						<?php echo esc_html( $post_type_label ); ?>
+					</h3>
+					<div class="mapping-meta">
+						<code>table_id: <?php echo esc_html( $mapping['table_id'] ); ?></code>
+						<?php if ( ! empty( $mapping['view_id'] ) ) : ?>
+							<code>view_id: <?php echo esc_html( $mapping['view_id'] ); ?></code>
+							<?php if ( ! empty( $mapping['view_name'] ) ) : ?>
+								<span>(<?php echo esc_html( $mapping['view_name'] ); ?>)</span>
+							<?php endif; ?>
+						<?php endif; ?>
+					</div>
+				</div>
+				<div class="mapping-header-right">
+					<button type="button" class="button button-primary airtable-sync-now-btn" data-table-id="<?php echo esc_attr( $mapping['table_id'] ); ?>">
+						<span class="dashicons dashicons-update"></span>
+						<?php esc_html_e( 'Sync Now', 'airtable-sync' ); ?>
+					</button>
+					<div class="sync-status" style="display: none;">
+						<span class="sync-spinner spinner"></span>
+						<span class="sync-message"></span>
+					</div>
+				</div>
 			</div>
-			<div class="field-mappings-list" data-index="<?php echo esc_attr( $index ); ?>">
-				<?php if ( ! empty( $field_mappings ) ) : ?>
-					<?php foreach ( $field_mappings as $field_index => $field_mapping ) : ?>
-						<div class="field-mapping-row" data-field-index="<?php echo esc_attr( $field_index ); ?>">
-							<div class="field-mapping-airtable">
-								<strong><?php echo esc_html( $field_mapping['airtable_field_name'] ); ?></strong>
-								<span class="field-type">(<?php echo esc_html( $field_mapping['airtable_field_type'] ); ?>)</span>
-								<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][airtable_field_id]" value="<?php echo esc_attr( $field_mapping['airtable_field_id'] ); ?>" />
-								<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][airtable_field_name]" value="<?php echo esc_attr( $field_mapping['airtable_field_name'] ); ?>" />
-								<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][airtable_field_type]" value="<?php echo esc_attr( $field_mapping['airtable_field_type'] ); ?>" />
-							</div>
-							<span class="field-mapping-arrow">→</span>
-							<div class="field-mapping-destination">
-								<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][destination_type]" class="destination-type-select">
-									<option value=""><?php esc_html_e( 'Select type...', 'airtable-sync' ); ?></option>
-									<option value="core" <?php selected( $field_mapping['destination_type'], 'core' ); ?>><?php esc_html_e( 'Core WordPress', 'airtable-sync' ); ?></option>
-									<option value="taxonomy" <?php selected( $field_mapping['destination_type'], 'taxonomy' ); ?>><?php esc_html_e( 'Taxonomy', 'airtable-sync' ); ?></option>
-									<option value="acf" <?php selected( $field_mapping['destination_type'], 'acf' ); ?>><?php esc_html_e( 'ACF Field', 'airtable-sync' ); ?></option>
-								</select>
-								<select name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][destination_key]" class="destination-field-select">
-									<option value="<?php echo esc_attr( $field_mapping['destination_key'] ); ?>"><?php echo esc_html( $field_mapping['destination_name'] ); ?></option>
-								</select>
-								<input type="hidden" name="<?php echo esc_attr( $this->option_name ); ?>[table_mappings][<?php echo esc_attr( $index ); ?>][field_mappings][<?php echo esc_attr( $field_index ); ?>][destination_name]" value="<?php echo esc_attr( $field_mapping['destination_name'] ); ?>" class="destination-name-hidden" />
-							</div>
-							<button type="button" class="button button-small remove-field-mapping">×</button>
+
+			<?php if ( ! empty( $mapping['field_mappings'] ) ) : ?>
+				<table class="widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Airtable Field', 'airtable-sync' ); ?></th>
+							<th><?php esc_html_e( 'Field Type', 'airtable-sync' ); ?></th>
+							<th><?php esc_html_e( 'WordPress Destination', 'airtable-sync' ); ?></th>
+							<th><?php esc_html_e( 'Destination Type', 'airtable-sync' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $mapping['field_mappings'] as $field_mapping ) : ?>
+							<tr>
+								<td>
+									<strong>
+										<?php
+										echo esc_html(
+											! empty( $field_mapping['airtable_field_name'] )
+												? $field_mapping['airtable_field_name']
+												: $field_mapping['airtable_field_id']
+										);
+										?>
+									</strong>
+									<?php if ( ! empty( $field_mapping['airtable_field_name'] ) ) : ?>
+										<br>
+										<code class="small"><?php echo esc_html( $field_mapping['airtable_field_id'] ); ?></code>
+									<?php endif; ?>
+								</td>
+								<td>
+									<?php echo esc_html( isset( $field_mapping['airtable_field_type'] ) ? $field_mapping['airtable_field_type'] : 'N/A' ); ?>
+								</td>
+								<td>
+									<strong>
+										<?php
+										echo esc_html(
+											! empty( $field_mapping['destination_name'] )
+												? $field_mapping['destination_name']
+												: $field_mapping['destination_key']
+										);
+										?>
+									</strong>
+									<?php if ( ! empty( $field_mapping['destination_name'] ) ) : ?>
+										<br>
+										<code class="small"><?php echo esc_html( $field_mapping['destination_key'] ); ?></code>
+									<?php endif; ?>
+								</td>
+								<td>
+									<span class="badge badge-<?php echo esc_attr( $field_mapping['destination_type'] ); ?>">
+										<?php echo esc_html( $field_mapping['destination_type'] ); ?>
+									</span>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else : ?>
+				<p class="description"><?php esc_html_e( 'No field mappings configured for this table.', 'airtable-sync' ); ?></p>
+			<?php endif; ?>
+
+			<div class="sync-results" style="display: none;">
+				<div class="sync-results-header">
+					<h4><?php esc_html_e( 'Sync Results', 'airtable-sync' ); ?></h4>
+				</div>
+				<div class="sync-results-body">
+					<div class="sync-stats">
+						<div class="stat-item stat-processed">
+							<span class="stat-label"><?php esc_html_e( 'Processed:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="processed">0</span>
 						</div>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</div>
-			<div class="field-mappings-empty" style="<?php echo ! empty( $field_mappings ) ? 'display:none;' : ''; ?>">
-				<p><?php esc_html_e( 'No field mappings configured. Click "Load Fields" to get started.', 'airtable-sync' ); ?></p>
+						<div class="stat-item stat-created">
+							<span class="stat-label"><?php esc_html_e( 'Created:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="created">0</span>
+						</div>
+						<div class="stat-item stat-updated">
+							<span class="stat-label"><?php esc_html_e( 'Updated:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="updated">0</span>
+						</div>
+						<div class="stat-item stat-skipped">
+							<span class="stat-label"><?php esc_html_e( 'Skipped:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="skipped">0</span>
+						</div>
+						<div class="stat-item stat-unpublished">
+							<span class="stat-label"><?php esc_html_e( 'Unpublished:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="unpublished">0</span>
+						</div>
+						<div class="stat-item stat-errors">
+							<span class="stat-label"><?php esc_html_e( 'Errors:', 'airtable-sync' ); ?></span>
+							<span class="stat-value" data-stat="errors">0</span>
+						</div>
+					</div>
+					<div class="sync-message-box"></div>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -492,6 +589,33 @@ class Airtable_Sync_Admin {
 	}
 
 	/**
+	 * AJAX handler to validate configuration.
+	 */
+	public function ajax_validate_config() {
+		check_ajax_referer( 'airtable_sync_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'airtable-sync' ) ) );
+		}
+
+		// Clear cache before validation
+		Airtable_Sync_Config::clear_cache();
+
+		$validation = Airtable_Sync_Config::validate();
+
+		if ( $validation['valid'] ) {
+			wp_send_json_success( array(
+				'message' => __( 'Configuration is valid!', 'airtable-sync' ),
+			) );
+		} else {
+			wp_send_json_error( array(
+				'message' => __( 'Configuration has errors', 'airtable-sync' ),
+				'errors' => $validation['errors'],
+			) );
+		}
+	}
+
+	/**
 	 * AJAX handler to get tables from a base.
 	 */
 	public function ajax_get_tables() {
@@ -501,18 +625,17 @@ class Airtable_Sync_Admin {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'airtable-sync' ) ) );
 		}
 
-		$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( $_POST['api_key'] ) : '';
-		$base_id = isset( $_POST['base_id'] ) ? sanitize_text_field( $_POST['base_id'] ) : '';
+		$credentials = Airtable_Sync_Config::get_credentials();
 
-		if ( empty( $api_key ) || empty( $base_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'API key and base ID are required.', 'airtable-sync' ) ) );
+		if ( empty( $credentials['api_key'] ) || empty( $credentials['base_id'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'API credentials not configured.', 'airtable-sync' ) ) );
 		}
 
 		$response = wp_remote_get(
-			'https://api.airtable.com/v0/meta/bases/' . $base_id . '/tables',
+			'https://api.airtable.com/v0/meta/bases/' . $credentials['base_id'] . '/tables',
 			array(
 				'headers' => array(
-					'Authorization' => 'Bearer ' . $api_key,
+					'Authorization' => 'Bearer ' . $credentials['api_key'],
 				),
 				'timeout' => 30,
 			)
@@ -533,60 +656,6 @@ class Airtable_Sync_Admin {
 	}
 
 	/**
-	 * AJAX handler to get views from a table.
-	 */
-	public function ajax_get_views() {
-		check_ajax_referer( 'airtable_sync_nonce', 'nonce' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'airtable-sync' ) ) );
-		}
-
-		$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( $_POST['api_key'] ) : '';
-		$base_id = isset( $_POST['base_id'] ) ? sanitize_text_field( $_POST['base_id'] ) : '';
-		$table_id = isset( $_POST['table_id'] ) ? sanitize_text_field( $_POST['table_id'] ) : '';
-
-		if ( empty( $api_key ) || empty( $base_id ) || empty( $table_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'API key, base ID, and table ID are required.', 'airtable-sync' ) ) );
-		}
-
-		// Get table metadata which includes views
-		$response = wp_remote_get(
-			'https://api.airtable.com/v0/meta/bases/' . $base_id . '/tables',
-			array(
-				'headers' => array(
-					'Authorization' => 'Bearer ' . $api_key,
-				),
-				'timeout' => 30,
-			)
-		);
-
-		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( array( 'message' => $response->get_error_message() ) );
-		}
-
-		$body = wp_remote_retrieve_body( $response );
-		$data = json_decode( $body, true );
-
-		if ( isset( $data['error'] ) ) {
-			wp_send_json_error( array( 'message' => $data['error']['message'] ) );
-		}
-
-		// Find the specific table and return its views
-		$views = array();
-		if ( isset( $data['tables'] ) ) {
-			foreach ( $data['tables'] as $table ) {
-				if ( $table['id'] === $table_id ) {
-					$views = isset( $table['views'] ) ? $table['views'] : array();
-					break;
-				}
-			}
-		}
-
-		wp_send_json_success( array( 'views' => $views ) );
-	}
-
-	/**
 	 * AJAX handler to get table schema (fields) from Airtable.
 	 */
 	public function ajax_get_table_schema() {
@@ -596,20 +665,23 @@ class Airtable_Sync_Admin {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'airtable-sync' ) ) );
 		}
 
-		$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( $_POST['api_key'] ) : '';
-		$base_id = isset( $_POST['base_id'] ) ? sanitize_text_field( $_POST['base_id'] ) : '';
 		$table_id = isset( $_POST['table_id'] ) ? sanitize_text_field( $_POST['table_id'] ) : '';
-		$view_id = isset( $_POST['view_id'] ) ? sanitize_text_field( $_POST['view_id'] ) : '';
 
-		if ( empty( $api_key ) || empty( $base_id ) || empty( $table_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'API key, base ID, and table ID are required.', 'airtable-sync' ) ) );
+		if ( empty( $table_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Table ID is required.', 'airtable-sync' ) ) );
+		}
+
+		$credentials = Airtable_Sync_Config::get_credentials();
+
+		if ( empty( $credentials['api_key'] ) || empty( $credentials['base_id'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'API credentials not configured.', 'airtable-sync' ) ) );
 		}
 
 		$response = wp_remote_get(
-			'https://api.airtable.com/v0/meta/bases/' . $base_id . '/tables',
+			'https://api.airtable.com/v0/meta/bases/' . $credentials['base_id'] . '/tables',
 			array(
 				'headers' => array(
-					'Authorization' => 'Bearer ' . $api_key,
+					'Authorization' => 'Bearer ' . $credentials['api_key'],
 				),
 				'timeout' => 30,
 			)
@@ -641,159 +713,62 @@ class Airtable_Sync_Admin {
 			wp_send_json_error( array( 'message' => __( 'Table not found.', 'airtable-sync' ) ) );
 		}
 
-		// If a view is specified, filter fields to only those visible in the view
-		if ( ! empty( $view_id ) ) {
-			// First, check if the metadata API provides visibleFieldIds
-			$visible_field_ids = null;
-
-			if ( isset( $table_schema['views'] ) ) {
-				foreach ( $table_schema['views'] as $view ) {
-					if ( $view['id'] === $view_id ) {
-						if ( isset( $view['visibleFieldIds'] ) && is_array( $view['visibleFieldIds'] ) ) {
-							$visible_field_ids = $view['visibleFieldIds'];
-						}
-						break;
-					}
-				}
-			}
-
-			// If metadata doesn't include visibleFieldIds, fetch records from the view
-			// using returnFieldsByFieldId to get all visible field IDs (including empty ones)
-			if ( $visible_field_ids === null ) {
-				$sample_response = wp_remote_get(
-					'https://api.airtable.com/v0/' . $base_id . '/' . $table_id . '?view=' . rawurlencode( $view_id ) . '&maxRecords=5&returnFieldsByFieldId=true',
-					array(
-						'headers' => array(
-							'Authorization' => 'Bearer ' . $api_key,
-						),
-						'timeout' => 30,
-					)
-				);
-
-				if ( ! is_wp_error( $sample_response ) ) {
-					$sample_body = wp_remote_retrieve_body( $sample_response );
-					$sample_data = json_decode( $sample_body, true );
-
-					// When using returnFieldsByFieldId=true, the fields are returned with field IDs as keys
-					// We'll collect all unique field IDs across multiple records to account for sparse data
-					if ( isset( $sample_data['records'] ) && ! empty( $sample_data['records'] ) ) {
-						$visible_field_ids = array();
-
-						// Collect field IDs from all sample records
-						foreach ( $sample_data['records'] as $record ) {
-							if ( isset( $record['fields'] ) && is_array( $record['fields'] ) ) {
-								foreach ( array_keys( $record['fields'] ) as $field_id ) {
-									if ( ! in_array( $field_id, $visible_field_ids, true ) ) {
-										$visible_field_ids[] = $field_id;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			// Apply the filter if we have visible field IDs
-			if ( $visible_field_ids && is_array( $visible_field_ids ) && ! empty( $visible_field_ids ) ) {
-				$filtered_fields = array();
-
-				foreach ( $table_schema['fields'] as $field ) {
-					if ( in_array( $field['id'], $visible_field_ids, true ) ) {
-						$filtered_fields[] = $field;
-					}
-				}
-
-				$table_schema['fields'] = $filtered_fields;
-			}
-		}
-
 		wp_send_json_success( $table_schema );
 	}
 
 	/**
-	 * AJAX handler to get WordPress fields (core, ACF, and taxonomies) for a post type.
+	 * AJAX handler to run sync for a specific table.
 	 */
-	public function ajax_get_wp_fields() {
+	public function ajax_run_sync() {
 		check_ajax_referer( 'airtable_sync_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'airtable-sync' ) ) );
 		}
 
-		$post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : '';
+		$table_id = isset( $_POST['table_id'] ) ? sanitize_text_field( $_POST['table_id'] ) : '';
 
-		if ( empty( $post_type ) ) {
-			wp_send_json_error( array( 'message' => __( 'Post type is required.', 'airtable-sync' ) ) );
+		if ( empty( $table_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Table ID is required.', 'airtable-sync' ) ) );
 		}
 
-		$fields = array(
-			'core' => array(),
-			'taxonomies' => array(),
-			'acf' => array(),
-		);
+		// Get credentials
+		$credentials = Airtable_Sync_Config::get_credentials();
 
-		// Core WordPress fields
-		$fields['core'] = array(
-			array(
-				'key' => 'post_title',
-				'name' => __( 'Post Title', 'airtable-sync' ),
-				'type' => 'text',
-			),
-			array(
-				'key' => 'post_content',
-				'name' => __( 'Post Content', 'airtable-sync' ),
-				'type' => 'textarea',
-			),
-			array(
-				'key' => 'post_excerpt',
-				'name' => __( 'Post Excerpt', 'airtable-sync' ),
-				'type' => 'textarea',
-			),
-			array(
-				'key' => 'post_name',
-				'name' => __( 'Post Slug', 'airtable-sync' ),
-				'type' => 'text',
-			),
-			array(
-				'key' => 'post_date',
-				'name' => __( 'Post Date', 'airtable-sync' ),
-				'type' => 'date',
-			),
-		);
-
-		// Get taxonomies for the post type
-		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-		foreach ( $taxonomies as $taxonomy ) {
-			$fields['taxonomies'][] = array(
-				'key' => $taxonomy->name,
-				'name' => $taxonomy->labels->name,
-				'type' => 'taxonomy',
-				'hierarchical' => $taxonomy->hierarchical,
-			);
+		if ( empty( $credentials['api_key'] ) || empty( $credentials['base_id'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'API credentials not configured.', 'airtable-sync' ) ) );
 		}
 
-		// Get ACF fields for the post type
-		if ( function_exists( 'acf_get_field_groups' ) ) {
-			$field_groups = acf_get_field_groups( array(
-				'post_type' => $post_type,
+		// Get mapping for this table
+		$mapping = Airtable_Sync_Config::get_mapping_by_table_id( $table_id );
+
+		if ( ! $mapping ) {
+			wp_send_json_error( array( 'message' => sprintf( __( 'No mapping found for table ID: %s', 'airtable-sync' ), $table_id ) ) );
+		}
+
+		// Initialize API and sync engine
+		$api = new Airtable_API( $credentials['api_key'], $credentials['base_id'] );
+		$engine = new Airtable_Sync_Engine( $api, $mapping );
+
+		// Run the sync
+		$stats = $engine->sync( false ); // Not a dry run
+
+		// Check for errors in stats
+		if ( isset( $stats['errors'] ) && $stats['errors'] > 0 ) {
+			wp_send_json_success( array(
+				'message' => sprintf(
+					__( 'Sync completed with %d error(s).', 'airtable-sync' ),
+					$stats['errors']
+				),
+				'stats' => $stats,
+				'hasErrors' => true,
 			) );
-
-			foreach ( $field_groups as $field_group ) {
-				$acf_fields = acf_get_fields( $field_group['ID'] );
-				if ( $acf_fields ) {
-					foreach ( $acf_fields as $acf_field ) {
-						$fields['acf'][] = array(
-							'key' => $acf_field['key'],
-							'name' => $acf_field['label'],
-							'field_name' => $acf_field['name'],
-							'type' => $acf_field['type'],
-							'group' => $field_group['title'],
-						);
-					}
-				}
-			}
+		} else {
+			wp_send_json_success( array(
+				'message' => __( 'Sync completed successfully!', 'airtable-sync' ),
+				'stats' => $stats,
+				'hasErrors' => false,
+			) );
 		}
-
-		wp_send_json_success( $fields );
 	}
 }
