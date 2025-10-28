@@ -5,7 +5,10 @@
     {% if fields.featured_label %}
       <div>{{ fields.featured_label }}</div>
     {% endif %}
-    {% include '@partial/tease_switcher.twig' with { post: get_post(fields.featured_work) } only %}
+    {% include '@partial/tease_switcher.twig' with {
+      post: get_post(fields.featured_work),
+      tease_options: { variant: 'featured' }
+    } only %}
   </div>
 {% endif %}
 
@@ -15,7 +18,7 @@
   {% endif %}
   <div class="all-posts-grid">
     {% if posts|length %}
-      {% include '@partial/post-repeater.twig' with { posts: posts, variant: 'card' } only %}
+      {% include '@partial/post-repeater.twig' with { posts: posts, variant: 'archive' } only %}
     {% else %}
       <div class="no-results">No works found matching your criteria.</div>
     {% endif %}
