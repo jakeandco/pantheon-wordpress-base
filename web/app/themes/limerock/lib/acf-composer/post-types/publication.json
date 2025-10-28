@@ -7,6 +7,38 @@
       "name": "authors",
       "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
       "post_type": ["person"]
+    },
+    {
+      "label": "Projects",
+      "name": "projects",
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
+      "post_type": ["project"]
+    },
+    {
+      "label": "Publication",
+      "instructions": "The name of the publication where this work was published.",
+      "name": "publication_name",
+      "type": "text"
+    },
+    {
+      "label": "URL",
+      "instructions": "The external URL of the publication.",
+      "name": "url",
+      "type": "url"
+    },
+    {
+      "label": "Date",
+      "instructions": "The date of the publication.",
+      "name": "publication_date",
+      "type": "date_picker",
+      "display_format": "m\/d\/Y",
+      "return_format": "m\/d\/Y",
+      "first_day": 1,
+      "default_to_current_date": 0,
+      "placeholder": "",
+      "min_date": "",
+      "max_date": "",
+      "no_weekends": 0
     }
   ],
   "location": [

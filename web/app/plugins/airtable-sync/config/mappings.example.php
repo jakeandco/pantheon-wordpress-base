@@ -61,6 +61,39 @@ return array(
 				'destination_key'     => 'field_budget', // ACF field key or name
 				'destination_name'    => 'Budget',
 			),
+			// Map Airtable "Team Members" linked record field to ACF relationship field
+			// This maps Airtable record IDs to WordPress post IDs by looking up posts
+			// with matching _airtable_id post meta values
+			array(
+				'airtable_field_id'   => 'fldCCCCCCCCCCCCC',
+				'airtable_field_name' => 'Team Members',
+				'airtable_field_type' => 'linkedRecord', // Important: marks this as a relationship field
+				'destination_type'    => 'acf',
+				'destination_key'     => 'team_members', // ACF relationship field key or name
+				'destination_name'    => 'Team Members',
+				'linked_post_type'    => 'person', // Optional: restrict lookup to this post type for better performance
+			),
+			// Map multiple Airtable fields to a single ACF link field
+			// ACF link fields have 'url', 'title', and 'target' properties
+			// You can map different Airtable fields to each property using 'acf_link_property'
+			array(
+				'airtable_field_id'   => 'fldDDDDDDDDDDDDD',
+				'airtable_field_name' => 'External URL',
+				'airtable_field_type' => 'url',
+				'destination_type'    => 'acf',
+				'destination_key'     => 'external_link', // Same destination_key for both mappings
+				'destination_name'    => 'External Link',
+				'acf_link_property'   => 'url', // Specifies this maps to the 'url' property
+			),
+			array(
+				'airtable_field_id'   => 'fldEEEEEEEEEEEEE',
+				'airtable_field_name' => 'Link Title',
+				'airtable_field_type' => 'singleLineText',
+				'destination_type'    => 'acf',
+				'destination_key'     => 'external_link', // Same destination_key - will be merged
+				'destination_name'    => 'External Link Title',
+				'acf_link_property'   => 'title', // Specifies this maps to the 'title' property
+			),
 		),
 	),
 

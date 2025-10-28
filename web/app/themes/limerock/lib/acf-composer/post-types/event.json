@@ -17,6 +17,12 @@
       "name": "event_end_date",
       "type": "date_time_picker"
     },
+    {
+      "label": "Related People",
+      "name": "related_people",
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
+      "post_type": ["person"]
+    },
     { "label": "Event Category", "name": "event_category", "type": "taxonomy" },
     { "label": "Intro Copy", "name": "intro_copy", "type": "wysiwyg" },
     { "label": "Intro Logo", "name": "intro_logo", "type": "image" },

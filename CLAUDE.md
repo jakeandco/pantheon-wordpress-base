@@ -307,6 +307,57 @@ Use taxonomy name (e.g., `category`, `post_tag`, `project_type`). Works with hie
 **ACF Fields:**
 Use ACF field key (e.g., `field_XXXXXXXXXXXXXXXX`) or field name. Requires ACF Pro.
 
+**Linked Records (Relationships):**
+Map Airtable "Link to another record" fields to ACF relationship fields. The plugin automatically converts Airtable record IDs to WordPress post IDs by looking up posts with matching `_airtable_id` post meta values.
+
+Example configuration:
+```php
+array(
+    'airtable_field_id' => 'fldXXXXXXXXXXXXXX',
+    'airtable_field_name' => 'Researchers',
+    'airtable_field_type' => 'linkedRecord', // Important: marks as relationship
+    'destination_type' => 'acf',
+    'destination_key' => 'researchers', // ACF relationship field
+    'destination_name' => 'Researchers',
+    'linked_post_type' => 'person', // Optional: restrict lookup to specific post type
+)
+```
+
+**Important notes:**
+- Linked records must be synced to WordPress before they can be referenced
+- Missing relationships are logged as warnings but don't stop the sync
+- Use `linked_post_type` parameter to improve performance by restricting lookups
+- Works with ACF relationship, post object, and user fields
+
+**ACF Link Fields (Multi-Field Mapping):**
+Map multiple Airtable fields to a single ACF link field by specifying which property each field populates. ACF link fields have three properties: `url`, `title`, and `target`.
+
+Example configuration:
+```php
+// Map External URL field to the 'url' property
+array(
+    'airtable_field_id' => 'fldXXXXXXXXXXXXXX',
+    'airtable_field_name' => 'External URL',
+    'airtable_field_type' => 'url',
+    'destination_type' => 'acf',
+    'destination_key' => 'external_link',
+    'destination_name' => 'External Link',
+    'acf_link_property' => 'url', // Specifies url property
+),
+// Map Link Title field to the 'title' property
+array(
+    'airtable_field_id' => 'fldYYYYYYYYYYYYYY',
+    'airtable_field_name' => 'Link Title',
+    'airtable_field_type' => 'singleLineText',
+    'destination_type' => 'acf',
+    'destination_key' => 'external_link', // Same destination_key
+    'destination_name' => 'External Link Title',
+    'acf_link_property' => 'title', // Specifies title property
+)
+```
+
+The sync engine automatically merges these into a single ACF link array structure.
+
 ### Running Syncs
 
 **Admin UI (Manual Syncs):**

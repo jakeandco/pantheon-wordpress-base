@@ -3,9 +3,21 @@
   "title": "Post Type: Post",
   "fields": [
     {
+      "label": "Related People",
+      "name": "related_people",
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
+      "post_type": ["person"]
+    },
+    {
       "label": "Is External Link",
       "name": "is_external_link",
       "type": "true_false"
+    },
+    {
+      "label": "Publication",
+      "instructions": "The name of the publication where this work was published.",
+      "name": "publication_name",
+      "type": "text"
     },
     {
       "label": "External Link",

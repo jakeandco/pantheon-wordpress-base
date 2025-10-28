@@ -255,7 +255,25 @@ class Airtable_Sync_Engine {
 			if ( $destination_type === 'core' ) {
 				$transformed['core'][ $destination_key ] = $transformed_value;
 			} elseif ( $destination_type === 'acf' ) {
-				$transformed['acf'][ $destination_key ] = $transformed_value;
+				// Handle ACF link fields with multiple source fields
+				if ( isset( $field_mapping['acf_link_property'] ) ) {
+					$link_property = $field_mapping['acf_link_property'];
+
+					// Initialize link array if it doesn't exist
+					if ( ! isset( $transformed['acf'][ $destination_key ] ) ) {
+						$transformed['acf'][ $destination_key ] = array(
+							'url'    => '',
+							'title'  => '',
+							'target' => '',
+						);
+					}
+
+					// Set the specific property
+					$transformed['acf'][ $destination_key ][ $link_property ] = $transformed_value;
+				} else {
+					// Standard ACF field - direct assignment
+					$transformed['acf'][ $destination_key ] = $transformed_value;
+				}
 			} elseif ( $destination_type === 'taxonomy' ) {
 				if ( ! isset( $transformed['taxonomy'][ $destination_key ] ) ) {
 					$transformed['taxonomy'][ $destination_key ] = array();

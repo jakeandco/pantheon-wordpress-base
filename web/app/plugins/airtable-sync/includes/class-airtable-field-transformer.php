@@ -34,6 +34,9 @@ class Airtable_Field_Transformer {
 			case 'multipleAttachments':
 				return self::transform_attachment( $value );
 
+			case 'linkedRecord':
+				return self::transform_linked_record( $value, $field_mapping );
+
 			case 'url':
 				return self::transform_url( $value, $field_mapping );
 
@@ -87,6 +90,81 @@ class Airtable_Field_Transformer {
 		$attachment_id = $api->download_attachment( $attachment );
 
 		return is_wp_error( $attachment_id ) ? null : $attachment_id;
+	}
+
+	/**
+	 * Transform linked record field (relationship).
+	 *
+	 * Converts Airtable record IDs to WordPress post IDs by looking up posts
+	 * that have matching _airtable_id post meta values.
+	 *
+	 * @param mixed $value         Array of Airtable record IDs.
+	 * @param array $field_mapping Field mapping configuration.
+	 * @return array Array of WordPress post IDs.
+	 */
+	private static function transform_linked_record( $value, $field_mapping ) {
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+
+		$wp_post_ids = array();
+		$missing_relationships = array();
+
+		// Optional: filter by specific post type if provided
+		$post_type = isset( $field_mapping['linked_post_type'] ) ? $field_mapping['linked_post_type'] : 'any';
+
+		foreach ( $value as $airtable_record_id ) {
+			// Query for post with this Airtable ID
+			$query_args = array(
+				'post_type'      => $post_type,
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'meta_query'     => array(
+					array(
+						'key'     => '_airtable_id',
+						'value'   => $airtable_record_id,
+						'compare' => '=',
+					),
+				),
+				'fields'         => 'ids',
+			);
+
+			$posts = get_posts( $query_args );
+
+			if ( ! empty( $posts ) ) {
+				$wp_post_ids[] = $posts[0];
+			} else {
+				// Track missing relationships for logging
+				$missing_relationships[] = $airtable_record_id;
+			}
+		}
+
+		// Log warning if relationships are missing
+		if ( ! empty( $missing_relationships ) ) {
+			$field_name = isset( $field_mapping['airtable_field_name'] ) ? $field_mapping['airtable_field_name'] : $field_mapping['airtable_field_id'];
+			$destination_name = isset( $field_mapping['destination_name'] ) ? $field_mapping['destination_name'] : $field_mapping['destination_key'];
+
+			$message = sprintf(
+				'Linked record field "%s" → "%s": Could not find WordPress posts for %d Airtable record(s): %s',
+				$field_name,
+				$destination_name,
+				count( $missing_relationships ),
+				implode( ', ', $missing_relationships )
+			);
+
+			// Use WordPress logging if WP_DEBUG_LOG is enabled
+			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+				error_log( '[Airtable Sync] ' . $message );
+			}
+
+			// Fire action hook for custom logging
+			do_action( 'airtable_sync_missing_relationship', $field_mapping, $missing_relationships );
+
+			// Also log via the standard sync logger
+			do_action( 'airtable_sync_log', 'WARNING: ' . $message );
+		}
+
+		return $wp_post_ids;
 	}
 
 	/**
@@ -233,6 +311,7 @@ class Airtable_Field_Transformer {
 			case 'multipleLookupValues':
 			case 'attachment':
 			case 'multipleAttachments':
+			case 'linkedRecord':
 				return array();
 
 			default:
