@@ -1,0 +1,27 @@
+{#
+  @param post obj (required)
+  @param taxonomy slug (required)
+  @param show_post_type boolean (optional)
+#}
+
+{% set show_post_type = show_post_type is defined ? show_post_type : false %}
+{% set terms = post.terms(taxonomy) %}
+
+{% if terms and terms|length or show_post_type %}
+  <ul class="category-list list-unstyled">
+    {% if show_post_type %}
+      <li class="type">
+        <a href="{{post.link}}" class="btn btn-secondary">
+          {{ post.post_type }}
+        </a>
+      </li>
+    {% endif %}
+    {% for term in terms %}
+      <li class="term">
+        <a href="{{post.link}}" class="btn btn-secondary">
+          {{ term.name }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

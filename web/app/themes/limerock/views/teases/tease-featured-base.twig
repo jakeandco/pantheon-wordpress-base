@@ -1,0 +1,25 @@
+{% embed '@views/tease.twig' with {
+  tease_options: {
+    extra_classes: 'tease-featured post-' ~ post.post_type,
+  },
+  post
+} only %}
+  {% block content %}
+    <div class="row">
+      {% if post.thumbnail %}
+        <div class="col-12 col-md-6 img-holder">
+          {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}
+        </div>
+      {% endif %}
+      <div class="col-12 col-md-6">
+        <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        {% include '@partial/researchers.twig' with { post: post } only %}
+        {% include '@partial/post-taxonomy-list.twig' with {
+          post: post,
+          taxonomy: 'tax-research-area',
+          show_post_type: true
+        } only %}
+      </div>
+    </div>
+  {% endblock %}
+{% endembed %}
