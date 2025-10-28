@@ -13,6 +13,9 @@
       {% endif %}
       <div class="col-12 col-md-6">
         <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        {% if post.excerpt %}
+          <div class="excerpt">{{ post.excerpt }}</div>
+        {% endif %}
         {% include '@partial/researchers.twig' with { post: post } only %}
         {% include '@partial/post-taxonomy-list.twig' with {
           post: post,
