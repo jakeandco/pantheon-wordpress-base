@@ -274,14 +274,14 @@ return array(
 				'destination_name'    => 'Publication',
 			),
 
-			// Date → date (date field)
+			// Date → publication_date (date field)
 			array(
 				'airtable_field_id'   => 'fld2sBl9KH8ifp2RZ',
 				'airtable_field_name' => 'Date',
 				'airtable_field_type' => 'date',
 				'destination_type'    => 'acf',
-				'destination_key'     => 'date',
-				'destination_name'    => 'Date',
+				'destination_key'     => 'publication_date',
+				'destination_name'    => 'Publication Date',
 			),
 
 			// URL → url (url field)

@@ -27,7 +27,7 @@
       "type": "url"
     },
     {
-      "label": "Date",
+      "label": "Publication Date",
       "instructions": "The date of the publication.",
       "name": "publication_date",
       "type": "date_picker",
