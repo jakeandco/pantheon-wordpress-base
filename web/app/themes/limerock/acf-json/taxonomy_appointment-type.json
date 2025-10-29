@@ -4,7 +4,7 @@
   "menu_order": 0,
   "active": true,
   "taxonomy": "appointment-type",
-  "object_type": ["person"],
+  "object_type": ["person", "styleguide"],
   "advanced_configuration": 1,
   "import_source": "",
   "import_date": "",

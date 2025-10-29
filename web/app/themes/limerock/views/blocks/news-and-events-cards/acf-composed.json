@@ -22,7 +22,7 @@
       "label": "Selections",
       "name": "selections",
       "type": "relationship",
-      "post_type": ["post"],
+      "post_type": ["post", "event"],
       "conditional_logic": [
         [
           {

@@ -1,7 +1,7 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_news-and-events-cards' } %}
   {% block content %}
     <div class="container">
-      {% set post_type = 'event' %}
+      {% set post_type = ['event', 'post'] %}
 
       <span class="d-block block-title mb-0">{{fields.title}}</span>
 
@@ -15,13 +15,13 @@
         {% set selections = get_posts({
           post_type,
           date_query:
-            [
-              {
+            { 
+              before: {
                 year : today.year,
                 month : today.mon,
                 day : today.mday,
               },
-            ],
+             },
         }) %}
       {% elseif fields.selection_type == 'related' %}
         {% set relation_taxonomies = ['tax-research-area', 'event-category' ] %}
