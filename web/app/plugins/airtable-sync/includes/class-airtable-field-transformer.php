@@ -74,7 +74,7 @@ class Airtable_Field_Transformer {
 	 * Transform attachment field.
 	 *
 	 * @param mixed $value Attachment data from Airtable.
-	 * @return int|null Attachment ID or null.
+	 * @return array|null Array with 'attachment_id' and 'url' keys, or null.
 	 */
 	private static function transform_attachment( $value ) {
 		if ( ! is_array( $value ) ) {
@@ -84,12 +84,11 @@ class Airtable_Field_Transformer {
 		// Handle single attachment (take first if multiple)
 		$attachment = is_array( $value[0] ) ? $value[0] : $value;
 
-		// Download and import the attachment
-		$credentials = Airtable_Sync_Config::get_credentials();
-		$api = new Airtable_API( $credentials['api_key'], $credentials['base_id'] );
-		$attachment_id = $api->download_attachment( $attachment );
-
-		return is_wp_error( $attachment_id ) ? null : $attachment_id;
+		// Return both the attachment data and URL for comparison
+		return array(
+			'attachment_data' => $attachment,
+			'url'            => isset( $attachment['url'] ) ? $attachment['url'] : '',
+		);
 	}
 
 	/**

@@ -201,9 +201,11 @@ class Airtable_Sync_Engine {
 			}
 		}
 
-		// Sync featured image
-		if ( isset( $transformed['thumbnail'] ) && $transformed['thumbnail'] ) {
-			set_post_thumbnail( $post_id, $transformed['thumbnail'] );
+		// Sync featured image with smart comparison and cleanup
+		// Always call sync method - it handles both adding and removing images
+		// Use array_key_exists instead of isset to handle null values (removed photos)
+		if ( array_key_exists( 'thumbnail', $transformed ) ) {
+			$this->sync_featured_image( $post_id, $transformed['thumbnail'] );
 		}
 
 		$this->log( sprintf( '%s post %d (Airtable ID: %s)', ucfirst( $action ), $post_id, $airtable_id ) );
@@ -229,15 +231,19 @@ class Airtable_Sync_Engine {
 
 		foreach ( $this->mapping['field_mappings'] as $field_mapping ) {
 			$airtable_field_id = $field_mapping['airtable_field_id'];
-
-			// Skip if field doesn't exist in Airtable record
-			if ( ! isset( $airtable_fields[ $airtable_field_id ] ) ) {
-				continue;
-			}
-
-			$value = $airtable_fields[ $airtable_field_id ];
 			$destination_type = $field_mapping['destination_type'];
 			$destination_key = $field_mapping['destination_key'];
+
+			// For post_thumbnail fields, always process even if missing (to handle deletions)
+			$is_thumbnail = ( $destination_type === 'core' && $destination_key === 'post_thumbnail' );
+
+			// Get value from Airtable (null if not present)
+			$value = isset( $airtable_fields[ $airtable_field_id ] ) ? $airtable_fields[ $airtable_field_id ] : null;
+
+			// Skip if field doesn't exist in Airtable record, UNLESS it's a thumbnail
+			if ( ! isset( $airtable_fields[ $airtable_field_id ] ) && ! $is_thumbnail ) {
+				continue;
+			}
 
 			// Get field type
 			$field_type = isset( $field_mapping['airtable_field_type'] ) ? $field_mapping['airtable_field_type'] : 'text';
@@ -246,7 +252,7 @@ class Airtable_Sync_Engine {
 			$transformed_value = Airtable_Field_Transformer::transform( $value, $field_type, $field_mapping );
 
 			// Handle special case: post_thumbnail
-			if ( $destination_type === 'core' && $destination_key === 'post_thumbnail' ) {
+			if ( $is_thumbnail ) {
 				$transformed['thumbnail'] = $transformed_value;
 				continue;
 			}
@@ -426,5 +432,164 @@ class Airtable_Sync_Engine {
 	 */
 	public function get_stats() {
 		return $this->stats;
+	}
+
+	/**
+	 * Sync featured image with smart URL comparison and cleanup.
+	 *
+	 * @param int        $post_id         The post ID.
+	 * @param array|null $attachment_data Attachment data with 'url' and 'attachment_data' keys, or null if removed.
+	 */
+	private function sync_featured_image( $post_id, $attachment_data ) {
+		$current_thumbnail_id = get_post_thumbnail_id( $post_id );
+		$stored_url = get_post_meta( $post_id, '_airtable_featured_image_url', true );
+
+		// Handle case where photo was removed from Airtable (null or empty)
+		if ( ! is_array( $attachment_data ) || empty( $attachment_data['url'] ) || empty( $attachment_data['attachment_data'] ) ) {
+			// Only take action if there was a featured image
+			if ( $current_thumbnail_id ) {
+				$this->log( sprintf( 'Featured image removed from Airtable for post %d, removing from WordPress', $post_id ) );
+
+				// Remove the featured image
+				delete_post_thumbnail( $post_id );
+
+				// Remove stored URL
+				delete_post_meta( $post_id, '_airtable_featured_image_url' );
+
+				// Clean up the old attachment
+				$this->cleanup_old_attachment( $current_thumbnail_id, $post_id );
+			}
+			return;
+		}
+
+		$new_url = $attachment_data['url'];
+		$attachment_info = $attachment_data['attachment_data'];
+
+		// If URLs match, no need to re-download
+		if ( $stored_url === $new_url && $current_thumbnail_id ) {
+			$this->log( sprintf( 'Featured image unchanged for post %d, skipping download', $post_id ) );
+			return;
+		}
+
+		// URL changed or no previous image - download new one
+		$this->log( sprintf( 'Featured image changed for post %d, downloading new image', $post_id ) );
+
+		// Download the new attachment
+		$credentials = Airtable_Sync_Config::get_credentials();
+		$api = new Airtable_API( $credentials['api_key'], $credentials['base_id'] );
+		$new_attachment_id = $api->download_attachment( $attachment_info );
+
+		if ( is_wp_error( $new_attachment_id ) ) {
+			$this->log_error( sprintf(
+				'Failed to download featured image for post %d: %s',
+				$post_id,
+				$new_attachment_id->get_error_message()
+			) );
+			return;
+		}
+
+		// Set the new featured image
+		set_post_thumbnail( $post_id, $new_attachment_id );
+
+		// Store the new URL for future comparison
+		update_post_meta( $post_id, '_airtable_featured_image_url', $new_url );
+
+		// Handle cleanup of old attachment if it exists
+		if ( $current_thumbnail_id && $current_thumbnail_id !== $new_attachment_id ) {
+			$this->cleanup_old_attachment( $current_thumbnail_id, $post_id );
+		}
+	}
+
+	/**
+	 * Safely cleanup an old attachment.
+	 *
+	 * Only deletes if the attachment is not used elsewhere.
+	 * Otherwise just logs that it was detached.
+	 *
+	 * @param int $attachment_id The attachment ID to cleanup.
+	 * @param int $post_id       The post ID it was attached to.
+	 */
+	private function cleanup_old_attachment( $attachment_id, $post_id ) {
+		// Check if this attachment is used elsewhere
+		if ( $this->is_attachment_used_elsewhere( $attachment_id, $post_id ) ) {
+			$this->log( sprintf(
+				'Old featured image (ID: %d) is used elsewhere, detached but not deleted',
+				$attachment_id
+			) );
+			return;
+		}
+
+		// Safe to delete - not used anywhere else
+		$deleted = wp_delete_attachment( $attachment_id, true );
+
+		if ( $deleted ) {
+			$this->log( sprintf(
+				'Deleted old featured image (ID: %d) - not used elsewhere',
+				$attachment_id
+			) );
+		} else {
+			$this->log_error( sprintf(
+				'Failed to delete old featured image (ID: %d)',
+				$attachment_id
+			) );
+		}
+	}
+
+	/**
+	 * Check if an attachment is used in other posts or content.
+	 *
+	 * @param int $attachment_id The attachment ID to check.
+	 * @param int $current_post_id The current post ID to exclude from check.
+	 * @return bool True if attachment is used elsewhere, false otherwise.
+	 */
+	private function is_attachment_used_elsewhere( $attachment_id, $current_post_id ) {
+		global $wpdb;
+
+		// Check if it's a featured image for any other post
+		$featured_usage = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->postmeta}
+			WHERE meta_key = '_thumbnail_id'
+			AND meta_value = %d
+			AND post_id != %d",
+			$attachment_id,
+			$current_post_id
+		) );
+
+		if ( $featured_usage > 0 ) {
+			return true;
+		}
+
+		// Check if it's referenced in post content
+		$content_usage = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->posts}
+			WHERE post_content LIKE %s
+			AND ID != %d
+			AND post_status != 'trash'",
+			'%wp-image-' . $attachment_id . '%',
+			$current_post_id
+		) );
+
+		if ( $content_usage > 0 ) {
+			return true;
+		}
+
+		// Check if it's used in ACF fields (look for the attachment ID in postmeta)
+		$acf_usage = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->postmeta}
+			WHERE meta_value = %d
+			AND post_id != %d
+			AND meta_key NOT LIKE %s
+			AND meta_key NOT LIKE %s",
+			$attachment_id,
+			$current_post_id,
+			'_thumbnail_id',
+			'_airtable_%'
+		) );
+
+		if ( $acf_usage > 0 ) {
+			return true;
+		}
+
+		return false;
 	}
 }
