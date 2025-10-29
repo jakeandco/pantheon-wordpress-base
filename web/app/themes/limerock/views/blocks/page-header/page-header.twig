@@ -35,7 +35,7 @@
               </button>
               <div class="collapse d-md-block" id="navigation2">
                 <ol class="breadcrumb list-unstyled">
-                  {% for child in post.children %}
+                  {% for child in post.children(post.post_type) %}
                     <li class="breadcrumb-item">
                       <a href="{{ child.path }}">{{ child.title }}</a>
                     </li>
