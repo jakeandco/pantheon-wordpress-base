@@ -6,29 +6,38 @@
 } only %}
   {% block content %}
     {% set full_post = get_post(post) %}
+    {% set is_external_link = full_post.meta('is_external_link') %}
+    {% set external_link = full_post.meta('external_link') %}
+    {% set actual_link =  is_external_link ? external_link.url : full_post.path %}
+    {% set actual_target =  is_external_link ? '_blank' : '_self' %}
+    {% set terms = full_post.terms %}
 
     <div class="row">
-      {% if post.thumbnail %}
+      {% if full_post.thumbnail %}
         <div class="col-12 col-md-6 img-holder">
-          {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}
+          {% include "@partial/media-item.twig" with { image: full_post.thumbnail } only %}
         </div>
         <div class="col-10 col-md-5 text-holder">
       {% else %}
         <div class="col-10 col-md-11 text-holder">
       {% endif %}
 
-        <div class="date">Insight <span class="mark">·</span> July 12, 2025</div>
-        <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        <div class="date">{{ is_external_link ? external_link.title : 'Insight' }} <span class="mark">·</span> {{ full_post.date }}</div>
+        <h2 class="h5"><a href="{{ actual_link }}" target="{{ actual_target }}">{{full_post.post_title}}</a></h2>
 
-        <ul class="category-list list-unstyled">
-          <li>
-            <a href="{{full_post.link}}" class="btn btn-secondary">Research area tag</a>
-          </li>
-        </ul>
+        {% if terms is not empty %}
+          <ul class="category-list list-unstyled">
+          {% for term in terms %}
+            <li>
+              <a href="{{term.link}}" class="btn btn-secondary">{{ term.name }}</a>
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
       </div>
 
       <div class="col-2 col-md-1 btn-holder d-flex justify-content-end">
-        <a href="{{post.link}}" class="btn btn-secondary more-link">
+        <a href="{{ actual_link }}" target="{{ actual_target }}" class="btn btn-secondary more-link">
           <svg width="11" height="11" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.71928 10.0212L0.980469 9.28234L8.22787 2.03494H1.57856V0.979492H10.0221V9.42307H8.96669V2.77375L1.71928 10.0212Z" fill="currentColor"/>
           </svg>

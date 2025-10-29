@@ -4,7 +4,7 @@
   "menu_order": 0,
   "active": true,
   "taxonomy": "tax-research-area",
-  "object_type": ["post", "person", "project", "publication", "event"],
+  "object_type": ["post", "person", "project", "publication", "event", "styleguide"],
   "advanced_configuration": 1,
   "import_source": "",
   "import_date": "",
