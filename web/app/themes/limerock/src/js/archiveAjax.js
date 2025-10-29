@@ -3,12 +3,17 @@ export function setup() {
   if (!form) return;
 
   const resultsContainer = form.querySelector('.ajax-results-js');
+  if (!resultsContainer) return;
+
   const filterOptions = form.querySelectorAll('.filter-option-js');
   const createSelectedLabelOptions = form.querySelectorAll('.create-selected-label-js');
   const selectedFiltersWrap = form.querySelector('.selected-filters-js');
   const resetBtns = form.querySelectorAll('.reset-js');
   const defaultRadios = form.querySelectorAll('.default-radio-js');
+  const resultsTotalWrap = form.querySelector('.results-total-js');
+  const autoSearchInput = form.querySelector('.autosearch-on-typing-js');
   let currentController = null;
+  let searchTimeout = null;
 
   updSelectedFiltersLabels();
 
@@ -78,9 +83,22 @@ export function setup() {
     });
   });
 
+  if (autoSearchInput) {
+    autoSearchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        triggerSubmit();
+      }, 650);
+    });
+  }
+
   function ajaxLoadPosts(url) {
     if (currentController) {
       currentController.abort();
+    }
+
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
     }
 
     currentController = new AbortController();
@@ -116,8 +134,18 @@ export function setup() {
 
     const newGrid = tempDiv.querySelector('.ajax-results-js');
 
+    updateResultsTotalInfo(newGrid);
+
     if (newGrid && resultsContainer) {
       resultsContainer.innerHTML = newGrid.innerHTML;
+    }
+  }
+
+  function updateResultsTotalInfo(newGrid) {
+    if (resultsTotalWrap && newGrid.hasAttribute('data-total')) {
+      const total = newGrid.getAttribute('data-total');
+      resultsTotalWrap.innerHTML = total;
+      resultsContainer.setAttribute('data-total', total);
     }
   }
 

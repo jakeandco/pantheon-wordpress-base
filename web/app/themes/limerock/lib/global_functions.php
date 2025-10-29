@@ -346,6 +346,45 @@ function add_to_context($context) {
     return $context;
 }
 
+add_action('pre_get_posts', 'customize_search_page_query');
+
+function customize_search_page_query(WP_Query $query) {
+    if (!is_admin() && $query->is_main_query() && $query->is_search()) {
+
+        // Apply post type filter
+        if (!empty($_GET['type'])) {
+            $query->set('post_type', array_map('sanitize_text_field', (array) $_GET['type']));
+        }
+
+        // Apply research area filter
+        $tax_query = [];
+        if (!empty($_GET['research_area'])) {
+            $tax_query[] = [
+                'taxonomy' => 'tax-research-area',
+                'field'    => 'slug',
+                'terms'    => array_map('sanitize_text_field', (array) $_GET['research_area']),
+            ];
+        }
+        if ($tax_query) {
+            $query->set('tax_query', $tax_query);
+        }
+
+        // Apply sorting
+        if (!empty($_GET['sort'])) {
+            $sort_options = get_archive_sort_query_options();
+            $sort_key = sanitize_text_field(is_array($_GET['sort']) ? reset($_GET['sort']) : $_GET['sort']);
+            if (isset($sort_options[$sort_key])) {
+                foreach ($sort_options[$sort_key] as $key => $value) {
+                    $query->set($key, $value);
+                }
+            }
+        }
+
+        $query->set('posts_per_page', 2);
+    }
+
+}
+
 add_filter('timber/twig', function($twig) {
     $twig->addFilter(new \Twig\TwigFilter('file_get_contents_raw', function($url) {
         $uploads = wp_upload_dir();
