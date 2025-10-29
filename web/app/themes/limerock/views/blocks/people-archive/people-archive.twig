@@ -36,9 +36,7 @@
                 {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
               {% endif %}
             </div>
-            <div class="loader-wrap">
-              <div class="loader"></div>
-            </div>
+            {% include '@partial/loader.twig' %}
           </div>
         </div>
       </div>
