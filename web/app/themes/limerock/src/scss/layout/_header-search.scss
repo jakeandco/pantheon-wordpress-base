@@ -36,7 +36,7 @@
 }
 
 .header-search-form {
-  margin-bottom: 30px;
+  height: 66px;
 }
 
 .search-modal {
@@ -44,11 +44,11 @@
   top: 54px;
   left: 0;
   width: 100%;
-  height: calc(100vh - 154px);
+  height: calc(100vh - 53px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .3s, visibility .3s;
+  transition: opacity .1s, visibility .1s;
   will-change: opacity, visibility;
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.8);
@@ -104,6 +104,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: all;
+    transition: opacity .3s, visibility .3s;
   }
 
   #navbarSupportedContent {
@@ -118,11 +119,22 @@
 
 .search-info-wrap {
   min-height: 82px;
+  max-height: calc(100vh - 120px);
+  margin-right: -20px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    max-height: calc(100vh - 246px);
+  }
 
   .loader-wrap {
     background: transparent;
+  }
+
+  .search-info {
+    position: relative;
+    overflow: hidden;
+    padding-right: 20px;
   }
 }
 

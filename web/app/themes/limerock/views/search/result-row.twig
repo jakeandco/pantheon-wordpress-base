@@ -9,40 +9,23 @@
     <div class="row">
       <div class="col-12 col-md-9 text-holder">
         <span class="post-type">{{ post.post_type|replace({'_': ' '}) }}</span>
-
-        {% set clean_title = post.post_title|striptags %}
-
+        {% set post_title = post.post_title|striptags %}
         {# Highlight search words in title #}
         {% if search_query %}
-          {% set words = search_query|split(' ') %}
-          {% for word in words %}
-            {% if word %}
-              {% set clean_title = clean_title|replace({(word): '<b>' ~ word ~ '</b>'}) %}
-              {% set clean_title = clean_title|replace({(word|lower): '<b>' ~ word|lower ~ '</b>'}) %}
-              {% set clean_title = clean_title|replace({(word|capitalize): '<b>' ~ word|capitalize ~ '</b>'}) %}
-            {% endif %}
-          {% endfor %}
+          {% set post_title = function('highlight_words', post_title, search_query) %}
         {% endif %}
-
-        <h2 class="h5 search-post-title"><a href="{{ post.link|e }}">{{ clean_title|raw }}</a></h2>
-
+        <h2 class="h5 search-post-title">
+          <a href="{{ post.link|e }}">
+            {{ post_title }}
+          </a>
+        </h2>
         {% if post.excerpt %}
-
-          {% set clean_excerpt = post.excerpt|striptags %}
-
+          {% set post_excerpt = post.excerpt|striptags %}
           {# Highlight search words in excerpt #}
           {% if search_query %}
-            {% set words = search_query|split(' ') %}
-            {% for word in words %}
-              {% if word %}
-                {% set clean_excerpt = clean_excerpt|replace({(word): '<b>' ~ word ~ '</b>'}) %}
-                {% set clean_excerpt = clean_excerpt|replace({(word|lower): '<b>' ~ word|lower ~ '</b>'}) %}
-                {% set clean_excerpt = clean_excerpt|replace({(word|capitalize): '<b>' ~ word|capitalize ~ '</b>'}) %}
-              {% endif %}
-            {% endfor %}
+            {% set post_excerpt = function('highlight_words', post_excerpt, search_query) %}
           {% endif %}
-
-          <div class="excerpt">{{ clean_excerpt|raw }}</div>
+          <div class="excerpt">{{ post_excerpt }}</div>
         {% endif %}
       </div>
       {% if post.thumbnail %}

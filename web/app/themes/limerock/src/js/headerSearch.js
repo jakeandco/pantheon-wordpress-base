@@ -1,6 +1,12 @@
+import SimpleBar from 'simplebar';
+import 'simplebar-core/dist/simplebar.css';
+
+import ResizeObserver from 'resize-observer-polyfill';
+window.ResizeObserver = ResizeObserver;
+
 export function setup() {
-  const toggleSearchBtn   = document.querySelectorAll('.toggle-search-js');
-  const closeSearchBtn    = document.querySelectorAll('.close-search-js');
+  const toggleSearchBtn  = document.querySelectorAll('.toggle-search-js');
+  const closeSearchBtn   = document.querySelectorAll('.close-search-js');
 
   const searchInput      = document.querySelector('.header-search-input-js');
   const resultsContainer = document.querySelector('.header-search-result-js');
@@ -65,6 +71,19 @@ export function setup() {
     });
   }
 
+  // handle pagination ajax
+  searchModal.addEventListener('click', function (e) {
+    const link = e.target.closest('.pagination-js a');
+
+    if (!link) return;
+
+    e.preventDefault();
+
+    const url = link.getAttribute('href');
+
+    ajaxLoadPosts(url);
+  });
+
   window.addEventListener('pageshow', () => {
     clearSearch();
   });
@@ -122,6 +141,7 @@ export function setup() {
         updSearchState();
         searchModal.classList.remove('ajax-loading');
         currentController = null;
+        scrollToTop();
       });
   }
 
@@ -162,6 +182,19 @@ export function setup() {
   function clearSearch() {
     searchInput.value = '';
     updSearchState();
+  }
+
+  function scrollToTop() {
+    const el = document.querySelector('.search-info-wrap');
+    const simplebar = SimpleBar.instances.get(el);
+    if (simplebar) {
+      simplebar.getScrollElement().scrollTop = 0;
+      // smooth scroll if needed
+      // simplebar.getScrollElement().scrollTo({
+      //   top: 0,
+      //   behavior: 'smooth',
+      // });
+    }
   }
 }
 
