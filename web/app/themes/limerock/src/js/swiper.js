@@ -24,6 +24,18 @@ export function setup() {
     },
   });
 
+  const captionSwiper = new Swiper('.caption-carousel', {
+    modules: [Autoplay, Navigation],
+    direction: 'horizontal',
+    effect: 'slide',
+    slidesPerView: 'auto',
+    // Navigation arrows
+    navigation: {
+      nextEl: '.caption-carousel-button-next',
+      prevEl: '.caption-carousel-button-prev',
+    },
+  });
+
   const titleItems = document.querySelectorAll('.swiper-titles-pagination .pagination-item');
   const hasCustomPagination = titleItems.length > 0;
 

@@ -20,7 +20,7 @@
         {
           "label": "Content",
           "name": "content",
-          "type": "wysiwyg"
+          "type": "textarea"
         },
         {
           "label": "Image",
