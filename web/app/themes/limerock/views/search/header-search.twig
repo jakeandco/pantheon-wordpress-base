@@ -41,26 +41,26 @@
         </button>
       </div>
     </form>
-    <div class="search-info-wrap">
-      {% set featured_searches = options.site.general.featured_searches %}
-      {% if featured_searches %}
-        <div class="featured-searches">
-          <div>Featured searches</div>
-          <ul class="featured-searches-list">
-            {% for item in featured_searches %}
-              {% if item.search_term %}
-                <li>
-                  <a href="{{ site.url }}/?s={{ item.search_term|url_encode }}">{{ item.search_term }}</a>
-                </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-      <div class="header-search-result-js">
-        <div class="post-list">posts</div>
+    <div class="search-info-wrap" data-simplebar data-simplebar-auto-hide="false">
+      <div class="search-info">
+        {% set featured_searches = options.site.general.featured_searches %}
+        {% if featured_searches %}
+          <div class="featured-searches">
+            <div>Featured searches</div>
+            <ul class="featured-searches-list">
+              {% for item in featured_searches %}
+                {% if item.search_term %}
+                  <li>
+                    <a href="{{ site.url }}/?s={{ item.search_term|url_encode }}">{{ item.search_term }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        <div class="header-search-result-js"></div>
+        {% include '@partial/loader.twig' %}
       </div>
-      {% include '@partial/loader.twig' %}
     </div>
   </div>
 </div>

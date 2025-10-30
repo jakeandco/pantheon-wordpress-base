@@ -382,7 +382,24 @@ function customize_search_page_query(WP_Query $query) {
 
         $query->set('posts_per_page', 8);
     }
+}
 
+function highlight_words($text, $search_query) {
+
+    $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+    $search_query = mb_convert_encoding($search_query, 'UTF-8', 'auto');
+    $text = strip_tags($text);
+    $text = trim(preg_replace('/\s+/u', ' ', $text));
+    $words = preg_split('/\s+/u', $search_query, -1, PREG_SPLIT_NO_EMPTY);
+
+    foreach ($words as $word) {
+        if (!$word) continue;
+
+        $pattern = '/' . preg_quote($word, '/') . '/iu';
+        $text = preg_replace($pattern, '<b>$0</b>', $text);
+    }
+
+    return $text;
 }
 
 add_filter('timber/twig', function($twig) {
