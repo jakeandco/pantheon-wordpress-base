@@ -75,10 +75,10 @@
     "has_archive": true,
     "has_archive_slug": "styleguide",
     "rewrite": {
-        "permalink_rewrite": "post_type_key",
+        "permalink_rewrite": "styleguide",
         "with_front": "1",
         "feeds": "0",
-        "pages": "0"
+        "pages": true
     },
     "query_var": "post_type_key",
     "query_var_name": "",
