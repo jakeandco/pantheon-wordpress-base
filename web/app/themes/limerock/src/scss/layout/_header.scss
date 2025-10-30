@@ -21,29 +21,6 @@
   }
 }
 
-.search-form-holder {
-  position: absolute;
-  top: 11px;
-  right: 24px;
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    position: static;
-    margin-left: 3px;
-  }
-
-  .search-opener {
-    @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
-      padding: 0;
-      width: 38px;
-      height: 38px;
-    }
-
-    &:hover {
-      background-color: $black;
-      color: $white;
-    }
-  }
-}
-
 .navbar-nav {
   padding: 27px 0 53px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -445,5 +422,11 @@
       background-image: url('../assets/images/close-icon.svg');
       background-size: 19px;
     }
+  }
+}
+
+#navbarSupportedContent {
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    transition: .4s;
   }
 }

@@ -380,7 +380,7 @@ function customize_search_page_query(WP_Query $query) {
             }
         }
 
-        $query->set('posts_per_page', 2);
+        $query->set('posts_per_page', 8);
     }
 
 }
