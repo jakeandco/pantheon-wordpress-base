@@ -402,6 +402,21 @@ function highlight_words($text, $search_query) {
     return $text;
 }
 
+// Enable pages for 'styleguide' post
+function custom_template_redirect() {
+
+    if(is_singular('styleguide')) {
+        global $wp_query;
+        $page = (int)$wp_query->get('page');
+        if($page > 1) {
+            $query->set('page', 1);
+            $query->set('paged', $page);
+        }
+        remove_action('template_redirect', 'redirect_canonical');
+    }
+}
+add_action('template_redirect', 'custom_template_redirect', 0);
+
 add_filter('timber/twig', function($twig) {
     $twig->addFilter(new \Twig\TwigFilter('file_get_contents_raw', function($url) {
         $uploads = wp_upload_dir();
