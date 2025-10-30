@@ -28,11 +28,10 @@
                     <p class="h5">Please try a different keyword</p>
                   {% endblock %}
                 {% endembed %}
-
-                {% if posts|length %}
-                  {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
-                {% endif %}
               </div>
+              {% if posts|length %}
+                {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
+              {% endif %}
               {% include '@partial/loader.twig' %}
             </div>
           </div>

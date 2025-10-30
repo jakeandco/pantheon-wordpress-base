@@ -1,0 +1,66 @@
+<div class="search-menu">
+  <button type="button" class="btn search-opener toggle-search-js" aria-label="Open search">
+    <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="2"/>
+      <line x1="10.7071" y1="11.2929" x2="17.7782" y2="18.364" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </button>
+  <button type="button" class="header-search-close toggle-search-js" aria-label="Close search">
+    Close
+  </button>
+</div>
+<div class="search-modal search-modal-js" data-state="empty">
+  <div class="container">
+    <form
+      class="header-search-form header-search-form-js"
+      action="{{ site.url }}"
+      method="get"
+    >
+      <div class="search-row d-flex">
+        <input
+          class="header-search-input-js"
+          type="text"
+          name="s"
+          placeholder="Search..."
+          required
+          value=""
+        >
+        <button
+          class="clear-header-search-js"
+          type="button"
+          aria-label="clear-search"
+        >Clear search</button>
+        <button type="button" class="to-search-page-js">
+          <span>Search</span>
+          <svg id="Group_836" data-name="Group 836" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+            <g id="Symbol_62_2" data-name="Symbol 62 – 2" transform="translate(0 0)">
+              <rect id="Rectangle_176" data-name="Rectangle 176" width="20" height="20" transform="translate(0 0)" fill="none"/>
+              <path id="Path_99" data-name="Path 99" d="M19.7,17.964,15.61,13.875a8.482,8.482,0,0,0,1.734-5.2A8.619,8.619,0,0,0,8.672,0,8.619,8.619,0,0,0,0,8.672a8.619,8.619,0,0,0,8.672,8.672,8.482,8.482,0,0,0,5.2-1.734L17.964,19.7ZM2.478,8.672A6.134,6.134,0,0,1,8.672,2.478a6.134,6.134,0,0,1,6.194,6.194,6.134,6.134,0,0,1-6.194,6.194A6.134,6.134,0,0,1,2.478,8.672Z" transform="translate(0.302 0.151)" fill="#0072ce"/>
+            </g>
+          </svg>
+        </button>
+      </div>
+    </form>
+    <div class="search-info-wrap">
+      {% set featured_searches = options.site.general.featured_searches %}
+      {% if featured_searches %}
+        <div class="featured-searches">
+          <div>Featured searches</div>
+          <ul class="featured-searches-list">
+            {% for item in featured_searches %}
+              {% if item.search_term %}
+                <li>
+                  <a href="{{ site.url }}/?s={{ item.search_term|url_encode }}">{{ item.search_term }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="header-search-result-js">
+        <div class="post-list">posts</div>
+      </div>
+      {% include '@partial/loader.twig' %}
+    </div>
+  </div>
+</div>

@@ -8,12 +8,20 @@
       </svg>
     </label>
     <input
-      class="autosearch-on-typing-js"
-      type="search"
+      class="autosearch-on-typing-js search-input-js"
+      type="text"
       name="s"
       placeholder="Search..."
       value="{{ search_query }}"
     />
+    <button
+      class="clear-search-js"
+      type="button"
+      aria-label="Clear search"
+      {% if search_query is empty %}disabled{% endif %}
+    >
+      Clear search
+    </button>
     <button type="submit" aria-label="Submit search">Submit search</button>
   </div>
   <div class="filters-wrap">

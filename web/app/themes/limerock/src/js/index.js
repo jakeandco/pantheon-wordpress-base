@@ -10,6 +10,7 @@ import * as tags from './tags';
 import * as video from './video';
 import * as svgAnimation from './svgAnimation';
 import * as archiveAjax from './archiveAjax';
+import * as headerSearch from './headerSearch';
 
 export function setup() {
   accordion.setup();
@@ -24,6 +25,7 @@ export function setup() {
   video.setup();
   svgAnimation.setup();
   archiveAjax.setup();
+  headerSearch.setup();
 }
 
 // necessary for storybook to use this file in its entirety
@@ -40,6 +42,7 @@ export function teardown() {
   video.teardown();
   svgAnimation.teardown();
   archiveAjax.teardown();
+  headerSearch.teardown();
 }
 
 document.addEventListener('DOMContentLoaded', setup, false);

@@ -5,15 +5,19 @@ export function setup() {
   const resultsContainer = form.querySelector('.ajax-results-js');
   if (!resultsContainer) return;
 
-  const filterOptions = form.querySelectorAll('.filter-option-js');
+  const filterOptions              = form.querySelectorAll('.filter-option-js');
   const createSelectedLabelOptions = form.querySelectorAll('.create-selected-label-js');
+  const resetBtns                  = form.querySelectorAll('.reset-js');
+  const defaultRadios              = form.querySelectorAll('.default-radio-js');
+
   const selectedFiltersWrap = form.querySelector('.selected-filters-js');
-  const resetBtns = form.querySelectorAll('.reset-js');
-  const defaultRadios = form.querySelectorAll('.default-radio-js');
-  const resultsTotalWrap = form.querySelector('.results-total-js');
-  const autoSearchInput = form.querySelector('.autosearch-on-typing-js');
+  const resultsTotalWrap    = form.querySelector('.results-total-js');
+  const autoSearchInput     = form.querySelector('.autosearch-on-typing-js');
+  const clearSearchBtn      = form.querySelector('.clear-search-js');
+  const searchInput         = form.querySelector('.search-input-js');
+
   let currentController = null;
-  let searchTimeout = null;
+  let searchTimeout     = null;
 
   updSelectedFiltersLabels();
 
@@ -89,6 +93,22 @@ export function setup() {
       searchTimeout = setTimeout(() => {
         triggerSubmit();
       }, 650);
+    });
+  }
+
+  if (searchInput && clearSearchBtn) {
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.trim() !== '') {
+        clearSearchBtn.removeAttribute('disabled');
+      } else {
+        clearSearchBtn.setAttribute('disabled', '');
+      }
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearSearchBtn.setAttribute('disabled', '');
+      triggerSubmit();
     });
   }
 
