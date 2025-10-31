@@ -11,11 +11,6 @@
       "label": "Media Item",
       "name": "media_item",
       "type": "image"
-    },
-    {
-      "label": "Video description",
-      "name": "description",
-      "type": "text"
     }
   ],
   "location": [
