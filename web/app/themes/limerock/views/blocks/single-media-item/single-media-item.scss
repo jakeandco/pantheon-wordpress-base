@@ -35,9 +35,87 @@
       .media-item_caption {
         @extend .container;
       }
+
+      .video-toggle {
+        display: none;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          display: inline-block;
+          vertical-align: top;
+        }
+      }
+    }
+
+    .video-toggle {
+      order: -1;
+      margin: 0 auto;
+      width: 100%;
+      padding-bottom: 48px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        order: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-width: 720px;
+        padding: 0 25px 30px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        max-width: 960px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        max-width: 1140px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+        max-width: 1334px;
+      }
+    }
+
+    .toggler {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 14px;
+        line-height: 20px;
+        background: rgba(#F2F2F2,0.2) !important;
+        padding: 16px 21px;
+      }
+
+      &:hover {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          background-color: $primary !important;
+        }
+      }
+    }
+
+    .media-item--video {
+      width: 100%;
     }
 
     &:has(video) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 92px;
+      }
+
+      figure {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          border: 7px solid var(--bs-body-bg);
+        }
+
+        .media-item_caption {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            padding-top: 23px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+          }
+        }
+
+        .media-item_holder {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            position: relative;
+          }
+        }
+      }
+
       .container {
         display: flex;
         flex-direction: column-reverse;
@@ -47,22 +125,31 @@
       .h5 {
         font-family: 'FT System Grotesk';
         margin-bottom: 15px;
+        font-weight: 300;
         font-size: 24px;
         line-height: 28px;
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          color: $white;
           margin-bottom: 40px;
           font-size: 40px;
           line-height: 48px;
-          color: $white;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          max-width: 60%;
         }
       }
 
       .heading-holder {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 2;
+        padding-top: 15px;
+        padding-bottom: 12px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          position: absolute;
+          bottom: 178px;
+          left: 0;
+          right: 0;
+          z-index: 2;
+          padding: 0 25px;
+        }
       }
     }
   }

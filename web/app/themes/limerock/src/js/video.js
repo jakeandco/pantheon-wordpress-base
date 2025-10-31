@@ -1,31 +1,27 @@
 export function setup() {
-  let playerOpeners = document.querySelectorAll('.video-toggle');
+  let hoverVideos = document.querySelectorAll('[data-hover-play]');
 
-  for (const elem of playerOpeners) {
-    const toggleOverlay = elem,
-      videoHolder = toggleOverlay.closest('.media-item_holder'),
-      video = videoHolder.querySelector('video');
-
-    function listenForPlay(e) {
-      e.stopPropagation();
-      videoHolder.classList.add('play');
+   hoverVideos.forEach(video => {
+    const block = video.closest('.block_single-media-item');
+    const durationSpan = block?.querySelector('.video-duration');
+    block.addEventListener('mouseenter', () => {
       video.play();
+    });
 
-      toggleOverlay.removeEventListener('click', listenForPlay);
-      videoHolder.addEventListener('click', listenForPause);
-    }
-
-    function listenForPause(e) {
-      e.stopPropagation();
-      videoHolder.classList.remove('play');
+    block.addEventListener('mouseleave', () => {
       video.pause();
+      video.currentTime = 0;
+    });
 
-      videoHolder.removeEventListener('click', listenForPause);
-      toggleOverlay.addEventListener('click', listenForPlay);
-    }
-
-    toggleOverlay.addEventListener('click', listenForPlay);
-  }
+     video.addEventListener('loadedmetadata', () => {
+      if (durationSpan) {
+        const totalSeconds = Math.floor(video.duration);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        durationSpan.textContent = `(${minutes}:${seconds.toString().padStart(2, '0')})`;
+      }
+    });
+  });
 }
 
 export function teardown() {}
