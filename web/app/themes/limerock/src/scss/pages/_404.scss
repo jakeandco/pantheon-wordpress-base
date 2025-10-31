@@ -1,1 +1,32 @@
-.error404 {}
+.error404 {
+  h1 {
+    font-weight: 300;
+    font-family: 'FT System Grotesk';
+    @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+      font-size: 250px;
+      line-height: 0.62;
+      margin-bottom: 57px;
+      letter-spacing: -7px;
+    }
+  }
+
+  h4 {
+    font-weight: 470;
+    font-family: 'Season';
+    letter-spacing: 0;
+    margin-bottom: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      font-size: 60px;
+      line-height: 70px;
+      margin-bottom: 55px;
+      letter-spacing: -0.1px;
+    }
+  }
+
+  .block-wrapper {
+    padding-bottom: 50px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      padding-bottom: 108px;
+    }
+  }
+}

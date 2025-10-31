@@ -15,6 +15,10 @@
     margin-bottom: 1em;
   }
 
+  .media-item--video {
+    display: block;
+  }
+
   &--full {
 
     figure {
@@ -30,6 +34,35 @@
 
       .media-item_caption {
         @extend .container;
+      }
+    }
+
+    &:has(video) {
+      .container {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+      }
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        margin-bottom: 15px;
+        font-size: 24px;
+        line-height: 28px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 40px;
+          font-size: 40px;
+          line-height: 48px;
+          color: $white;
+        }
+      }
+
+      .heading-holder {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
       }
     }
   }

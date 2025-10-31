@@ -1,11 +1,10 @@
+{% set default_page_color = 'warm-light' %}
 {% extends "@views/base.twig" %}
 
 {% block content %}
   <article class="block-wrapper container">
-    <h1>404 Error</h1>
-    <p>
-      Doesn’t look like that page exists on this site.
-    </p>
-    <a href="/" class="btn btn-primary">Back to home</a>
+    <h1>404</h1>
+    <h4>Sorry, we can’t find this page.</h4>
+    <a href="/" class="btn btn-outline-primary">Go to the homepage</a>
   </article>
 {% endblock %}
