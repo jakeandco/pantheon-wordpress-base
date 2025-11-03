@@ -15,26 +15,6 @@
     margin-bottom: 1em;
   }
 
-  .media-item--video {
-    display: block;
-  }
-
-  .toggler {
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      font-size: 14px;
-      line-height: 20px;
-      background: rgba(#F2F2F2,0.2) !important;
-      padding: 16px 21px;
-    }
-
-    &:hover {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        background-color: $black !important;
-      }
-    }
-  }
-
-
   &--full {
 
     figure {
@@ -68,10 +48,6 @@
       padding-bottom: 48px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         order: 0;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
         max-width: 720px;
         padding: 0 25px 30px;
       }
@@ -84,10 +60,6 @@
       @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
         max-width: 1334px;
       }
-    }
-
-    .media-item--video {
-      width: 100%;
     }
 
     &:has(video) {
@@ -111,6 +83,7 @@
         }
 
         .media-item_holder {
+          position: static;
           @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
             position: relative;
           }
@@ -183,10 +156,6 @@
       padding-bottom: 48px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         order: 0;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
         padding: 0 25px 30px;
       }
     }
@@ -247,34 +216,12 @@
     }
 
     .media-item--video {
-      max-width: 100%;
       width: auto;
-    }
-
-    .toggler {
-      background: rgba(#F2F2F2,0.2) !important;
-
-      &:hover {
-        background-color: $black !important;
-      }
-    }
-
-    .video-toggle {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0 25px 30px;
-      text-align: left;
     }
 
     &:has(video) {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 72px 0;
-      }
-
-      .media-item_holder {
-        position: relative;
       }
 
       figure {
@@ -315,34 +262,12 @@
     }
 
     .media-item--video {
-      max-width: 100%;
       width: auto;
-    }
-
-    .toggler {
-      background: rgba(#F2F2F2,0.2) !important;
-
-      &:hover {
-        background-color: $black !important;
-      }
-    }
-
-    .video-toggle {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0 25px 30px;
-      text-align: left;
     }
 
     &:has(video) {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 72px 0;
-      }
-
-      .media-item_holder {
-        position: relative;
       }
 
       figure {
@@ -378,33 +303,12 @@
 
   &--left {
     .media-item--video {
-      max-width: 100%;
       width: auto;
-    }
-
-    .toggler {
-      background: rgba(#F2F2F2,0.2) !important;
-
-      &:hover {
-        background-color: $black !important;
-      }
-    }
-
-    .video-toggle {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0 25px 30px;
     }
 
     &:has(video) {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 72px 0;
-      }
-
-      .media-item_holder {
-        position: relative;
       }
 
       figure {

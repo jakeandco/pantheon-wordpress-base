@@ -122,6 +122,18 @@ export function setup() {
     },
   });
 
+  const videoSwiper = new Swiper('.video-carousel', {
+    modules: [Autoplay, Navigation],
+    direction: 'horizontal',
+    effect: 'slide',
+    slidesPerView: 'auto',
+    // Navigation arrows
+    navigation: {
+      nextEl: '.video-swiper-button-next',
+      prevEl: '.video-swiper-button-prev',
+    },
+  });
+
   // === CUSTOM TITLE NAVIGATION ===
   function updateActiveTitle(activeIndex) {
     if (!hasCustomPagination) return;

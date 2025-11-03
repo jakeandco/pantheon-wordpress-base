@@ -45,29 +45,6 @@
 
     .media-item_caption {
       @extend .container;
-      // padding-left: 25px;
-      // padding-right: 25px;
-    }
-
-    .video-toggle {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0 25px 30px;
-    }
-
-    .toggler {
-      background: rgba(#F2F2F2,0.2) !important;
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        font-size: 14px;
-        line-height: 20px;
-        padding: 16px 21px;
-      }
-
-      &:hover {
-        background-color: $black !important;
-      }
     }
   }
 }
