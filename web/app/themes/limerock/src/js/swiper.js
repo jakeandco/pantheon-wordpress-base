@@ -122,18 +122,6 @@ export function setup() {
     },
   });
 
-  const videoSwiper = new Swiper('.video-carousel', {
-    modules: [Autoplay, Navigation],
-    direction: 'horizontal',
-    effect: 'slide',
-    slidesPerView: 'auto',
-    // Navigation arrows
-    navigation: {
-      nextEl: '.video-swiper-button-next',
-      prevEl: '.video-swiper-button-prev',
-    },
-  });
-
   // === CUSTOM TITLE NAVIGATION ===
   function updateActiveTitle(activeIndex) {
     if (!hasCustomPagination) return;
@@ -151,6 +139,60 @@ export function setup() {
     });
 
     updateActiveTitle(researchSwiper.realIndex);
+  }
+
+  const videoSwiper = new Swiper('.video-carousel', {
+    modules: [Autoplay, Navigation],
+    direction: 'horizontal',
+    effect: 'slide',
+    slidesPerView: 'auto',
+    // Navigation arrows
+    navigation: {
+      nextEl: '.video-swiper-button-next',
+      prevEl: '.video-swiper-button-prev',
+    },
+  });
+
+  const yearTitleItems = Array.from(document.querySelectorAll('.year-swiper-pagination .pagination-item'));
+  const hasCustomYearPagination = yearTitleItems.length > 0;
+
+  const yearSwiper = new Swiper('.year-carousel', {
+    modules: [Autoplay, Navigation],
+    direction: 'horizontal',
+    effect: 'slide',
+    loop: true,
+    navigation: {
+      nextEl: '.year-swiper-button-next',
+      prevEl: '.year-swiper-button-prev',
+    },
+    pagination: false,
+    on: {
+      slideChange() {
+        if (hasCustomYearPagination) updateActiveTitleYear(this.realIndex);
+      },
+      init() {
+        if (hasCustomYearPagination) updateActiveTitleYear(this.realIndex);
+      }
+    }
+  });
+
+  function updateActiveTitleYear(activeIndex) {
+    if (!hasCustomYearPagination) return;
+    yearTitleItems.forEach((item, i) => {
+      item.classList.toggle('is-active', i === activeIndex);
+    });
+  }
+
+  if (hasCustomYearPagination) {
+    yearTitleItems.forEach((item, i) => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        yearSwiper.slideToLoop(i);
+        updateActiveTitleYear(i);
+      });
+    });
+
+    updateActiveTitleYear(yearSwiper.realIndex);
   }
 
   // === PLAY / PAUSE BUTTON ===
