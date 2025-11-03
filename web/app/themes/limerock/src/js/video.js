@@ -1,31 +1,50 @@
 export function setup() {
-  let playerOpeners = document.querySelectorAll('.video-toggle');
+  let hoverVideos = document.querySelectorAll('[data-hover-play]');
 
-  for (const elem of playerOpeners) {
-    const toggleOverlay = elem,
-      videoHolder = toggleOverlay.closest('.media-item_holder'),
-      video = videoHolder.querySelector('video');
+   hoverVideos.forEach(video => {
+    const block = video.closest('figure');
+    const block2 = video.closest('.block_single-media-item--full');
+    const block3 = video.closest('.block_single-media-item--wide');
+    const durationSpan = block?.querySelector('.video-duration');
+    if( ! block2 && ! block3 ) {
+      block.addEventListener('mouseenter', () => {
+        video.play();
+      });
 
-    function listenForPlay(e) {
-      e.stopPropagation();
-      videoHolder.classList.add('play');
-      video.play();
+      block.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    } else if( ! block2 ) {
+      block3.addEventListener('mouseenter', () => {
+        video.play();
+      });
 
-      toggleOverlay.removeEventListener('click', listenForPlay);
-      videoHolder.addEventListener('click', listenForPause);
+      block3.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    } else {
+      block2.addEventListener('mouseenter', () => {
+        video.play();
+      });
+
+      block2.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
     }
 
-    function listenForPause(e) {
-      e.stopPropagation();
-      videoHolder.classList.remove('play');
-      video.pause();
 
-      videoHolder.removeEventListener('click', listenForPause);
-      toggleOverlay.addEventListener('click', listenForPlay);
-    }
-
-    toggleOverlay.addEventListener('click', listenForPlay);
-  }
+     video.addEventListener('loadedmetadata', () => {
+      if (durationSpan) {
+        const totalSeconds = Math.floor(video.duration);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        durationSpan.textContent = `(${minutes}:${seconds.toString().padStart(2, '0')})`;
+      }
+    });
+  });
 }
 
 export function teardown() {}

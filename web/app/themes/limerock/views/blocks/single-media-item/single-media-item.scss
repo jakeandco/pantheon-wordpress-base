@@ -31,14 +31,180 @@
       .media-item_caption {
         @extend .container;
       }
+
+      .video-toggle {
+        display: none;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          display: inline-block;
+          vertical-align: top;
+        }
+      }
+    }
+
+    .video-toggle {
+      order: -1;
+      margin: 0 auto;
+      width: 100%;
+      padding-bottom: 48px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        order: 0;
+        max-width: 720px;
+        padding: 0 25px 30px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        max-width: 960px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        max-width: 1140px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+        max-width: 1334px;
+      }
+    }
+
+    &:has(video) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 92px;
+      }
+
+      figure {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          border: 7px solid var(--bs-body-bg);
+        }
+
+        .media-item_caption {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            padding-top: 23px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+          }
+        }
+
+        .media-item_holder {
+          position: static;
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            position: relative;
+          }
+        }
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+      }
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        margin-bottom: 15px;
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 28px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          color: $white;
+          margin-bottom: 40px;
+          font-size: 40px;
+          line-height: 48px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          max-width: 60%;
+        }
+      }
+
+      .heading-holder {
+        padding-top: 15px;
+        padding-bottom: 12px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          position: absolute;
+          bottom: 178px;
+          left: 0;
+          right: 0;
+          z-index: 2;
+          padding: 0 25px;
+        }
+      }
     }
   }
 
   &--wide {
 
     figure {
+
       img {
         width: 100%;
+      }
+
+      .video-toggle {
+        display: none;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          display: inline-block;
+          vertical-align: top;
+        }
+      }
+    }
+
+    .media-item--video {
+      width: 100%;
+    }
+
+    .video-toggle {
+      order: -1;
+      margin: 0 auto;
+      width: 100%;
+      padding-bottom: 48px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        order: 0;
+        padding: 0 25px 30px;
+      }
+    }
+
+    &:has(video) {
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        margin-bottom: 15px;
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 28px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          color: $white;
+          margin-bottom: 40px;
+          font-size: 40px;
+          line-height: 48px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          max-width: 60%;
+        }
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+      }
+
+      .heading-holder {
+        padding-top: 15px;
+        padding-bottom: 12px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          position: absolute;
+          bottom: 178px;
+          left: 25px;
+          right: 25px;
+          z-index: 2;
+          padding: 0 25px;
+        }
+      }
+
+      figure {
+
+        .media-item_holder {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            position: relative;
+          }
+        }
       }
     }
   }
@@ -48,12 +214,130 @@
     .media-item_holder {
       text-align: right;
     }
+
+    .media-item--video {
+      width: auto;
+    }
+
+    &:has(video) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 72px 0;
+      }
+
+      figure {
+        max-width: 845px;
+        margin-left: auto;
+      }
+
+      .heading-holder {
+        padding: 0 0 30px;
+
+        .col-md-9 {
+          width: 100%;
+        }
+      }
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        font-size: 16px;
+        line-height: 22px;
+        padding-bottom: 13px;
+        margin-bottom: 19px;
+        letter-spacing: 0;
+        border-bottom: 1px solid;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 22px;
+          line-height: 30px;
+          padding-bottom: 9px;
+          margin-bottom: 30px;
+        }
+      }
+    }
   }
 
   &--center {
 
     .media-item_holder {
       text-align: center;
+    }
+
+    .media-item--video {
+      width: auto;
+    }
+
+    &:has(video) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 72px 0;
+      }
+
+      figure {
+        max-width: 845px;
+        margin: 0 auto;
+      }
+
+      .heading-holder {
+        padding: 0 0 30px;
+
+        .col-md-9 {
+          width: 100%;
+        }
+      }
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        font-size: 16px;
+        line-height: 22px;
+        padding-bottom: 13px;
+        margin-bottom: 19px;
+        letter-spacing: 0;
+        border-bottom: 1px solid;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 22px;
+          line-height: 30px;
+          padding-bottom: 9px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+
+  &--left {
+    .media-item--video {
+      width: auto;
+    }
+
+    &:has(video) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 72px 0;
+      }
+
+      figure {
+        max-width: 845px;
+      }
+
+      .heading-holder {
+        padding: 0 0 30px;
+
+        .col-md-9 {
+          width: 100%;
+        }
+      }
+
+      .h5 {
+        font-family: 'FT System Grotesk';
+        font-size: 16px;
+        line-height: 22px;
+        padding-bottom: 13px;
+        margin-bottom: 19px;
+        letter-spacing: 0;
+        border-bottom: 1px solid;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 22px;
+          line-height: 30px;
+          padding-bottom: 9px;
+          margin-bottom: 30px;
+        }
+      }
     }
   }
 }

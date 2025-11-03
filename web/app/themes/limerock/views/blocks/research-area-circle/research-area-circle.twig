@@ -11,6 +11,20 @@
 
       <div class="research-area-circle">
         {% include '@partial/post-repeater.twig' with { posts: selections } only %}
+
+        {# <svg class="svg-decor d-md-none" width="320" height="422" viewBox="0 0 320 422" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M160 0.5C116.008 0.5 76.144 24.0141 47.2617 62.1025C18.3792 100.191 0.5 152.833 0.5 211C0.5 269.167 18.3792 321.809 47.2617 359.897C76.144 397.986 116.008 421.5 160 421.5C203.992 421.5 243.856 397.986 272.738 359.897C301.621 321.809 319.5 269.167 319.5 211C319.5 152.833 301.621 100.191 272.738 62.1025C243.856 24.0141 203.992 0.5 160 0.5Z" stroke="#BCAC9B"/>
+        </svg> #}
+
+        {# <svg class="svg-decor d-none d-md-block">
+          <circle class="circle" cx="335" cy="335" r="335" stroke="#BCAC9B" stroke-width="1"></circle>
+        </svg> #}
+
+        <svg class="svg-decor">
+          <circle class="circle d-none d-md-block" cx="335" cy="335" r="335" stroke="#BCAC9B" stroke-width="1" fill="none"></circle>
+          <ellipse class="d-md-none" cx="211" cy="160" rx="211" ry="160" stroke="#BCAC9B" stroke-width="1" fill="none"></ellipse>
+        </svg>
+
         <span class="decor decor-1"></span>
         <span class="decor decor-2"></span>
         <span class="decor decor-3"></span>

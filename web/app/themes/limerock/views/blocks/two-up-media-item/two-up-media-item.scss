@@ -32,7 +32,7 @@
       }
     }
 
-    img {
+    .media-item {
       width: 100%;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         position: absolute;
@@ -44,8 +44,7 @@
     }
 
     .media-item_caption {
-      padding-left: 25px;
-      padding-right: 25px;
+      @extend .container;
     }
   }
 }

@@ -1,17 +1,36 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_year-carousel' } %}
   {% block content %}
+    <div class="container">
 
+      {% if fields.headline %}
+        <h2 class="block-title">{{fields.headline}}</h2>
+      {% endif %}
 
-    <p>{{fields.headline}}</p>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">Slide 1</div>
+          <div class="swiper-slide">Slide 2</div>
+          <div class="swiper-slide">Slide 3</div>
+        </div>
+        <div class="swiper-pagination"></div>
 
-    {% for row in fields.carousel %}
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
 
-
-      <p>{{row['title']}}</p>
-
-      {{row['content']}}
-
-    {% endfor %}
-
+      {% for row in fields.carousel %}
+        <div class="row">
+          <div class="col-12 col-md-2 two-column-sidebar">
+            <p>{{row['title']}}</p>
+          </div>
+          <div class="col-12 col-md-5">
+            {{row['column_1']}}
+          </div>
+          <div class="col-12 col-md-5">
+            {{row['column_2']}}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   {% endblock %}
 {% endembed %}

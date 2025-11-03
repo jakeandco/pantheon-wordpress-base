@@ -89,3 +89,39 @@ body:has(.hero) {
     transform: rotate(360deg);
   }
 }
+
+figure {
+  .media-item--video {
+    display: block;
+    max-width: 100%;
+  }
+
+  .toggler {
+    background: rgba(#F2F2F2,0.2) !important;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 14px;
+      line-height: 20px;
+      padding: 16px 21px;
+    }
+
+    &:hover {
+      background-color: $black !important;
+    }
+  }
+
+  .video-toggle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 20px 23px;
+    text-align: left;
+  }
+
+  &:has(video) {
+
+    .media-item_holder {
+      position: relative;
+    }
+  }
+}

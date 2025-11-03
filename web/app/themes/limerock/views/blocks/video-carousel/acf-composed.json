@@ -3,14 +3,14 @@
   "title": "Block Details: Video Carousel",
   "fields": [
     {
-      "label": "Gallery",
-      "name": "gallery",
-      "type": "gallery"
-    },
-    {
       "label": "Title",
       "name": "title",
       "type": "text"
+    },
+    {
+      "label": "Gallery",
+      "name": "gallery",
+      "type": "gallery"
     }
   ],
   "location": [
