@@ -1,7 +1,9 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_video-carousel' } %}
   {% block content %}
     <div class="container">
-      <h2 class="block-title">{{fields.title}}</h2>
+      {% if fields.title %}
+        <h2 class="block-title">{{fields.title}}</h2>
+      {% endif %}
 
       <div class="swiper video-carousel">
         <div class="swiper-wrapper">
