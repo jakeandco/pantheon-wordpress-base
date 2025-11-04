@@ -3,13 +3,17 @@
     <div class="container">
       <div class="row">
         {% for row in fields.entry_points %}
-          <div class="col-12 col-md-4">
-            <div class="entry-point-card">
-              <h3 class="entry-point-card--title">
-                <a href="{{row['link'].url}}" alt="{{row['link'].alt}}">{{row['link'].title}}</a>
-              </h3>
-              {{row['description']}}
-            </div>
+          <div class="col-12 {{ fields.cards_per_row == '2' ? 'col-md-6' :'col-md-4'  }}">
+            <a class="entry-point-card" href="{{row.link.url}}" alt="{{row.link.alt}}">
+              {% if row.image %}
+                {% include '@partial/media-item.twig' with { image: row.image, size: 'medium' } %}
+              {% endif %}
+              <h3 class="entry-point-card--title">{{row.link.title}}</h3>
+              {{row.description}}
+              {% if row.button_text %}
+                <button class="btn btn-primary mt-7">{{row.button_text}}</button>
+              {% endif %}
+            </a>
           </div>
         {% endfor %}
       </div>

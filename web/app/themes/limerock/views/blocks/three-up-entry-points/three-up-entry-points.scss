@@ -15,18 +15,27 @@
 }
 
 .entry-point-card {
+  display: block;
   border: 1px solid;
-  padding: 30px 25px 15px;
+  text-decoration: none;
+  --entry-point-card--padding--top: 30px;
+  --entry-point-card--padding--bottom: 15px;
+  --entry-point-card--padding--horizontal: 25px;
+
+  padding: var(--entry-point-card--padding--top) var(--entry-point-card--padding--horizontal) var(--entry-point-card--padding--bottom);
+
   border-radius: 12px;
   margin-bottom: 30px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     height: calc(100% - 30px);
   }
   @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
-    padding: 45px 39px 23px;
+    --entry-point-card--padding--top: 45px;
+    --entry-point-card--padding--bottom: 23px;
+    --entry-point-card--padding--horizontal: 39px;
   }
 
-  .entry-point-card--title {
+  &--title {
     margin-bottom: 22px;
     font-size: 20px;
     line-height: 1.273;
@@ -35,5 +44,18 @@
       font-size: 22px;
       line-height: 28px;
     }
+  }
+
+  &:hover &--title {
+    text-decoration: underline;
+  }
+
+  figure {
+    $top-margin: calc((var(--entry-point-card--padding--top) * -1) + 10px);
+    $horizontal-margin: calc((var(--entry-point-card--padding--horizontal) * -1) + 10px);
+    margin-top: $top-margin;
+    margin-right: $horizontal-margin;
+    margin-left: $horizontal-margin;
+    margin-bottom: var(--entry-point-card--padding--bottom);
   }
 }
