@@ -6,11 +6,43 @@
       "label": "CTAs",
       "name": "ctas",
       "type": "repeater",
+      "layout": "block",
       "sub_fields": [
         {
           "label": "Background Image",
           "name": "background_image",
           "type": "image"
+        },
+        {
+          "label": "Background Image Position",
+          "name": "background_image_position",
+          "type": "select",
+          "choices": {
+            "right": "Right",
+            "left": "Left",
+            "center": "Center"
+          },
+          "conditional_logic": [
+            [
+              {
+                "fieldPath": "background_image",
+                "operator": "!=empty"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "Background Color",
+          "name": "background_color",
+          "acf_composer_extend": "LimeRockTheme/ACF/fields/theme-color",
+          "conditional_logic": [
+            [
+              {
+                "fieldPath": "background_image",
+                "operator": "==empty"
+              }
+            ]
+          ]
         },
         {
           "label": "Text",
