@@ -1,6 +1,6 @@
 import { Swiper } from 'swiper';
 import { Autoplay } from 'swiper/modules';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Controller } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/autoplay'; // Import Autoplay CSS
@@ -153,46 +153,75 @@ export function setup() {
     },
   });
 
-  const yearTitleItems = Array.from(document.querySelectorAll('.year-swiper-pagination .pagination-item'));
-  const hasCustomYearPagination = yearTitleItems.length > 0;
+  const yearNavEl = document.querySelector('.year-swiper-pagination');
+  const yearCarouselEl = document.querySelector('.year-carousel');
+  const btnNext = document.querySelector('.year-swiper-button-next');
+  const btnPrev = document.querySelector('.year-swiper-button-prev');
 
-  const yearSwiper = new Swiper('.year-carousel', {
-    modules: [Autoplay, Navigation],
-    direction: 'horizontal',
-    effect: 'slide',
-    loop: true,
-    navigation: {
-      nextEl: '.year-swiper-button-next',
-      prevEl: '.year-swiper-button-prev',
-    },
-    pagination: false,
-    on: {
-      slideChange() {
-        if (hasCustomYearPagination) updateActiveTitleYear(this.realIndex);
-      },
-      init() {
-        if (hasCustomYearPagination) updateActiveTitleYear(this.realIndex);
-      }
+  function refreshNavButtons(swiper) {
+    if (swiper.params && swiper.params.loop) {
+      if (btnNext) btnNext.classList.remove('swiper-button-disabled');
+      if (btnPrev) btnPrev.classList.remove('swiper-button-disabled');
+      return;
     }
-  });
 
-  function updateActiveTitleYear(activeIndex) {
-    if (!hasCustomYearPagination) return;
-    yearTitleItems.forEach((item, i) => {
-      item.classList.toggle('is-active', i === activeIndex);
-    });
+    if (btnPrev) btnPrev.classList.toggle('swiper-button-disabled', !!swiper.isBeginning);
+    if (btnNext) btnNext.classList.toggle('swiper-button-disabled', !!swiper.isEnd);
   }
 
-  if (hasCustomYearPagination) {
-    yearTitleItems.forEach((item, i) => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        yearSwiper.slideToLoop(i);
-        updateActiveTitleYear(i);
-      });
+  if (yearNavEl && yearCarouselEl) {
+    // NAV (show as horizontal scroller; no loop -> простіша логіка)
+    const yearSwiperNav = new Swiper(yearNavEl, {
+      slidesPerView: 'auto',
+      loop: false,
+      slideToClickedSlide: true
     });
 
-    updateActiveTitleYear(yearSwiper.realIndex);
+    // MAIN
+    const yearSwiper = new Swiper(yearCarouselEl, {
+      modules: [Navigation],
+      slidesPerView: 1,
+      loop: false,
+      navigation: false,
+      on: {
+        slideChange() {
+          const i = this.realIndex || 0;
+          yearSwiperNav.slideTo(i, 0);
+          document.querySelectorAll('.year-swiper-pagination .swiper-slide')
+            .forEach((s, idx) => s.classList.toggle('swiper-slide-active', idx === i));
+          refreshNavButtons(this);
+        },
+        init() {
+          const i = this.realIndex;
+          yearSwiperNav.slideTo(i, 300);
+          document.querySelectorAll('.year-swiper-pagination .swiper-slide')
+            .forEach((s, idx) => s.classList.toggle('swiper-slide-active', idx === i));
+          refreshNavButtons(this);
+        }
+      }
+    });
+
+    // Make clicked nav slide control main slider (simple binding)
+    yearSwiperNav.on('click', function (swiper, e) {
+      const clicked = swiper.clickedIndex;
+      if (typeof clicked === 'number') {
+        yearSwiper.slideTo(clicked, 300);
+      }
+    });
+
+    // Hook prev/next buttons to both swipers (simple and explicit)
+    if (btnNext) {
+      btnNext.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        yearSwiper.slideNext();
+      });
+    }
+    if (btnPrev) {
+      btnPrev.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        yearSwiper.slidePrev();
+      });
+    }
   }
 
   // === PLAY / PAUSE BUTTON ===
