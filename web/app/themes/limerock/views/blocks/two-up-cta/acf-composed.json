@@ -34,15 +34,7 @@
         {
           "label": "Background Color",
           "name": "background_color",
-          "acf_composer_extend": "LimeRockTheme/ACF/fields/theme-color",
-          "conditional_logic": [
-            [
-              {
-                "fieldPath": "background_image",
-                "operator": "==empty"
-              }
-            ]
-          ]
+          "acf_composer_extend": "LimeRockTheme/ACF/fields/theme-color"
         },
         {
           "label": "Text",

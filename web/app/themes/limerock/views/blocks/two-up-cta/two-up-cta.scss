@@ -6,6 +6,7 @@
 .cta-item {
   position: relative;
 
+
   &-image {
     &--position {
       &-left {
@@ -53,6 +54,14 @@
         padding-right: 52px;
       }
     }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  &:hover a {
+    text-decoration: underline;
   }
 
   figure {
