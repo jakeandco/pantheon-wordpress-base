@@ -1,4 +1,7 @@
-{% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_people-archive' } %}
+{% embed '@partial/block_wrapper.twig' with {
+  extra_classes: 'block_people-archive',
+  extra_attributes: 'data-bs-theme="white"'
+  } %}
   {% block content %}
     <form
       action="{{ ajax_url }}"
@@ -6,23 +9,28 @@
       class="ajax-form-js hide-selected-labels"
     >
       {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
-      <div class="people-wrap">
+
+      <div class="people-wrap" data-bs-theme="light-text">
         <div class="container">
           {% if fields.text %}
-            <div class="archive-text">{{ fields.text }}</div>
+            <div class="row people-wrap-heading">
+              <div class="col-12 col-md-10">
+                <h2 class="archive-text h5">{{ fields.text }}</h2>
+              </div>
+            </div>
           {% endif %}
           {% include '@blocks/people-archive/filters.twig' with { fields: fields } %}
           <div class="ajax-results-js">
             {% set display_featured = posts.pagination.current == 1 and not hide_featured %}
             {% if leadership_people|length and display_featured %}
               <div class="leadership-section">
-                <div>Leadership</div>
+                <h5 class="block-title">Leadership</h5>
                 {% include '@partial/people-cards.twig' with { people: leadership_people, items_per_row: 3 } only %}
               </div>
             {% endif %}
             <div class="all-posts-wrap">
               {% if fields.archive_label %}
-                <div>{{ fields.archive_label }}</div>
+                <h5 class="block-title">{{ fields.archive_label }}</h5>
               {% endif %}
               <div class="all-posts-grid">
                 {% if posts|length %}
