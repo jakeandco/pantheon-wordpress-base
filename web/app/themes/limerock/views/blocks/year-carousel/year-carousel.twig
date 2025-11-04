@@ -1,36 +1,57 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_year-carousel' } %}
   {% block content %}
     <div class="container">
+      <div class="heading-holder d-flex align-items-center justify-content-between">
+        {% if fields.headline %}
+          <h2 class="block-title">{{fields.headline}}</h2>
+        {% endif %}
 
-      {% if fields.headline %}
-        <h2 class="block-title">{{fields.headline}}</h2>
-      {% endif %}
-
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
+        <div class="year-swiper-nav-holder d-flex align-items-center">
+          <div class="swiper-button swiper-button-prev year-swiper-button-prev">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.4658 5.53699L12.4658 6.59869L2.05096 6.5987L6.82862 11.3764L6.07026 12.1347L0.0033898 6.06784L6.07026 0.000971169L6.82862 0.75933L2.05096 5.53699L12.4658 5.53699Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="swiper-button swiper-button-next year-swiper-button-next">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.00299169 6.59777L0.00299165 5.53607L10.4178 5.53607L5.64013 0.758408L6.39849 4.93524e-05L12.4654 6.06692L6.39849 12.1338L5.64013 11.3754L10.4178 6.59777L0.00299169 6.59777Z" fill="currentColor"/>
+            </svg>
+          </div>
         </div>
-        <div class="swiper-pagination"></div>
-
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
       </div>
 
-      {% for row in fields.carousel %}
-        <div class="row">
-          <div class="col-12 col-md-2 two-column-sidebar">
-            <p>{{row['title']}}</p>
-          </div>
-          <div class="col-12 col-md-5">
-            {{row['column_1']}}
-          </div>
-          <div class="col-12 col-md-5">
-            {{row['column_2']}}
-          </div>
+      <div class="swiper year-swiper-pagination">
+        <div class="swiper-wrapper">
+          {% for row in fields.carousel %}
+            <div class="swiper-slide">
+              <div class="pagination-item">{{ row['year']|split('/')[2] }}</div>
+            </div>
+          {% endfor %}
         </div>
-      {% endfor %}
+      </div>
+
+      <div class="swiper year-carousel">
+
+        <div class="swiper-wrapper">
+          {% for row in fields.carousel %}
+            <div class="swiper-slide">
+              <div class="row">
+                <div class="col-12 col-md-2 title-holder">
+                  <h6 class="title">{{row['title']}}</h6>
+                </div>
+                <div class="col-12 col-md-5">
+                  {{row['column_1']}}
+                </div>
+                <div class="col-12 col-md-5">
+                  {{row['column_2']}}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
+
+
   {% endblock %}
 {% endembed %}

@@ -1,3 +1,147 @@
 .block_year-carousel {
   // Add your custom styles here
+  padding: 33px 0;
+  overflow: hidden;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding: 68px 0 54px;
+  }
+
+  .heading-holder {
+    border-bottom: 1px solid;
+    padding-bottom: 12px;
+    margin-bottom: 40px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 9px;
+      margin-bottom: 53px;
+    }
+  }
+
+  .block-title {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .swiper-button {
+    background: $bright-red;
+    color: $white;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    margin-left: 6px;
+    justify-content: center;
+    transform: none;
+    transition: color 0.3s ease-in-out,
+                background-color 0.3s ease-in-out;
+
+    &:hover {
+      background: $bright-red;
+      background: $black;
+    }
+
+    &.swiper-button-disabled {
+      background: $light;
+      color: rgba($black,0.2);
+      opacity: 1;
+    }
+
+    &:after {
+      display: none;
+    }
+
+    svg {
+      height: auto;
+      max-width: 10px;
+    }
+  }
+
+  .year-swiper-pagination {
+    overflow: visible;
+    position: relative;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: auto;
+    transform: none;
+    height: 207px;
+    margin-bottom: 45px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 60px;
+    }
+
+    .swiper-slide {
+      height: 207px;
+      width: 207px;
+      display: flex;
+      align-items: center;
+      padding-top: 2px;
+      box-sizing: border-box;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 218px;
+      }
+
+      &.swiper-slide-active {
+        .pagination-item {
+          background-color: $bright-red;
+          font-size: 60px;
+          line-height: 81px;
+          font-weight: 300;
+          width: 207px;
+          height: 207px;
+          min-width: 207px;
+          padding-top: 8px;
+        }
+      }
+    }
+
+    .pagination-item {
+      background-color: $warm-dark;
+      font-size: 26px;
+      line-height: 36px;
+      color: $white;
+      font-weight: 600;
+      width: 98px;
+      height: 98px;
+      min-width: 98px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 54px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      margin: 0 auto;
+
+      &:hover {
+        background-color: #303030;
+        width: 115px;
+        height: 115px;
+        min-width: 115px;
+      }
+    }
+  }
+}
+
+.year-carousel {
+
+  .row {
+    box-sizing: border-box;
+  }
+
+  .title {
+    font: inherit;
+    margin-bottom: 15px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      line-height: 28px;
+    }
+  }
+
 }
