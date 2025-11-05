@@ -341,3 +341,82 @@
     }
   }
 }
+
+.fancybox__container {
+
+  .fancybox__backdrop {
+    background: rgba($black,0.9);
+    filter: blur(4px);
+  }
+
+  .f-button.is-close-button {
+    font-family: 'FT System Grotesk';
+    font-weight: 300;
+    line-height: 1;
+    width: auto;
+    height: auto;
+    font-size: 22px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 32px;
+    }
+
+    &:before {
+      content: 'Close';
+    }
+
+    &:after {
+      content: '';
+      background: url("../assets/images/close-icon.svg") no-repeat;
+      background-position: center;
+      background-size: 26px;
+      display: inline-block;
+      vertical-align: top;
+      width: 26px;
+      height: 26px;
+      filter: brightness(0) invert(1);
+      margin-left: 12px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background-size: 35px;
+        width: 34px;
+        height: 34px;
+      }
+    }
+
+    svg {
+      display: none;
+    }
+  }
+
+  video {
+    height: auto;
+    margin-top: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-top: 60px;
+    }
+  }
+
+  .f-caption {
+    font-family: 'FT System Mono';
+    max-width: 1285px;
+    width: 100%;
+    padding: 20px 0 0;
+    font-size: 12px;
+    line-height: 18px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding: 40px 0 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .has-html5video .f-html {
+    max-width: 1285px;
+    height: auto;
+    max-height: none;
+    background: transparent;
+  }
+
+  .fancybox__slide {
+    padding: 0 25px;
+  }
+}

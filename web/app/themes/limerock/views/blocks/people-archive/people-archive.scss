@@ -1,3 +1,107 @@
 .block_people-archive {
   // Add your custom styles here
+
+  .people-wrap-heading {
+    padding: 34px 0 31px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding: 87px 0 53px;
+    }
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    label {
+      margin-right: 18px;
+      position: relative;
+      font-size: 16px;
+      line-height: 22px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-right: 30px;
+        font-size: 18px;
+        line-height: 24px;
+      }
+
+      input[type="radio"] {
+        position: absolute;
+        left: -99999;
+        visibility: hidden;
+
+        &:checked {
+          span {
+            border-top-color: $black;
+          }
+        }
+      }
+
+      span {
+        border-top: 1px solid #BCAC9B;
+        padding-top: 6px;
+        display: block;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          padding-top: 8px;
+        }
+
+        &:hover {
+          border-top-color: $black;
+        }
+      }
+    }
+  }
+}
+
+.pagination-block-alt {
+  border-top: 1px solid;
+  padding-top: 20px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: 28px;
+  }
+}
+
+.pagination-alt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .pages-info {
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0 auto;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin: 0 32px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      font-size: 22px;
+      line-height: 30px;
+    }
+  }
+
+  .disabled {
+    .pagination-link {
+      background-color: $white;
+      color: rgba($black,0.2);
+
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+
+  .pagination-link {
+    background-color: $black;
+    color: $white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: $bright-red;
+    }
+  }
 }

@@ -5,14 +5,16 @@
   post
 } only %}
   {% block content %}
-    <div>
-      <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
-      {% include '@partial/researchers.twig' with { post: post } only %}
-      {% include '@partial/post-taxonomy-list.twig' with {
-        post: post,
-        taxonomy: 'tax-research-area',
-        show_post_type: true
-      } only %}
+    <div class="tease-archive-holder">
+      <div class="text-holder d-flex flex-column">
+        <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        {% include '@partial/researchers.twig' with { post: post } only %}
+        {% include '@partial/post-taxonomy-list.twig' with {
+          post: post,
+          taxonomy: 'tax-research-area',
+          show_post_type: true
+        } only %}
+      </div>
       {% if post.thumbnail %}
         <div class="img-holder">
           {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}

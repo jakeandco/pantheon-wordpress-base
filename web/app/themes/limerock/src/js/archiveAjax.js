@@ -201,13 +201,17 @@ export function setup() {
 
   function createLabel(text, label) {
     return `<div class="selected-filter">
-      <div class="text">${text}</div>
       <button
         type="button"
-        class="remove-filter-js"
+        class="btn btn-primary btn-sm remove-filter-js"
         aria-label="Remove filter"
         data-option="${label}"
-      >Remove ${text} filter</button>
+      >${text} filter
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.530273 7.36572L7.36564 0.530358" stroke="white" stroke-width="1.5"/>
+          <path d="M7.36572 7.36572L0.530358 0.530358" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </button>
     </div>`;
   }
 

@@ -1,12 +1,24 @@
 {% if posts.pagination.pages is not empty %}
   <nav class="pagination-block-alt">
-    <ul class="pagination-alt pagination-js">
+    <ul class="pagination-alt list-unstyled pagination-js">
 
       {# Previous page link #}
       {% if posts.pagination.prev %}
-        <li class="prev"><a href="{{ posts.pagination.prev.link }}">previous</a></li>
+        <li class="prev">
+          <a class="pagination-link" href="{{ posts.pagination.prev.link }}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.8473 7.33067L13.8473 6.15102L2.27542 6.15102L7.58388 0.842554L6.74127 -5.84354e-05L0.000366601 6.74084L6.74127 13.4817L7.58388 12.6391L2.27542 7.33067L13.8473 7.33067Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
       {% else %}
-        <li class="prev disabled"><span>previous</span></li>
+        <li class="prev disabled">
+          <span class="pagination-link">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.8473 7.33067L13.8473 6.15102L2.27542 6.15102L7.58388 0.842554L6.74127 -5.84354e-05L0.000366601 6.74084L6.74127 13.4817L7.58388 12.6391L2.27542 7.33067L13.8473 7.33067Z" fill="currentColor"/>
+            </svg>
+          </span>
+        </li>
       {% endif %}
 
       {# Page info #}
@@ -14,11 +26,22 @@
 
       {# Next page link #}
       {% if posts.pagination.next %}
-        <li class="next"><a href="{{ posts.pagination.next.link }}">next</a></li>
+        <li class="next">
+          <a class="pagination-link" href="{{ posts.pagination.next.link }}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.000351801 7.33067L0.000352138 6.15102L11.5722 6.15102L6.26377 0.842554L7.10639 -5.84354e-05L13.8473 6.74084L7.10639 13.4817L6.26377 12.6391L11.5722 7.33067L0.000351801 7.33067Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
       {% else %}
-        <li class="next disabled"><span>next</span></li>
+        <li class="next disabled">
+          <span class="pagination-link">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.000351801 7.33067L0.000352138 6.15102L11.5722 6.15102L6.26377 0.842554L7.10639 -5.84354e-05L13.8473 6.74084L7.10639 13.4817L6.26377 12.6391L11.5722 7.33067L0.000351801 7.33067Z" fill="currentColor"/>
+            </svg>
+          </span>
+        </li>
       {% endif %}
-
     </ul>
   </nav>
 {% endif %}

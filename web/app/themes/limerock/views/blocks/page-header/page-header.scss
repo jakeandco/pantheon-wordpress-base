@@ -5,9 +5,6 @@
 
   h1 {
     @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
-      font-size: 50px;
-      line-height: 1;
-      font-weight: 400;
       min-height: 115px;
       display: flex;
       align-items: flex-end;
@@ -18,6 +15,33 @@
       display: flex;
       align-items: flex-end;
       margin-bottom: 23px;
+    }
+
+    &.title-size {
+
+      &-extra_large {
+        @extend .h1;
+        @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 50px;
+          line-height: 1;
+          font-weight: 400;
+        }
+      }
+
+      &-large {
+        @extend .h2;
+      }
+
+      &-medium {
+        @extend .h3;
+        @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 36px;
+        }
+      }
+
+      &-small {
+        @extend .h4;
+      }
     }
   }
 
@@ -197,18 +221,9 @@
   }
 
   .form-holder {
+    position: relative;
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       padding-left: 5px;
-    }
-  }
-
-  form {
-    position: relative;
-    margin-top: -3px;
-    margin-bottom: 4px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-bottom: 7px;
-      margin-top: 0;
     }
 
     input[type="text"] {
@@ -222,6 +237,7 @@
       width: 100%;
       max-width: 100%;
       background: transparent;
+      margin-bottom: 13px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 0 0 21px;
         font-size: 22px;
@@ -241,7 +257,7 @@
       border: 1px solid;
       position: absolute;
       top: 0;
-      right: 0;
+      right: 25px;
       background: transparent;
       transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -254,6 +270,16 @@
         border-color: $black;
         color: $white;
       }
+    }
+  }
+
+  form {
+    position: relative;
+    margin-top: -3px;
+    margin-bottom: 4px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 7px;
+      margin-top: 0;
     }
   }
 
@@ -334,5 +360,4 @@
       }
     }
   }
-
 }
