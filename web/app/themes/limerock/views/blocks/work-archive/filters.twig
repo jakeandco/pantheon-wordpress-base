@@ -8,41 +8,46 @@
   <button type="button" class="reset-js" disabled>Reset</button>
   <div class="filters-blocks">
 
-    {# Filter by Post Type #}
-    {% embed '@partial/filter-radio-checkbox.twig' with {
-      title: 'Filter by type',
-      name: 'type',
-      type: 'checkbox',
-      options: type_options,
-      selected: request.get.type|default([]),
-      add_all: true,
-      create_labels: true
-    } %}
-    {% endembed %}
-
-    {# Filter by Research Area #}
-    {% embed '@partial/filter-radio-checkbox.twig' with {
-      title: 'Filter by research area',
-      name: 'research_area',
-      type: 'checkbox',
-      options: research_terms,
-      selected: request.get.research_area|default([]),
-      add_all: true,
-      create_labels: true
-    } %}
-    {% endembed %}
-
-    {# Sort Options #}
-    {% embed '@partial/filter-radio-checkbox.twig' with {
-      title: 'Sort',
-      name: 'sort',
-      type: 'radio',
-      options: sort_options,
-      selected: request.get.sort|default(['newest']),
-      default_option: 'newest',
-      create_labels: true
-    } %}
-    {% endembed %}
-
+    <div class="row">
+      <div class="col-12 col-md-4">
+        {# Filter by Post Type #}
+        {% embed '@partial/filter-radio-checkbox.twig' with {
+          title: 'Filter by type',
+          name: 'type',
+          type: 'checkbox',
+          options: type_options,
+          selected: request.get.type|default([]),
+          add_all: true,
+          create_labels: true
+        } %}
+        {% endembed %}
+      </div>
+      <div class="col-12 col-md-4">
+        {# Filter by Research Area #}
+        {% embed '@partial/filter-radio-checkbox.twig' with {
+          title: 'Filter by research area',
+          name: 'research_area',
+          type: 'checkbox',
+          options: research_terms,
+          selected: request.get.research_area|default([]),
+          add_all: true,
+          create_labels: true
+        } %}
+        {% endembed %}
+      </div>
+      <div class="col-12 col-md-4">
+        {# Sort Options #}
+        {% embed '@partial/filter-radio-checkbox.twig' with {
+          title: 'Sort',
+          name: 'sort',
+          type: 'radio',
+          options: sort_options,
+          selected: request.get.sort|default(['newest']),
+          default_option: 'newest',
+          create_labels: true
+        } %}
+        {% endembed %}
+      </div>
+    </div>
   </div>
 </div>

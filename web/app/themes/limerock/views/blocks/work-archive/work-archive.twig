@@ -1,4 +1,7 @@
-{% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_work-archive' } %}
+{% embed '@partial/block_wrapper.twig' with {
+  extra_classes: 'block_work-archive',
+  extra_attributes: 'data-bs-theme="green"'
+} %}
   {% block content %}
     <form
       action="{{ ajax_url }}"
@@ -6,7 +9,7 @@
       class="ajax-form-js hide-selected-labels"
     >
       {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
-      <div class="works-wrap">
+      <div class="works-wrap" data-bs-theme="white">
         <div class="container">
           {% include '@blocks/work-archive/filters.twig' with { fields: fields } %}
           <div class="ajax-results-js">

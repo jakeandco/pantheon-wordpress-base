@@ -3,7 +3,7 @@
 {% if fields.featured_work is not empty and display_featured %}
   <div class="featured-post-wrap">
     {% if fields.featured_label %}
-      <div>{{ fields.featured_label }}</div>
+      <h5 class="block-title">{{ fields.featured_label }}</h5>
     {% endif %}
     {% include '@partial/tease_switcher.twig' with {
       post: get_post(fields.featured_work),
@@ -14,7 +14,7 @@
 
 <div class="all-posts-wrap">
   {% if fields.archive_label %}
-    <div>{{ fields.archive_label }}</div>
+    <h5 class="block-title">{{ fields.archive_label }}</h5>
   {% endif %}
   <div class="all-posts-grid">
     {% if posts|length %}

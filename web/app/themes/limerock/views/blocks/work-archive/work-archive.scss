@@ -1,0 +1,218 @@
+.block_work-archive {
+
+  .filters-blocks {
+
+    .filter-title {
+      font-size: 16px;
+      line-height: 22px;
+      margin-bottom: 22px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid $warm-dark;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 18px;
+        line-height: 28px;
+        margin-bottom: 36px;
+        border: 0;
+      }
+    }
+  }
+
+  .filter-block {
+    margin-bottom: 40px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    label {
+      position: relative;
+      display: block;
+      margin-right: 5px;
+      margin-bottom: 10px;
+      cursor: pointer;
+
+      &:hover {
+
+        span {
+          color: $white;
+          background-color: $black;
+          border-color: $black;
+        }
+      }
+
+      span {
+        font-family: 'FT System Mono';
+        display: inline-block;
+        vertical-align: top;
+        text-transform: uppercase;
+        border-radius: 12px;
+        background-color: $white;
+        border: 1px solid $warm-dark;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 600;
+        padding: 4px 12px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      position: absolute;
+      left: -9999px;
+      visibility: hidden;
+
+      &:checked + span {
+        color: $white;
+        background-color: $black;
+        border-color: $black;
+      }
+    }
+  }
+
+  .works-wrap {
+    padding-top: 27px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 34px;
+    }
+  }
+
+  .all-posts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin: 0 -17px;
+      width: calc(100% + 34px);
+    }
+
+    .tease-archive {
+      width: 100%;
+      margin-bottom: 18px;
+      border: 0;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 33.33%;
+        padding: 0 17px;
+      }
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    .tease-archive-holder {
+      background-color: $warm-light;
+      padding: 18px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 27px 20px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+
+      .h5 {
+        font-family: 'Season';
+        font-weight: 470;
+        margin-bottom: 13px;
+        font-size: 24px;
+        line-height: 28px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 18px;
+          font-size: 28px;
+          line-height: 32px;
+        }
+      }
+
+      .img-holder {
+        margin: 0 -18px -18px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin: 0 -20px -27px;
+        }
+
+        figure {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .researchers {
+    font-family: 'FT System Grotesk';
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+
+  .featured-post-wrap {
+
+    .tease-featured {
+      background-color: $warm-light;
+      margin-bottom: 30px;
+      padding: 16px 18px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background-color: transparent;
+        padding: 0 0 30px;
+      }
+
+      &:hover {
+        background: transparent;
+      }
+
+      .row {
+        flex-direction: column-reverse;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          flex-direction: row;
+        }
+      }
+
+      .h5 {
+        font-family: 'Season';
+        margin-bottom: 13px;
+        font-weight: 470;
+        font-size: 24px;
+        line-height: 28px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 25px;
+          font-size: 44px;
+          line-height: 50px;
+        }
+      }
+
+      .excerpt {
+        margin-bottom: 13px;
+        font-size: 16px;
+        line-height: 22px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 23px;
+          font-size: 22px;
+          line-height: 30px;
+        }
+      }
+
+      .researchers {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 14px;
+          line-height: 18px;
+        }
+      }
+
+      .category-list {
+
+        .btn {
+          background-color: $warm-light;
+
+          &:hover {
+            background-color: $black;
+          }
+        }
+      }
+    }
+  }
+}
