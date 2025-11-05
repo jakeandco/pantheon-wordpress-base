@@ -6,6 +6,23 @@
 .cta-item {
   position: relative;
 
+
+  &-image {
+    &--position {
+      &-left {
+        --cta-item-position: left;
+      }
+
+      &-center {
+        --cta-item-position: center;
+      }
+
+      &-right {
+        --cta-item-position: right;
+      }
+    }
+  }
+
   &:nth-child(odd) {
     .img-holder {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -31,11 +48,20 @@
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding-left: 25px;
       }
+
       @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
         padding-left: 53px;
         padding-right: 52px;
       }
     }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  &:hover a {
+    text-decoration: underline;
   }
 
   figure {
@@ -48,6 +74,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: var(--cta-item-position);
     }
   }
 
@@ -58,6 +85,7 @@
     left: 50%;
     width: 100vw;
     transform: translateX(-50%);
+
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       left: 0;
       width: 50vw;
@@ -67,11 +95,13 @@
     &:only-child {
       position: relative;
       padding-bottom: 100%;
+
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding-bottom: 0;
         min-height: 660px;
         width: 100%;
       }
+
       @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
         min-height: 788px;
       }
@@ -83,6 +113,7 @@
         left: 50%;
         width: 100vw;
         transform: translateX(-50%);
+
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
           left: 0;
           width: 50vw;
@@ -96,6 +127,7 @@
     padding: 34px 0 20px;
     position: relative;
     z-index: 2;
+
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding: 62px 0 44px;
       display: flex;
@@ -103,9 +135,11 @@
       justify-content: space-between;
       min-height: 660px;
     }
+
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       min-height: 788px;
     }
+
     @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
       padding-right: 60px;
     }
