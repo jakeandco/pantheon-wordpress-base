@@ -6,23 +6,6 @@
 .cta-item {
   position: relative;
 
-
-  &-image {
-    &--position {
-      &-left {
-        --cta-item-position: left;
-      }
-
-      &-center {
-        --cta-item-position: center;
-      }
-
-      &-right {
-        --cta-item-position: right;
-      }
-    }
-  }
-
   &:nth-child(odd) {
     .img-holder {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -74,7 +57,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: var(--cta-item-position);
     }
   }
 

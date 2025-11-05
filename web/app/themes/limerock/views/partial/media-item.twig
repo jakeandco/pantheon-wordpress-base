@@ -2,12 +2,21 @@
 {% set playsinline = playsinline is null ? true : playsinline %}
 
 {% set primary_media_item = video|default(image) %}
+{% set primary_media_item = primary_media_item.type == 'video' ? primary_media_item : get_image(primary_media_item) %}
 
 {% if primary_media_item is not empty %}
+  {% set attachment_post = get_attachment(primary_media_item.id) %}
+  {% set focal_point = attachment_post.meta('focal_point') %}
+  {% set focal_point_class = [focal_point.vertical,  focal_point.horizontal]|filter(v => v)|join('-') %}
+  {% set media_item_classes = html_classes(
+        'media-item',
+        ('media-item--' ~ (attachment_post.type ?: 'image')),
+        focal_point_class,
+      ) %}
   <figure>
     <div class="media-item_holder">
       {% if primary_media_item.type == 'video' %}
-        <video class="media-item media-item--{{ primary_media_item.type }}" muted loop data-video data-hover-play {{ playsinline != false ? 'playsinline' : '' }} {% if video is not empty and image is not empty %} poster="{{ image.url|default(image.src) }}" {% endif %}>
+        <video class="{{ primary_media_item.type }}" muted loop data-video data-hover-play {{ playsinline != false ? 'playsinline' : '' }} {% if video is not empty and image is not empty %} poster="{{ image.url|default(image.src) }}" {% endif %}>
           <source src="{{ primary_media_item.url|default(primary_media_item.src) }}" type="{{primary_media_item.mime_type}}">
           Your browser does not support the video tag.
         </video>
@@ -23,11 +32,21 @@
             <svg width="7" height="10" viewbox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.35645 5L0.356445 9.33013L0.356446 0.669872L6.35645 5Z" fill="currentColor"/>
             </svg>
-            Watch video <span class="video-duration">(11:32)</span>
+            Watch video
+            <span class="video-duration">({{ function('wp_read_video_metadata', attachment_post.file_loc).length_formatted }})</span>
           </a>
         </div>
       {% else %}
-        <img class="media-item media-item--{{ primary_media_item.type }}" src="{{ primary_media_item.url|default(primary_media_item.src) }}" alt='{{primary_media_item.alt}}'/>
+        {% set img_src = size is defined and size ?  primary_media_item.src(size) :  primary_media_item.url|default(primary_media_item.src) %}
+        {% set img_srcset = primary_media_item.srcset(size is defined and size ? size : 'full' ) %}
+
+        <img
+          style="background-image: url({{ primary_media_item.src('thumbnail') }});"
+          class="{{ media_item_classes }}"
+          src="{{ img_src }}"
+          alt="{{primary_media_item.alt}}"
+          srcset="{{ img_srcset }}"
+        />
       {% endif %}
     </div>
     {% if not hide_caption and primary_media_item.caption is not empty %}

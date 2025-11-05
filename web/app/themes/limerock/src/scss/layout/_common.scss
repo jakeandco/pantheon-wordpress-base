@@ -125,3 +125,40 @@ figure {
     }
   }
 }
+
+.media-item {
+  --media-item--vertical-position: center;
+  --media-item--horizontal-position: center;
+
+  &[class*=top-] {
+    --media-item--vertical-position: top;
+  }
+  &[class*=bottom-] {
+    --media-item--vertical-position: bottom;
+  }
+  &.bottom, &.center, &.top {
+    &-left {
+      --media-item--horizontal-position: left;
+    }
+    &-right {
+      --media-item--horizontal-position: right;
+    }
+  }
+
+  // &--fit {
+  //   &--cover {
+  //     --media-item--fit: cover;
+  //   }
+  //   &--contain {
+  //     --media-item--fit: contain;
+  //   }
+  // }
+
+  object-position: var(--media-item--vertical-position) var(--media-item--horizontal-position);
+  background-position: var(--media-item--vertical-position) var(--media-item--horizontal-position);
+
+  // object-fit: var(--media-item--fit);
+  // background-size: var(--media-item--fit);
+
+  background-repeat: no-repeat;
+}

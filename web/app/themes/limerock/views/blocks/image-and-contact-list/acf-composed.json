@@ -8,14 +8,16 @@
       "type": "image"
     },
     {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/single-line-basic-wysiwyg",
       "label": "Title",
       "name": "title",
-      "type": "text"
+      "limerock_option_autop": false
     },
     {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/single-line-basic-wysiwyg",
       "label": "Subtitle",
       "name": "subtitle",
-      "type": "textarea"
+      "limerock_option_autop": false
     },
     {
       "label": "Contacts",
