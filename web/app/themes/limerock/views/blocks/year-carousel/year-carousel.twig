@@ -24,7 +24,7 @@
         <div class="swiper-wrapper">
           {% for row in fields.carousel %}
             <div class="swiper-slide">
-              <div class="pagination-item">{{ row['year']|split('/')[2] }}</div>
+              <div class="pagination-item">{{ row.year|datetime('Y')}}</div>
             </div>
           {% endfor %}
         </div>
@@ -37,13 +37,13 @@
             <div class="swiper-slide">
               <div class="row">
                 <div class="col-12 col-md-2 title-holder">
-                  <h6 class="title">{{row['title']}}</h6>
+                  <h6 class="title">{{row.title}}</h6>
                 </div>
                 <div class="col-12 col-md-5">
-                  {{row['column_1']}}
+                  {{row.column_1}}
                 </div>
                 <div class="col-12 col-md-5">
-                  {{row['column_2']}}
+                  {{row.column_2}}
                 </div>
               </div>
             </div>

@@ -1,0 +1,7 @@
+// Don't perform fade-in animation on editor preview.
+.block_year-carousel{
+  .year-swiper-pagination .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+}
