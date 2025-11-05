@@ -1,24 +1,32 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_image-and-text-callout' } %}
   {% block content %}
-
     <div class="container">
       <div class="image-and-text-callout image-and-text-callout--{{fields.image_size}}">
-        <div class="row align-items-center">
-          {% if fields.image_size == 'large' %}
-            <div class="col-12 col-md-6">
-              {% include '@partial/media-item.twig' with { image: fields.image } only %}
-            </div>
-            <div class="col-12 col-md-6 text-holder">
-              {{fields.text}}
-            </div>
-          {% elseif fields.image_size == 'small' %}
-            <div class="col-12 col-md-5">
-              {% include '@partial/media-item.twig' with { image: fields.image } only %}
-            </div>
-            <div class="col-12 col-md-7 text-holder">
-              {{fields.text}}
-            </div>
-          {% endif %}
+        <div class="{{ html_classes('row align-items-center', {'flex-row-reverse': block.align == 'right'}) }}">
+          {% set img_col = html_classes(
+            'col-12',
+            {
+              'col-md-6': fields.image_size == 'large',
+              'col-md-5': fields.image_size == 'small',
+            }
+          ) %}
+
+          <div class="{{ img_col }}">
+            {% include '@partial/media-item.twig' with { image: fields.image } only %}
+          </div>
+
+
+          {% set text_col = html_classes(
+            'text-holder',
+            'col-12',
+            {
+              'col-md-6': fields.image_size == 'large',
+              'col-md-7': fields.image_size == 'small',
+            }
+          ) %}
+          <div class="{{ text_col }}">
+            {{fields.text}}
+          </div>
         </div>
       </div>
     </div>
