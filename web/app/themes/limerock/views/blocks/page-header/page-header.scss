@@ -34,6 +34,9 @@
 
       &-medium {
         @extend .h3;
+        @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 36px;
+        }
       }
 
       &-small {
@@ -234,6 +237,7 @@
       width: 100%;
       max-width: 100%;
       background: transparent;
+      margin-bottom: 13px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 0 0 21px;
         font-size: 22px;
