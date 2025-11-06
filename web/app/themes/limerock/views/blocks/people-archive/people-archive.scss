@@ -57,7 +57,8 @@
   border-top: 1px solid;
   padding-top: 20px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-top: 28px;
+    padding-top: 15px;
+    border-top: 0;
   }
 }
 
@@ -69,7 +70,7 @@
   .pages-info {
     font-size: 16px;
     line-height: 22px;
-    margin: 0 auto;
+    margin: -8px auto 0;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       margin: 0 32px;
     }
@@ -99,6 +100,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      width: 35px;
+      height: 35px;
+    }
 
     &:hover {
       background-color: $bright-red;

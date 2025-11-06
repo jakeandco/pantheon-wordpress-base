@@ -1,7 +1,7 @@
 <div class="filters-wrap">
 
-  <div class="row flex-md-row-reverse">
-    <div class="col-12 col-md-4 text-md-end">
+  <div class="row flex-md-row-reverse align-items-center">
+    <div class="col-12 col-md-4 col-lg-3 text-md-end">
       <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
         <span class="open-text">
           Sort and filter
@@ -21,21 +21,19 @@
         </span>
       </button>
     </div>
-    <div class="col-12 col-md-8">
-      <div class="selected-filters-wrap d-flex flex-wrap">
-        <div class="selected-fitlers d-flex flex-wrap selected-filters-js"></div>
-        <button type="button" class="btn btn-secondary btn-sm reset-js" disabled>Clear All</button>
+    <div class="col-12 col-md-8 col-lg-9">
+      <div class="selected-filters-wrap d-flex flex-wrap align-items-center">
+        <div class="selected-fitlers d-flex flex-wrap align-items-center selected-filters-js"></div>
+        <button type="button" class="btn btn-secondary btn-sm clear-all reset-js" disabled>Clear All</button>
       </div>
-      <button type="button" class="btn btn-secondary">View results</button>
-      <button type="button" class="btn btn-secondary reset-js" disabled>Reset</button>
     </div>
   </div>
 
-  <div class="collapse" id="filtersCollapse">
+  <div class="collapse collapse-holder" id="filtersCollapse">
     <div class="filters-blocks">
 
       <div class="row">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           {# Filter by Post Type #}
           {% embed '@partial/filter-radio-checkbox.twig' with {
             title: 'Filter by type',
@@ -48,7 +46,7 @@
           } %}
           {% endembed %}
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-5">
           {# Filter by Research Area #}
           {% embed '@partial/filter-radio-checkbox.twig' with {
             title: 'Filter by research area',
@@ -74,6 +72,11 @@
           } %}
           {% endembed %}
         </div>
+      </div>
+
+      <div class="btn-holder">
+        <button type="button" class="btn btn-secondary view-results">View results</button>
+        <button type="button" class="btn btn-secondary reset reset-js" disabled>Reset</button>
       </div>
     </div>
   </div>
