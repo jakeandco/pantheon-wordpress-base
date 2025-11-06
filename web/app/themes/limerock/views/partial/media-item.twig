@@ -6,17 +6,19 @@
 
 {% if primary_media_item is not empty %}
   {% set attachment_post = get_attachment(primary_media_item.id) %}
+  {% set media_type = attachment_post.post_mime_type|split('/')|first %}
   {% set focal_point = attachment_post.meta('focal_point') %}
   {% set focal_point_class = [focal_point.vertical,  focal_point.horizontal]|filter(v => v)|join('-') %}
   {% set media_item_classes = html_classes(
         'media-item',
-        ('media-item--' ~ (attachment_post.type ?: 'image')),
+        ('media-item--' ~ (media_type ?: 'image')),
         focal_point_class,
       ) %}
+
   <figure>
     <div class="media-item_holder">
-      {% if primary_media_item.type == 'video' %}
-        <video class="{{ primary_media_item.type }}" muted loop data-video data-hover-play {{ playsinline != false ? 'playsinline' : '' }} {% if video is not empty and image is not empty %} poster="{{ image.url|default(image.src) }}" {% endif %}>
+      {% if media_type == 'video' %}
+        <video class="{{ media_item_classes }}" muted loop data-video data-hover-play {{ playsinline != false ? 'playsinline' : '' }} {% if video is not empty and image is not empty %} poster="{{ image.url|default(image.src) }}" {% endif %}>
           <source src="{{ primary_media_item.url|default(primary_media_item.src) }}" type="{{primary_media_item.mime_type}}">
           Your browser does not support the video tag.
         </video>
