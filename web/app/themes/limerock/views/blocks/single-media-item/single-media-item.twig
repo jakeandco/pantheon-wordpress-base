@@ -13,30 +13,14 @@
       {% if fields.headline %}
         <div class="row heading-holder">
           <div class="col-12 col-md-9">
-            <h2 class="h5 mb-0">{{fields.headline}}</h2>
+            <h2 class="h6 mb-0">{{fields.headline}}</h2>
           </div>
         </div>
       {% endif %}
       <div class="row media-holder">
-        <div class="{{ html_classes('col-12', {
-          'col-md-8': align not in ['wide', 'full'],
-          'offset-md-4': align == 'right',
-          'offset-md-2': align == 'center',
-        }) }}">
+        <div class="{{ html_classes('col-12', { 'col-md-8': align not in ['wide', 'full'], 'offset-md-4': align == 'right', 'offset-md-2': align == 'center', }) }}">
 
-          {% include '@partial/media-item.twig' with { image: fields.media_item } only %}
-
-          {% if fields.media_item.type == 'video' %}
-            <div class="video-toggle d-md-none">
-              <a class="btn btn-primary toggler" aria-pressed="false" data-fancybox href="{{ fields.media_item.url|default(fields.media_item.src) }}">
-                <svg width="7" height="10" viewbox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.35645 5L0.356445 9.33013L0.356446 0.669872L6.35645 5Z" fill="currentColor"/>
-                </svg>
-                Watch video
-                <span class="video-duration">(11:32)</span>
-              </a>
-            </div>
-          {% endif %}
+          {% include '@partial/media-item.twig' with { image: fields.media_item, overlay_title: fields.media_item_title } only %}
         </div>
       </div>
     </div>

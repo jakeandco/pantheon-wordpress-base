@@ -10,9 +10,11 @@ body:has(.hero) {
 
 .content-wrapper {
   --content-wrapper--margin-top: 54px;
+
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     --content-wrapper--margin-top: 184px;
   }
+
   @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
     --content-wrapper--margin-top: 188px;
   }
@@ -28,6 +30,7 @@ body:has(.hero) {
   margin-bottom: 19px;
   letter-spacing: 0;
   border-bottom: 1px solid;
+
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     font-size: 22px;
     line-height: 30px;
@@ -55,7 +58,7 @@ body:has(.hero) {
   height: 100%;
   opacity: 0;
   visibility: hidden;
-  background: rgba(255,255,255,.97);
+  background: rgba(255, 255, 255, .97);
   z-index: 10;
   text-align: center;
   padding-top: 30px;
@@ -85,6 +88,7 @@ body:has(.hero) {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -97,25 +101,32 @@ figure {
   }
 
   .toggler {
-    background: rgba(#F2F2F2,0.2) !important;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       font-size: 14px;
       line-height: 20px;
       padding: 16px 21px;
     }
-
-    &:hover {
-      background-color: $black !important;
-    }
   }
 
+
   .video-toggle {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0 20px 23px;
     text-align: left;
+
+    &--overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 20px 23px;
+
+      .toggler {
+        background: rgba(#F2F2F2, 0.2) !important;
+
+        &:hover {
+          background-color: $black !important;
+        }
+      }
+    }
   }
 
   &:has(video) {
@@ -133,13 +144,18 @@ figure {
   &[class*=top-] {
     --media-item--vertical-position: top;
   }
+
   &[class*=bottom-] {
     --media-item--vertical-position: bottom;
   }
-  &.bottom, &.center, &.top {
+
+  &.bottom,
+  &.center,
+  &.top {
     &-left {
       --media-item--horizontal-position: left;
     }
+
     &-right {
       --media-item--horizontal-position: right;
     }
@@ -161,4 +177,36 @@ figure {
   // background-size: var(--media-item--fit);
 
   background-repeat: no-repeat;
+
+  &_overlay-title {
+    font-family: 'FT System Grotesk';
+    margin-bottom: 15px;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      color: $white;
+      margin-bottom: 40px;
+      font-size: 40px;
+      line-height: 48px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+      max-width: 60%;
+    }
+
+    [class*="col-md-"] & {
+      font-family: 'FT System Grotesk';
+      font-size: 16px;
+      line-height: 22px;
+      padding-bottom: 13px;
+      margin-bottom: 19px;
+      letter-spacing: 0;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 22px;
+        line-height: 30px;
+        padding-bottom: 9px;
+        margin-bottom: 30px;
+      }
+    }
+  }
 }
