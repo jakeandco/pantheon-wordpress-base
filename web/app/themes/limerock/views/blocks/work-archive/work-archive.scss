@@ -1,46 +1,135 @@
 .block_work-archive {
 
+  .works-wrap {
+    padding-bottom: 27px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
+      padding-bottom: 91px;
+    }
+  }
+
   .filters-blocks {
+    padding-top: 29px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 29px;
+    }
 
     .filter-title {
       font-size: 16px;
       line-height: 22px;
-      margin-bottom: 22px;
-      padding-bottom: 13px;
+      margin-bottom: 21px;
+      padding-bottom: 11px;
       border-bottom: 1px solid $warm-dark;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         font-size: 18px;
         line-height: 28px;
-        margin-bottom: 36px;
+        margin-bottom: 23px;
         border: 0;
       }
     }
   }
 
   .filters-wrap {
-
     padding: 27px 0 29px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding: 34px 0;
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    &:has(.selected-fitlers .btn-primary) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        border-bottom: 1px solid;
+        margin-bottom: 42px;
+      }
+
+      .btn-holder {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          display: none;
+        }
+      }
+    }
+
+    .collapse-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        background-color: $white;
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+      }
+
+      &.show {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          opacity: 1;
+        }
+
+        .btn-holder {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+
+    .btn-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        padding-bottom: 32px;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .btn {
+        letter-spacing: 1px;
+        margin-right: 4px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          letter-spacing: 0;
+        }
+      }
     }
 
     .btn-secondary {
       border: 1px solid $black;
       color: $black;
       background-color: $warm-light;
-      font-size: 10px;
-      line-height: 19px;
-      padding: 6px 15px;
+
 
       &:hover {
         background-color: $black;
         color: $white;
       }
 
+      &:not(.btn-sm) {
+        font-size: 10px;
+        line-height: 19px;
+        padding: 6px 18px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
+          font-size: 16px;
+          line-height: 28px;
+          padding: 12px 18px;
+        }
+
+        &.collapsed {
+          @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+            padding: 6px 14px;
+          }
+        }
+      }
+
       svg {
         margin-left: 4px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-left: 0px;
+        }
       }
 
       &[data-bs-toggle="collapse"] {
@@ -50,9 +139,18 @@
 
         .close-text {
           display: none;
+          margin: 0 7px;
         }
 
         &[aria-expanded="true"] {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            font-size: 18px;
+            line-height: 26px;
+            background: $black;
+            color: $white;
+            padding: 12px 13px;
+          }
+
           .close-text {
             display: inline;
           }
@@ -66,7 +164,10 @@
   }
 
   .filter-block {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 15px;
+    }
   }
 
   .filters {
@@ -77,8 +178,11 @@
       position: relative;
       display: block;
       margin-right: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       cursor: pointer;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 6px;
+      }
 
       &:hover {
 
@@ -100,7 +204,7 @@
         font-size: 12px;
         line-height: 20px;
         font-weight: 600;
-        padding: 4px 12px;
+        padding: 2px 12px;
         text-align: center;
         transition: all 0.3s ease-in-out;
       }
@@ -242,88 +346,181 @@
     margin-bottom: 26px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       margin-bottom: 30px;
+      padding-bottom: 29px;
     }
 
     .block-title {
       padding-bottom: 11px;
       margin-bottom: 26px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 9px;
+        margin-bottom: 34px;
+      }
+    }
+  }
+
+  .tease-featured {
+    background-color: $warm-light;
+    padding: 17px 19px 0;
+    margin-bottom: 0;
+    border: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      background-color: transparent;
+      padding: 0;
     }
 
-    .tease-featured {
+    &:hover {
       background-color: $warm-light;
-      padding: 17px 19px 0;
-      margin-bottom: 0;
-      border: 0;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        background-color: transparent;
-        margin-bottom: 30px;
-        padding: 0 0 30px;
-      }
-
-      &:hover {
         background: transparent;
       }
+    }
 
-      .row {
-        flex-direction: column-reverse;
+    .row {
+      flex-direction: column-reverse;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        flex-direction: row;
+      }
+    }
+
+    .img-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 53.5%;
+      }
+
+      figure {
+        margin: 0 -19px 0;
+      }
+
+      .media-item_holder {
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          flex-direction: row;
+          padding-bottom: 103.8%;
         }
       }
+    }
 
-      .img-holder {
+    .text-holder {
+      min-height: 223px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 46.5%;
+        padding-left: 38px;
+        padding-top: 46px;
+      }
+    }
 
-        figure {
-          margin: 0 -19px 0;
-        }
+    .h5 {
+      font-family: 'Season';
+      margin-bottom: 13px;
+      font-weight: 470;
+      font-size: 24px;
+      line-height: 28px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 27px;
+        font-size: 34px;
+        line-height: 40px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        font-size: 44px;
+        line-height: 50px;
+      }
+    }
+
+    .excerpt {
+      margin-bottom: 13px;
+      font-size: 16px;
+      line-height: 22px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        margin-bottom: 23px;
+        font-size: 22px;
+        line-height: 30px;
+      }
+    }
+
+    .researchers {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+
+    .category-list {
+      margin-bottom: 22px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        margin-bottom: 29px;
       }
 
-      .h5 {
-        font-family: 'Season';
-        margin-bottom: 13px;
-        font-weight: 470;
-        font-size: 24px;
-        line-height: 28px;
+      .btn {
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          margin-bottom: 25px;
-          font-size: 44px;
-          line-height: 50px;
+          background-color: $warm-light;
         }
-      }
 
-      .excerpt {
-        margin-bottom: 13px;
-        font-size: 16px;
-        line-height: 22px;
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          margin-bottom: 23px;
-          font-size: 22px;
-          line-height: 30px;
-        }
-      }
-
-      .researchers {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          font-size: 14px;
-          line-height: 18px;
-        }
-      }
-
-      .category-list {
-        margin-bottom: 22px;
-
-        .btn {
+        &:hover {
           @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-            background-color: $warm-light;
-          }
-
-          &:hover {
-            @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-              background-color: $black;
-            }
+            background-color: $black;
           }
         }
       }
     }
+  }
+
+  .btn.view-results {
+    @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+      background: $black;
+      color: $white;
+    }
+  }
+
+  .btn.reset {
+    @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+      border-color: $black;
+      color: $black;
+      background-color: $white;
+    }
+  }
+}
+
+.clear-all {
+
+  &[disabled] {
+    visibility: hidden;
+    position: absolute;
+    left: -9999px;
+  }
+}
+
+.selected-filters-wrap {
+
+  &:has(.btn-primary) {
+    padding-top: 10px;
+    border-bottom: 1px solid;
+    padding-bottom: 17px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      border: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .btn-sm {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding: 2px 10px;
+    }
+
+    &.btn-secondary {
+      margin-bottom: 10px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 1px 10px;
+      }
+    }
+
+    svg {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-left: 13px;
+      }
+    }
+  }
+
+  .selected-filter {
+    margin-right: 12px;
+    margin-bottom: 10px;
   }
 }
