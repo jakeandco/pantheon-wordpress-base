@@ -12,20 +12,6 @@
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding-top: 29px;
     }
-
-    .filter-title {
-      font-size: 16px;
-      line-height: 22px;
-      margin-bottom: 21px;
-      padding-bottom: 11px;
-      border-bottom: 1px solid $warm-dark;
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        font-size: 18px;
-        line-height: 28px;
-        margin-bottom: 23px;
-        border: 0;
-      }
-    }
   }
 
   .filters-wrap {
@@ -51,21 +37,8 @@
     }
 
     .collapse-holder {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        z-index: 3;
-        background-color: $white;
-        opacity: 0;
-        transition: all 0.3s ease-in-out;
-      }
 
       &.show {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          opacity: 1;
-        }
 
         .btn-holder {
           @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -75,7 +48,6 @@
         }
       }
     }
-
 
     .btn-holder {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -129,35 +101,6 @@
         margin-left: 4px;
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
           margin-left: 0px;
-        }
-      }
-
-      &[data-bs-toggle="collapse"] {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          margin-left: auto;
-        }
-
-        .close-text {
-          display: none;
-          margin: 0 7px;
-        }
-
-        &[aria-expanded="true"] {
-          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-            font-size: 18px;
-            line-height: 26px;
-            background: $black;
-            color: $white;
-            padding: 12px 13px;
-          }
-
-          .close-text {
-            display: inline;
-          }
-
-          .open-text {
-            display: none;
-          }
         }
       }
     }
@@ -522,5 +465,73 @@
   .selected-filter {
     margin-right: 12px;
     margin-bottom: 10px;
+  }
+}
+
+.filters-wrap {
+
+  .btn[data-bs-toggle="collapse"] {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-left: auto;
+    }
+
+    .close-text {
+      display: none;
+      margin: 0 7px;
+    }
+
+    &[aria-expanded="true"] {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        font-size: 18px !important;
+        line-height: 26px !important;
+        background: $black;
+        color: $white;
+        padding: 12px 13px !important;
+      }
+
+      .close-text {
+        display: inline;
+      }
+
+      .open-text {
+        display: none;
+      }
+    }
+  }
+
+  .collapse-holder {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      background-color: $white;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &.show {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.filter-block {
+
+  .filter-title {
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 21px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid $warm-dark;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 18px;
+      line-height: 28px;
+      margin-bottom: 23px;
+      border: 0;
+    }
   }
 }
