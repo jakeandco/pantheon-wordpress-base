@@ -21,54 +21,81 @@
       {% if search_query is empty %}disabled{% endif %}
     >
       Clear search
+      <svg width="34" height="33" viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="2.12117" y1="0.7072" x2="33.1212" y2="31.7072" stroke="#303030" stroke-width="2"/>
+        <line y1="-1" x2="43.8406" y2="-1" transform="matrix(-0.707107 0.707107 0.707107 0.707107 32.4141 1.41431)" stroke="#303030" stroke-width="2"/>
+      </svg>
     </button>
     <button type="submit" aria-label="Submit search">Submit search</button>
   </div>
-  <div class="filters-wrap">
+  <div class="filters-wrap main-filters-wrap">
     <div class="selected-filters-wrap">
       <div class="selected-fitlers selected-filters-js"></div>
-      <button type="button" class="reset-js" disabled>Clear All</button>
+      <button type="button" class="btn btn-secondary btn-sm clear-all reset-js" disabled>Clear All</button>
     </div>
-    <button type="button">Sort and filter</button>
-    <button type="button" class="reset-js" disabled>Reset</button>
+    <button type="button" class="btn btn-secondary">
+      <span class="open-text">
+          Sort and filter
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.6665 6.10352e-05V9.66673" stroke="currentColor"/>
+            <circle cx="1.66667" cy="7.00007" r="1.66667" fill="currentColor"/>
+            <path d="M6.3335 9.66666L6.3335 -8.73208e-06" stroke="currentColor"/>
+            <circle cx="6.33333" cy="2.66665" r="1.66667" transform="rotate(-180 6.33333 2.66665)" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="close-text">
+          Close
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.530273 7.36569L7.36564 0.530328" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7.36572 7.36581L0.530358 0.53045" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </span>
+    </button>
+    <button type="button" class="btn btn-secondary reset reset-js" disabled>Reset</button>
     <div class="filters-blocks">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          {# Filter by Post Type #}
+          {% embed '@partial/filter-radio-checkbox.twig' with {
+            title: 'Filter by type',
+            name: 'type',
+            type: 'checkbox',
+            options: type_options,
+            selected: request.get.type|default([]),
+            add_all: true,
+            create_labels: true
+          } %}
+          {% endembed %}
+        </div>
 
-      {# Filter by Post Type #}
-      {% embed '@partial/filter-radio-checkbox.twig' with {
-        title: 'Filter by type',
-        name: 'type',
-        type: 'checkbox',
-        options: type_options,
-        selected: request.get.type|default([]),
-        add_all: true,
-        create_labels: true
-      } %}
-      {% endembed %}
+        <div class="col-12 col-md-5">
+          {# Filter by Research Area #}
+          {% embed '@partial/filter-radio-checkbox.twig' with {
+            title: 'Filter by research area',
+            name: 'research_area',
+            type: 'checkbox',
+            options: research_terms,
+            selected: request.get.research_area|default([]),
+            add_all: true,
+            create_labels: true
+          } %}
+          {% endembed %}
+        </div>
 
-      {# Filter by Research Area #}
-      {% embed '@partial/filter-radio-checkbox.twig' with {
-        title: 'Filter by research area',
-        name: 'research_area',
-        type: 'checkbox',
-        options: research_terms,
-        selected: request.get.research_area|default([]),
-        add_all: true,
-        create_labels: true
-      } %}
-      {% endembed %}
-
-      {# Sort Options #}
-      {% embed '@partial/filter-radio-checkbox.twig' with {
-        title: 'Sort',
-        name: 'sort',
-        type: 'radio',
-        options: sort_options,
-        selected: request.get.sort|default(['newest']),
-        default_option: 'newest',
-        create_labels: true
-      } %}
-      {% endembed %}
-
+        <div class="col-12 col-md-4">
+          {# Sort Options #}
+          {% embed '@partial/filter-radio-checkbox.twig' with {
+            title: 'Sort',
+            name: 'sort',
+            type: 'radio',
+            options: sort_options,
+            selected: request.get.sort|default(['newest']),
+            default_option: 'newest',
+            create_labels: true
+          } %}
+          {% endembed %}
+        </div>
+      </div>
     </div>
   </div>
 </div>

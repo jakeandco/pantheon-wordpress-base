@@ -113,60 +113,6 @@
     }
   }
 
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-
-    label {
-      position: relative;
-      display: block;
-      margin-right: 5px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        margin-bottom: 6px;
-      }
-
-      &:hover {
-
-        span {
-          color: $white;
-          background-color: $black;
-          border-color: $black;
-        }
-      }
-
-      span {
-        font-family: 'FT System Mono';
-        display: inline-block;
-        vertical-align: top;
-        text-transform: uppercase;
-        border-radius: 12px;
-        background-color: $white;
-        border: 1px solid $warm-dark;
-        font-size: 12px;
-        line-height: 20px;
-        font-weight: 600;
-        padding: 2px 12px;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-
-    input[type="checkbox"],
-    input[type="radio"] {
-      position: absolute;
-      left: -9999px;
-      visibility: hidden;
-
-      &:checked + span {
-        color: $white;
-        background-color: $black;
-        border-color: $black;
-      }
-    }
-  }
-
   .all-posts-grid {
     display: flex;
     flex-wrap: wrap;
@@ -532,6 +478,63 @@
       line-height: 28px;
       margin-bottom: 23px;
       border: 0;
+    }
+  }
+}
+
+.main-filters-wrap {
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    label {
+      position: relative;
+      display: block;
+      margin-right: 5px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 6px;
+      }
+
+      &:hover {
+
+        span {
+          color: $white;
+          background-color: $black;
+          border-color: $black;
+        }
+      }
+
+      span {
+        font-family: 'FT System Mono';
+        display: inline-block;
+        vertical-align: top;
+        text-transform: uppercase;
+        border-radius: 12px;
+        background-color: $white;
+        border: 1px solid $warm-dark;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 600;
+        padding: 2px 12px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      position: absolute;
+      left: -9999px;
+      visibility: hidden;
+
+      &:checked + span {
+        color: $white;
+        background-color: $black;
+        border-color: $black;
+      }
     }
   }
 }

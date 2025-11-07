@@ -6,15 +6,15 @@
 } only %}
   {% block content %}
     {% set search_query = fn('get_search_query') %}
-    <div class="row">
-      <div class="col-12 col-md-9 text-holder">
-        <span class="post-type">{{ post.post_type|replace({'_': ' '}) }}</span>
+    <div class="row justify-content-between">
+      <div class="col-7 col-md-8 text-holder">
+        <span class="post-type d-block">{{ post.post_type|replace({'_': ' '}) }}</span>
         {% set post_title = post.post_title|striptags %}
         {# Highlight search words in title #}
         {% if search_query %}
           {% set post_title = function('highlight_words', post_title, search_query) %}
         {% endif %}
-        <h2 class="h5 search-post-title">
+        <h2 class="search-post-title">
           <a href="{{ post.link|e }}">
             {{ post_title }}
           </a>
@@ -25,11 +25,11 @@
           {% if search_query %}
             {% set post_excerpt = function('highlight_words', post_excerpt, search_query) %}
           {% endif %}
-          <div class="excerpt">{{ post_excerpt }}</div>
+          <div class="excerpt d-none d-lg-block">{{ post_excerpt }}</div>
         {% endif %}
       </div>
       {% if post.thumbnail %}
-        <div class="col-12 col-md-3 img-holder">
+        <div class="col-5 col-md-4 col-xl-3 img-holder">
           {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}
         </div>
       {% endif %}

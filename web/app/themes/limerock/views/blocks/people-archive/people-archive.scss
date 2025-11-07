@@ -21,7 +21,7 @@
   .filters {
     display: flex;
     white-space: nowrap;
-    overflow: scroll;
+    overflow-x: scroll;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       white-space: normal;
       flex-wrap: wrap;
