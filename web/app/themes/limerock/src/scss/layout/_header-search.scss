@@ -25,18 +25,184 @@
   }
 
   .header-search-close {
+    font-family: 'FT System Grotesk';
+    color: $black;
     position: absolute;
-    right: 0;
+    right: -24px;
     top: 0;
     opacity: 0;
     visibility: hidden;
     transition: .3s;
     transform: scale(0);
+    font-weight: 300;
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 22px;
+      right: 28px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      font-size: 32px;
+      line-height: 43px;
+      letter-spacing: -0.5px;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 3px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-left: 4px;
+        width: 22px;
+        height: 22px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 31px;
+        height: 31px;
+      }
+    }
   }
 }
 
 .header-search-form {
-  height: 66px;
+  // height: 66px;
+  margin-bottom: 0;
+  padding-top: 20px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    margin-bottom: 51px;
+  }
+  @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+    padding-top: 93px;
+  }
+
+  input[type="text"] {
+    font-family: 'FT System Grotesk';
+    font-size: 36px;
+    line-height: 43px;
+    letter-spacing: -2px;
+    font-weight: 300;
+    padding: 10px 5px;
+    padding-right: 120px;
+    border: 1px solid transparent;
+    border-bottom-color: $stanford-red;
+    color: $black;
+    outline: none;
+    border-radius: 0;
+    width: 100%;
+    background: transparent;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 95px;
+      line-height: 95px;
+      letter-spacing: -3px;
+      padding: 14px 0;
+      padding-right: 160px;
+    }
+
+    @include placeholder {
+      color: $black;
+    }
+  }
+
+  .search-row {
+    position: relative;
+  }
+
+  .search-btn {
+    color: $dark-gray;
+    font-family: 'FT System Grotesk';
+    position: absolute;
+    right: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    padding: 14px 0;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 22px;
+      line-height: 1.3;
+      top: 64%;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      font-size: 32px;
+      line-height: 43px;
+      letter-spacing: -0.6px;
+    }
+
+    &:hover {
+      background: transparent;
+      color: $bright-red;
+    }
+
+    svg {
+      position: relative;
+      top: -2px;
+      margin-left: 4px;
+      width: 14px;
+      height: 15px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 22px;
+        height: 26px;
+        margin-left: 8px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 28px;
+        height: 31px;
+        margin-left: 14px;
+        top: -4px;
+      }
+    }
+  }
+
+  .clear-header-search-btn {
+    color: $dark-gray;
+    position: absolute;
+    right: 65px;
+    border-radius: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    padding: 5px 11px;
+    border: 1px solid transparent;
+    border-right-color: #D9D9D9;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      top: 62%;
+      right: 164px;
+      padding: 10px 25px;
+    }
+
+    &:hover {
+      background: transparent;
+      border-right-color: #D9D9D9;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 22px;
+        height: 22px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        width: 31px;
+        height: 31px;
+      }
+    }
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
 }
 
 .search-modal {
@@ -51,10 +217,11 @@
   transition: opacity .1s, visibility .1s;
   will-change: opacity, visibility;
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     top: 180px;
     height: calc(100vh - 180px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   &[data-state="empty"] {
@@ -107,6 +274,11 @@
     transition: opacity .3s, visibility .3s;
   }
 
+  .navbar-toggler {
+    visibility: hidden;
+    opacity: 0;
+  }
+
   #navbarSupportedContent {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       transition: .2s;
@@ -119,12 +291,15 @@
 
 .search-info-wrap {
   min-height: 82px;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 146px);
   margin-right: -20px;
   position: relative;
   overflow-x: hidden;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    max-height: calc(100vh - 246px);
+    max-height: calc(100vh - 396px);
+  }
+  @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+    max-height: calc(100vh - 475px);
   }
 
   .loader-wrap {
@@ -132,10 +307,26 @@
   }
 
   .search-info {
+    // font-family: 'FT System Grotesk';
     position: relative;
     overflow: hidden;
     padding-right: 20px;
+    // font-weight: 400;
+    // font-size: 36px;
+    // line-height: 1;
+    // color: rgba($black,0.5);
+    // @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      // font-size: 40px;
+      // line-height: 48px;
+    // }
+
+    .post-list {
+      &>.h4 {
+        padding-top: 40px;
+      }
+    }
   }
+
 }
 
 .header-search-result-js {
