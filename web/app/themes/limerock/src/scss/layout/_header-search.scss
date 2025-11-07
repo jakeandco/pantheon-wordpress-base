@@ -80,7 +80,7 @@
     font-family: 'FT System Grotesk';
     font-size: 36px;
     line-height: 43px;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
     font-weight: 300;
     padding: 10px 5px;
     padding-right: 120px;
@@ -165,15 +165,20 @@
     top: 52%;
     transform: translateY(-50%);
     padding: 5px 11px;
+    color: #303030;
     border: 1px solid transparent;
     border-right-color: #D9D9D9;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       top: 62%;
-      right: 164px;
+      right: 124px;
       padding: 10px 25px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      right: 164px;
     }
 
     &:hover {
+      color: $bright-red;
       background: transparent;
       border-right-color: #D9D9D9;
     }
@@ -202,7 +207,8 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px rgba($white,0) inset !important;
+  background: transparent;
 }
 
 .search-modal {
@@ -307,18 +313,9 @@ select:-webkit-autofill:focus {
   }
 
   .search-info {
-    // font-family: 'FT System Grotesk';
     position: relative;
     overflow: hidden;
     padding-right: 20px;
-    // font-weight: 400;
-    // font-size: 36px;
-    // line-height: 1;
-    // color: rgba($black,0.5);
-    // @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      // font-size: 40px;
-      // line-height: 48px;
-    // }
 
     .post-list {
       &>.h4 {
@@ -326,7 +323,56 @@ select:-webkit-autofill:focus {
       }
     }
   }
+}
 
+.featured-searches {
+  padding-top: 36px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: 42px;
+  }
+
+  .featured-searches-title {
+    font-family: 'FT System Grotesk';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    margin-bottom: 18px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 27px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+
+  .featured-searches-list {
+    font-family: 'FT System Grotesk';
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1;
+    color: rgba($black,0.5);
+    letter-spacing: -1.2px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 40px;
+      line-height: 48px;
+      letter-spacing: 0px;
+    }
+
+    li {
+      margin-bottom: 15px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 16px;
+      }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .header-search-result-js {
