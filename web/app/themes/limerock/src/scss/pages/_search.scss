@@ -1,2 +1,268 @@
+body.search-results {
+
+  .content-wrapper {
+    margin-top: 0 !important;
+  }
+}
+
 .search-section {
+  padding: 0;
+
+  .search-section-label {
+    font-family: 'FT System Grotesk';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    margin: 0;
+    letter-spacing: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+
+  .search-section-top-wrap {
+    padding-top: 56px;
+    padding-bottom: 1px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 169px;
+    }
+  }
+
+  .header-search-form {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 27px;
+      padding-bottom: 96px;
+    }
+
+    input[type="text"] {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 11px 0;
+      }
+    }
+  }
+
+  .main-filters-wrap {
+    position: relative;
+    padding-bottom: 41px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 10px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100%;
+      background: $warm-light;
+      z-index: -1;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        display: none;
+      }
+    }
+
+    &:has(.selected-fitlers .btn-primary) {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        border: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .btn-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 59px;
+      }
+    }
+
+    .filters-blocks {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-top: 50px;
+      }
+
+      .filter-title {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 25px;
+        }
+      }
+    }
+
+    .filters {
+
+      label {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+}
+
+.main-filters-wrap {
+  padding: 27px 0 29px;
+
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    position: relative;
+    padding: 34px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &:has(.selected-fitlers .btn-primary) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      border-bottom: 1px solid;
+      margin-bottom: 42px;
+    }
+
+    .btn-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        display: none;
+      }
+    }
+  }
+
+  .collapse-holder {
+
+    &.show {
+
+      .btn-holder {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .filters-blocks {
+    padding-top: 29px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 29px;
+    }
+  }
+
+  .filter-block {
+    margin-bottom: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 15px;
+    }
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    label {
+      position: relative;
+      display: block;
+      margin-right: 5px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 6px;
+      }
+
+      &:hover {
+
+        span {
+          color: $white;
+          background-color: $black;
+          border-color: $black;
+        }
+      }
+
+      span {
+        font-family: 'FT System Mono';
+        display: inline-block;
+        vertical-align: top;
+        text-transform: uppercase;
+        border-radius: 12px;
+        background-color: $white;
+        border: 1px solid $warm-dark;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 600;
+        padding: 2px 12px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      position: absolute;
+      left: -9999px;
+      visibility: hidden;
+
+      &:checked + span {
+        color: $white;
+        background-color: $black;
+        border-color: $black;
+      }
+    }
+  }
+
+  .btn-secondary {
+    border: 1px solid $black;
+    color: $black;
+    background-color: $warm-light;
+
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+
+    &:not(.btn-sm) {
+      font-size: 10px;
+      line-height: 19px;
+      padding: 6px 18px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
+        font-size: 16px;
+        line-height: 28px;
+        padding: 12px 18px;
+      }
+
+      &.collapsed {
+        @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+          padding: 6px 10px;
+        }
+        @media screen and (max-width: map-get($grid-breakpoints, 'xl')) {
+          padding: 6px 14px;
+        }
+      }
+    }
+
+    svg {
+      margin-left: 4px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  .btn-holder {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      position: absolute;
+      bottom: 100%;
+      left: 25px;
+      padding-bottom: 62px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .btn {
+      letter-spacing: 1px;
+      margin-right: 4px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        letter-spacing: 0;
+      }
+    }
+  }
 }

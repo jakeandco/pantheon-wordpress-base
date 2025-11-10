@@ -7,166 +7,6 @@
     }
   }
 
-  .filters-blocks {
-    padding-top: 29px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding-top: 29px;
-    }
-  }
-
-  .filters-wrap {
-    padding: 27px 0 29px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding: 34px 0;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    &:has(.selected-fitlers .btn-primary) {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        border-bottom: 1px solid;
-        margin-bottom: 42px;
-      }
-
-      .btn-holder {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          display: none;
-        }
-      }
-    }
-
-    .collapse-holder {
-
-      &.show {
-
-        .btn-holder {
-          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-            visibility: visible;
-            opacity: 1;
-          }
-        }
-      }
-    }
-
-    .btn-holder {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        position: absolute;
-        bottom: 100%;
-        left: 0;
-        padding-bottom: 32px;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-      }
-
-      .btn {
-        letter-spacing: 1px;
-        margin-right: 4px;
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          letter-spacing: 0;
-        }
-      }
-    }
-
-    .btn-secondary {
-      border: 1px solid $black;
-      color: $black;
-      background-color: $warm-light;
-
-
-      &:hover {
-        background-color: $black;
-        color: $white;
-      }
-
-      &:not(.btn-sm) {
-        font-size: 10px;
-        line-height: 19px;
-        padding: 6px 18px;
-        @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
-          font-size: 16px;
-          line-height: 28px;
-          padding: 12px 18px;
-        }
-
-        &.collapsed {
-          @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
-            padding: 6px 14px;
-          }
-        }
-      }
-
-      svg {
-        margin-left: 4px;
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          margin-left: 0px;
-        }
-      }
-    }
-  }
-
-  .filter-block {
-    margin-bottom: 30px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-bottom: 15px;
-    }
-  }
-
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-
-    label {
-      position: relative;
-      display: block;
-      margin-right: 5px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        margin-bottom: 6px;
-      }
-
-      &:hover {
-
-        span {
-          color: $white;
-          background-color: $black;
-          border-color: $black;
-        }
-      }
-
-      span {
-        font-family: 'FT System Mono';
-        display: inline-block;
-        vertical-align: top;
-        text-transform: uppercase;
-        border-radius: 12px;
-        background-color: $white;
-        border: 1px solid $warm-dark;
-        font-size: 12px;
-        line-height: 20px;
-        font-weight: 600;
-        padding: 2px 12px;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-
-    input[type="checkbox"],
-    input[type="radio"] {
-      position: absolute;
-      left: -9999px;
-      visibility: hidden;
-
-      &:checked + span {
-        color: $white;
-        background-color: $black;
-        border-color: $black;
-      }
-    }
-  }
-
   .all-posts-grid {
     display: flex;
     flex-wrap: wrap;
@@ -480,7 +320,7 @@
       margin: 0 7px;
     }
 
-    &[aria-expanded="true"] {
+    &[aria-expanded="true"]:not(.view-results) {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         font-size: 18px !important;
         line-height: 26px !important;
@@ -503,8 +343,10 @@
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
+      left: 50%;
+      right: auto;
+      width: 100vw;
+      transform: translateX(-50%);
       z-index: 3;
       background-color: $white;
       opacity: 0;
@@ -514,6 +356,14 @@
     &.show {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         opacity: 1;
+      }
+    }
+
+    .container {
+      padding: 0;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        position: relative;
+        padding: 0 25px;
       }
     }
   }
