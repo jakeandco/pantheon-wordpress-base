@@ -25,3 +25,18 @@
   @import 'editor/block-fixes/index';
 
 }
+
+.acf-block-preview {
+  font-family: $font-family-sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+  @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .full-block-width {
+    width: 100%;
+  }
+}
