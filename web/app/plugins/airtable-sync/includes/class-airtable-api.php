@@ -120,29 +120,109 @@ class Airtable_API {
 		$url = $attachment['url'];
 		$filename = isset( $attachment['filename'] ) ? $attachment['filename'] : basename( wp_parse_url( $url, PHP_URL_PATH ) );
 
+		// Temporarily allow additional image mime types
+		add_filter( 'upload_mimes', array( $this, 'allow_image_mimes' ), 999 );
+
 		// Download file
 		$tmp_file = download_url( $url );
 
 		if ( is_wp_error( $tmp_file ) ) {
+			remove_filter( 'upload_mimes', array( $this, 'allow_image_mimes' ), 999 );
 			return $tmp_file;
+		}
+
+		// Ensure filename has proper extension based on MIME type
+		$mime_type = isset( $attachment['type'] ) ? $attachment['type'] : '';
+		$filename = $this->ensure_filename_extension( $filename, $mime_type, $tmp_file );
+
+		// Check file type and validate
+		$filetype = wp_check_filetype( $filename, null );
+		if ( ! $filetype['type'] ) {
+			// Try to detect mime type from file contents
+			$filetype = wp_check_filetype( $tmp_file, null );
 		}
 
 		// Prepare file array
 		$file_array = array(
 			'name'     => $filename,
 			'tmp_name' => $tmp_file,
+			'type'     => $filetype['type'],
 		);
 
 		// Import to media library
 		$attachment_id = media_handle_sideload( $file_array, 0 );
 
-		// Clean up temp file on error
+		// Clean up and remove filter
+		remove_filter( 'upload_mimes', array( $this, 'allow_image_mimes' ), 999 );
+
 		if ( is_wp_error( $attachment_id ) ) {
 			@unlink( $tmp_file );
 			return $attachment_id;
 		}
 
 		return $attachment_id;
+	}
+
+	/**
+	 * Ensure filename has proper extension based on MIME type.
+	 *
+	 * @param string $filename  Original filename.
+	 * @param string $mime_type MIME type from Airtable.
+	 * @param string $tmp_file  Path to temporary file.
+	 * @return string Filename with proper extension.
+	 */
+	private function ensure_filename_extension( $filename, $mime_type, $tmp_file ) {
+		// Check if filename already has an extension
+		$pathinfo = pathinfo( $filename );
+		if ( ! empty( $pathinfo['extension'] ) ) {
+			return $filename;
+		}
+
+		// Map MIME types to extensions
+		$mime_to_ext = array(
+			'image/jpeg'    => 'jpg',
+			'image/png'     => 'png',
+			'image/gif'     => 'gif',
+			'image/webp'    => 'webp',
+			'image/svg+xml' => 'svg',
+			'image/bmp'     => 'bmp',
+			'image/tiff'    => 'tif',
+			'image/x-icon'  => 'ico',
+			'image/heic'    => 'heic',
+			'image/heif'    => 'heif',
+		);
+
+		// Try to get extension from MIME type
+		if ( $mime_type && isset( $mime_to_ext[ $mime_type ] ) ) {
+			return $filename . '.' . $mime_to_ext[ $mime_type ];
+		}
+
+		// Try to detect from file contents using wp_check_filetype
+		$filetype = wp_check_filetype( $tmp_file );
+		if ( ! empty( $filetype['ext'] ) ) {
+			return $filename . '.' . $filetype['ext'];
+		}
+
+		// Default to jpg if we can't determine
+		return $filename . '.jpg';
+	}
+
+	/**
+	 * Allow common image mime types for Airtable uploads.
+	 *
+	 * @param array $mimes Existing mime types.
+	 * @return array Modified mime types.
+	 */
+	public function allow_image_mimes( $mimes ) {
+		// Ensure all common image types are allowed
+		$mimes['jpg|jpeg|jpe'] = 'image/jpeg';
+		$mimes['png']          = 'image/png';
+		$mimes['gif']          = 'image/gif';
+		$mimes['webp']         = 'image/webp';
+		$mimes['svg']          = 'image/svg+xml';
+		$mimes['ico']          = 'image/x-icon';
+		$mimes['heic']         = 'image/heic';
+		return $mimes;
 	}
 
 	/**

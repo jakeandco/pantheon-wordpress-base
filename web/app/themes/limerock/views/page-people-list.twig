@@ -1,0 +1,101 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="mb-4">People Photo Diagnostic</h1>
+				<div class="row mb-4">
+					<div class="col-md-4">
+						<div class="card">
+							<div class="card-body text-center">
+								<h2 class="display-4 mb-0">{{ total_people }}</h2>
+								<p class="mb-0">Total People</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card border-success">
+							<div class="card-body text-center">
+								<h2 class="display-4 mb-0 text-success">{{ total_with_photos }}</h2>
+								<p class="mb-0">With Photos</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card border-danger">
+							<div class="card-body text-center">
+								<h2 class="display-4 mb-0 text-danger">{{ total_without_photos }}</h2>
+								<p class="mb-0">Without Photos</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered">
+						<thead class="table-dark">
+							<tr>
+								<th style="width: 80px;">Photo</th>
+								<th>Name</th>
+								<th>Last Name</th>
+								<th>First Name</th>
+								<th>Has Image?</th>
+								<th>Image ID</th>
+								<th>Airtable ID</th>
+								<th>Last Synced</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for person in people %}
+								<tr>
+									<td>
+										{% if person.thumbnail and person.thumbnail.src %}
+											<img src="{{ person.thumbnail.src('thumbnail') }}"
+											     alt="{{ person.title }}"
+											     class="img-thumbnail"
+											     style="max-width: 60px; height: auto;">
+										{% else %}
+											<span class="badge bg-danger">No Photo</span>
+										{% endif %}
+									</td>
+									<td>
+										<a href="{{ person.link }}" target="_blank">
+											{{ person.title }}
+										</a>
+									</td>
+									<td>{{ person.last_name ?: '—' }}</td>
+									<td>{{ person.first_name ?: '—' }}</td>
+									<td>
+										{% if person.has_thumbnail %}
+											<span class="badge bg-success">Yes</span>
+										{% else %}
+											<span class="badge bg-danger">No</span>
+										{% endif %}
+									</td>
+									<td>
+										{% if person.thumbnail_id %}
+											<code>{{ person.thumbnail_id }}</code>
+										{% else %}
+											—
+										{% endif %}
+									</td>
+									<td>
+										{% if person.airtable_id %}
+											<code style="font-size: 0.75rem;">{{ person.airtable_id }}</code>
+										{% else %}
+											—
+										{% endif %}
+									</td>
+									<td style="font-size: 0.85rem;">
+										{{ person.airtable_synced ?: '—' }}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

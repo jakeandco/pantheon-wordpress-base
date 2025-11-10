@@ -240,6 +240,264 @@ class Airtable_Sync_CLI {
 	}
 
 	/**
+	 * Sync photos for people from Airtable.
+	 *
+	 * By default, syncs photos for all people who don't have a featured image.
+	 * Can optionally sync a specific Airtable record.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--record-id=<record_id>]
+	 * : Sync only a specific Airtable record ID (e.g., recXXXXXXXXXXXXXX).
+	 *
+	 * [--force]
+	 * : Force re-download photos even if they already exist.
+	 *
+	 * [--dry-run]
+	 * : Run in dry-run mode (no changes will be made).
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Sync all missing photos
+	 *     wp airtable sync-photos
+	 *
+	 *     # Sync photo for specific Airtable record
+	 *     wp airtable sync-photos --record-id=recXXXXXXXXXXXXXX
+	 *
+	 *     # Force re-download all photos
+	 *     wp airtable sync-photos --force
+	 *
+	 *     # Preview changes without applying
+	 *     wp airtable sync-photos --dry-run
+	 *
+	 * @when after_wp_load
+	 */
+	public function sync_photos( $args, $assoc_args ) {
+		$record_id = isset( $assoc_args['record-id'] ) ? $assoc_args['record-id'] : null;
+		$force = isset( $assoc_args['force'] );
+		$dry_run = isset( $assoc_args['dry-run'] );
+
+		if ( $dry_run ) {
+			WP_CLI::warning( 'Running in DRY-RUN mode. No changes will be made.' );
+		}
+
+		// Get credentials
+		$credentials = Airtable_Sync_Config::get_credentials();
+
+		if ( empty( $credentials['api_key'] ) || empty( $credentials['base_id'] ) ) {
+			WP_CLI::error( 'API credentials not configured. Please configure them in WP Admin > Airtable Sync.' );
+			return;
+		}
+
+		// Find People table mapping
+		$mappings = Airtable_Sync_Config::get_mappings();
+		$people_mapping = null;
+
+		foreach ( $mappings as $mapping ) {
+			if ( $mapping['post_type'] === 'person' ) {
+				$people_mapping = $mapping;
+				break;
+			}
+		}
+
+		if ( ! $people_mapping ) {
+			WP_CLI::error( 'No mapping found for "person" post type.' );
+			return;
+		}
+
+		// Find photo field mapping
+		$photo_field = null;
+		foreach ( $people_mapping['field_mappings'] as $field_mapping ) {
+			if ( isset( $field_mapping['destination_type'] ) && $field_mapping['destination_type'] === 'core' &&
+			     isset( $field_mapping['destination_key'] ) && $field_mapping['destination_key'] === 'post_thumbnail' ) {
+				$photo_field = $field_mapping;
+				break;
+			}
+		}
+
+		if ( ! $photo_field ) {
+			WP_CLI::error( 'No photo field mapping found for People. Expected a field mapped to post_thumbnail.' );
+			return;
+		}
+
+		$photo_field_id = $photo_field['airtable_field_id'];
+
+		WP_CLI::log( WP_CLI::colorize( '%BSyncing People Photos%n' ) );
+		WP_CLI::log( str_repeat( '=', 50 ) );
+
+		// Initialize API client
+		$api = new Airtable_API( $credentials['api_key'], $credentials['base_id'] );
+
+		// Stats
+		$stats = array(
+			'processed' => 0,
+			'updated'   => 0,
+			'skipped'   => 0,
+			'errors'    => 0,
+		);
+
+		// If specific record ID provided, sync only that one
+		if ( $record_id ) {
+			WP_CLI::log( sprintf( 'Syncing photo for record: %s', $record_id ) );
+			$result = $this->sync_single_photo( $api, $people_mapping, $photo_field_id, $record_id, $force, $dry_run );
+			$stats['processed']++;
+			if ( $result === 'updated' ) {
+				$stats['updated']++;
+			} elseif ( $result === 'skipped' ) {
+				$stats['skipped']++;
+			} elseif ( $result === 'error' ) {
+				$stats['errors']++;
+			}
+		} else {
+			// Get all records from Airtable
+			WP_CLI::log( 'Fetching records from Airtable...' );
+			$records = $api->get_records( $people_mapping['table_id'], $people_mapping['view_id'] );
+
+			if ( is_wp_error( $records ) ) {
+				WP_CLI::error( sprintf( 'Failed to fetch records: %s', $records->get_error_message() ) );
+				return;
+			}
+
+			WP_CLI::log( sprintf( 'Found %d records in Airtable', count( $records ) ) );
+			WP_CLI::log( '' );
+
+			// Process each record
+			$progress = \WP_CLI\Utils\make_progress_bar( 'Syncing photos', count( $records ) );
+
+			foreach ( $records as $record ) {
+				$airtable_record_id = $record['id'];
+				$result = $this->sync_single_photo( $api, $people_mapping, $photo_field_id, $airtable_record_id, $force, $dry_run, $record );
+				$stats['processed']++;
+				if ( $result === 'updated' ) {
+					$stats['updated']++;
+				} elseif ( $result === 'skipped' ) {
+					$stats['skipped']++;
+				} elseif ( $result === 'error' ) {
+					$stats['errors']++;
+				}
+				$progress->tick();
+			}
+
+			$progress->finish();
+		}
+
+		// Display stats
+		WP_CLI::log( '' );
+		WP_CLI::log( str_repeat( '=', 50 ) );
+		WP_CLI::log( sprintf( 'Processed:  %d', $stats['processed'] ) );
+		WP_CLI::log( WP_CLI::colorize( sprintf( '%%GUpdated:    %d%%n', $stats['updated'] ) ) );
+		WP_CLI::log( sprintf( 'Skipped:    %d', $stats['skipped'] ) );
+		if ( $stats['errors'] > 0 ) {
+			WP_CLI::log( WP_CLI::colorize( sprintf( '%%RErrors:     %d%%n', $stats['errors'] ) ) );
+		} else {
+			WP_CLI::log( sprintf( 'Errors:     %d', $stats['errors'] ) );
+		}
+
+		if ( $stats['errors'] > 0 ) {
+			WP_CLI::warning( sprintf( 'Photo sync completed with %d error(s).', $stats['errors'] ) );
+		} else {
+			WP_CLI::success( 'Photo sync completed successfully!' );
+		}
+	}
+
+	/**
+	 * Sync photo for a single person record.
+	 *
+	 * @param Airtable_API $api            API client instance.
+	 * @param array        $mapping        People table mapping.
+	 * @param string       $photo_field_id Airtable photo field ID.
+	 * @param string       $record_id      Airtable record ID.
+	 * @param bool         $force          Force re-download even if exists.
+	 * @param bool         $dry_run        Dry run mode.
+	 * @param array|null   $record         Optional: Pre-fetched record data.
+	 * @return string Result: 'updated', 'skipped', or 'error'.
+	 */
+	private function sync_single_photo( $api, $mapping, $photo_field_id, $record_id, $force, $dry_run, $record = null ) {
+		// Find WordPress post by Airtable ID
+		$query_args = array(
+			'post_type'      => 'person',
+			'post_status'    => 'any',
+			'posts_per_page' => 1,
+			'meta_query'     => array(
+				array(
+					'key'     => '_airtable_id',
+					'value'   => $record_id,
+					'compare' => '=',
+				),
+			),
+			'fields'         => 'ids',
+		);
+
+		$posts = get_posts( $query_args );
+
+		if ( empty( $posts ) ) {
+			WP_CLI::warning( sprintf( 'No WordPress post found for Airtable record: %s', $record_id ) );
+			return 'error';
+		}
+
+		$post_id = $posts[0];
+		$post_title = get_the_title( $post_id );
+
+		// Check if post already has thumbnail
+		if ( ! $force && has_post_thumbnail( $post_id ) ) {
+			return 'skipped';
+		}
+
+		// Fetch record from Airtable if not provided
+		if ( ! $record ) {
+			$record = $api->get_record( $mapping['table_id'], $record_id );
+
+			if ( is_wp_error( $record ) ) {
+				WP_CLI::warning( sprintf( 'Failed to fetch record %s: %s', $record_id, $record->get_error_message() ) );
+				return 'error';
+			}
+		}
+
+		// Get photo field value using field ID
+		$fields = isset( $record['fields'] ) ? $record['fields'] : array();
+		$photo_value = isset( $fields[ $photo_field_id ] ) ? $fields[ $photo_field_id ] : null;
+
+		if ( empty( $photo_value ) ) {
+			WP_CLI::log( sprintf( 'No photo in Airtable for: %s (ID: %s)', $post_title, $record_id ) );
+			return 'skipped';
+		}
+
+		// Photo value is an array of attachments - take first one
+		$attachment_data = is_array( $photo_value ) && isset( $photo_value[0] ) ? $photo_value[0] : null;
+
+		if ( ! $attachment_data || empty( $attachment_data['url'] ) ) {
+			WP_CLI::log( sprintf( 'Invalid photo data for: %s (ID: %s)', $post_title, $record_id ) );
+			return 'skipped';
+		}
+
+		// Debug: Show file info
+		$filename = isset( $attachment_data['filename'] ) ? $attachment_data['filename'] : 'unknown';
+		$file_type = isset( $attachment_data['type'] ) ? $attachment_data['type'] : 'unknown';
+		WP_CLI::log( sprintf( 'File: %s (Type: %s)', $filename, $file_type ) );
+		WP_CLI::log( sprintf( 'URL: %s', $attachment_data['url'] ) );
+
+		if ( $dry_run ) {
+			WP_CLI::log( sprintf( 'Would download photo for: %s', $post_title ) );
+			return 'updated';
+		}
+
+		// Download and attach photo
+		WP_CLI::log( sprintf( 'Downloading photo for: %s', $post_title ) );
+		$attachment_id = $api->download_attachment( $attachment_data );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			WP_CLI::warning( sprintf( 'Failed to download photo for %s: %s', $post_title, $attachment_id->get_error_message() ) );
+			return 'error';
+		}
+
+		// Set as featured image
+		set_post_thumbnail( $post_id, $attachment_id );
+		WP_CLI::log( WP_CLI::colorize( sprintf( '%%GPhoto set for: %s%%n', $post_title ) ) );
+
+		return 'updated';
+	}
+
+	/**
 	 * Display sync statistics.
 	 *
 	 * @param array $stats Sync statistics.
@@ -267,5 +525,6 @@ class Airtable_Sync_CLI {
 // Register WP-CLI commands
 WP_CLI::add_command( 'airtable sync', array( 'Airtable_Sync_CLI', 'sync' ) );
 WP_CLI::add_command( 'airtable sync-table', array( 'Airtable_Sync_CLI', 'sync_table' ) );
+WP_CLI::add_command( 'airtable sync-photos', array( 'Airtable_Sync_CLI', 'sync_photos' ) );
 WP_CLI::add_command( 'airtable validate', array( 'Airtable_Sync_CLI', 'validate' ) );
 WP_CLI::add_command( 'airtable list', array( 'Airtable_Sync_CLI', 'list_mappings' ) );
