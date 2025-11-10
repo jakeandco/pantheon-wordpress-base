@@ -48,6 +48,10 @@
       letter-spacing: -0.5px;
     }
 
+    &:hover {
+      color: $bright-red !important;
+    }
+
     svg {
       width: 16px;
       height: 16px;

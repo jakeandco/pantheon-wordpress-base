@@ -7,34 +7,71 @@
     role="search"
   >
     <div class="search-section content-wrapper">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-12">
-            <div class="h2">
-              <span class="results-total-js">{{ results_total }}</span>
-              results for
-            </div>
-            {% include '@views/search/filters.twig' with { fields: fields } %}
-            <div class="ajax-results-js" data-total={{ results_total }}>
-              <div class="post-list">
-                {% embed '@partial/repeater.twig' with { repeater_rows: posts } %}
-                  {% block row %}
-                    {% include '@views/search/result-row.twig' with {
-                      post: get_post(row_data)
-                    } only %}
-                  {% endblock %}
-                  {% block empty %}
-                    <p class="h4">No results found.</p>
-                    <p class="h5">Please try a different keyword</p>
-                  {% endblock %}
-                {% endembed %}
+      <div class="search-section-top-wrap" data-bs-theme="warm-light">
+        <div class="container">
+          <h2 class="search-section-label">
+            <span class="results-total-js">{{ results_total }}</span>
+            results for
+          </h2>
+
+          <div class="search-form-fields">
+            <div class="search-block header-search-form">
+              <div class="search-row d-flex">
+                <input
+                  class="autosearch-on-typing-js search-input-js"
+                  type="text"
+                  name="s"
+                  placeholder="Search..."
+                  value="{{ search_query }}"
+                />
+                <button
+                  class="btn bt-link clear-header-search-btn clear-search-js"
+                  type="button"
+                  aria-label="Clear search"
+                  {% if search_query is empty %}disabled{% endif %}
+                >
+                  Clear search
+                  <svg width="34" height="33" viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="2.12117" y1="0.7072" x2="33.1212" y2="31.7072" stroke="currentColor" stroke-width="2"/>
+                    <line y1="-1" x2="43.8406" y2="-1" transform="matrix(-0.707107 0.707107 0.707107 0.707107 32.4141 1.41431)" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </button>
+                <button class="search-btn btn bt-link" type="submit" aria-label="Submit search">
+                  Search
+                  <svg id="Group_836" data-name="Group 836" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <g id="Symbol_62_2" data-name="Symbol 62 – 2" transform="translate(0 0)">
+                      <rect id="Rectangle_176" data-name="Rectangle 176" width="20" height="20" transform="translate(0 0)" fill="none"></rect>
+                      <path id="Path_99" data-name="Path 99" d="M19.7,17.964,15.61,13.875a8.482,8.482,0,0,0,1.734-5.2A8.619,8.619,0,0,0,8.672,0,8.619,8.619,0,0,0,0,8.672a8.619,8.619,0,0,0,8.672,8.672,8.482,8.482,0,0,0,5.2-1.734L17.964,19.7ZM2.478,8.672A6.134,6.134,0,0,1,8.672,2.478a6.134,6.134,0,0,1,6.194,6.194,6.134,6.134,0,0,1-6.194,6.194A6.134,6.134,0,0,1,2.478,8.672Z" transform="translate(0.302 0.151)" fill="currentColor"></path>
+                    </g>
+                  </svg>
+                </button>
               </div>
-              {% if posts|length %}
-                {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
-              {% endif %}
-              {% include '@partial/loader.twig' %}
             </div>
           </div>
+        </div>
+      </div>
+
+      {% include '@views/search/filters.twig' with { fields: fields } %}
+
+      <div class="container">
+        <div class="ajax-results-js" data-total={{ results_total }}>
+          <div class="post-list">
+            {% embed '@partial/repeater.twig' with { repeater_rows: posts } %}
+              {% block row %}
+                {% include '@views/search/result-row.twig' with {
+                  post: get_post(row_data)
+                } only %}
+              {% endblock %}
+              {% block empty %}
+                <p class="h4">No results found.</p>
+                <p class="h5">Please try a different keyword</p>
+              {% endblock %}
+            {% endembed %}
+          </div>
+          {% if posts|length %}
+            {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
+          {% endif %}
+          {% include '@partial/loader.twig' %}
         </div>
       </div>
     </div>
