@@ -71,24 +71,6 @@ class AdminCustomizer
       'classes' => 'h6',
       'wrapper' => false
     ],
-    [
-      'title' => 'Primary Button',
-      'selector' => 'a',
-      'classes' => 'btn btn--primary',
-      'wrapper' => false
-    ],
-    [
-      'title' => 'Secondary Button',
-      'selector' => 'a',
-      'classes' => 'btn btn--secondary',
-      'wrapper' => false
-    ],
-    [
-      'title' => 'Tertiary Button',
-      'selector' => 'a',
-      'classes' => 'btn btn--tertiary',
-      'wrapper' => false
-    ],
   ];
 
   public static function mce_buttons($buttons)
