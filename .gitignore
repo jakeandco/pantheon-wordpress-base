@@ -107,6 +107,7 @@ web/app/cache/
 web/app/managewp/backups/
 web/app/updraft/
 web/app/upgrade/
+web/app/ewww/
 web/app/advanced-cache.php
 web/app/wp-cache-config.php
 web/wp-config-local.php
