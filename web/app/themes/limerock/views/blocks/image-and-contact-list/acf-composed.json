@@ -3,9 +3,9 @@
   "title": "Block Details: Image and Contact List",
   "fields": [
     {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
       "label": "Image",
-      "name": "image",
-      "type": "image"
+      "name": "image"
     },
     {
       "acf_composer_extend": "LimeRockTheme/ACF/fields/single-line-basic-wysiwyg",

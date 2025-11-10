@@ -23,7 +23,7 @@
     {
       "label": "Image",
       "name": "image",
-      "type": "image",
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
       "wrapper": {
         "width": 30
       }

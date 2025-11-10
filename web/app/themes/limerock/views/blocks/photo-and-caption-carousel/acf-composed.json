@@ -23,9 +23,9 @@
           "type": "textarea"
         },
         {
+          "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
           "label": "Image",
-          "name": "image",
-          "type": "image"
+          "name": "image"
         }
       ]
     }

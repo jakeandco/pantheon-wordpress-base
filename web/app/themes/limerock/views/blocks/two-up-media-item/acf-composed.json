@@ -3,17 +3,17 @@
   "title": "Block Details: 2-Up Media Item",
   "fields": [
     {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
       "label": "Left",
       "name": "left",
-      "type": "image",
       "wrapper": {
         "width": 50
       }
     },
     {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
       "label": "Right",
       "name": "right",
-      "type": "image",
       "wrapper": {
         "width": 50
       }

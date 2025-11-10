@@ -9,9 +9,9 @@
       "layout": "block",
       "sub_fields": [
         {
+          "acf_composer_extend": "LimeRockTheme/ACF/fields/image",
           "label": "Background Image",
-          "name": "background_image",
-          "type": "image"
+          "name": "background_image"
         },
         {
           "label": "Background Color",
