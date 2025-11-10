@@ -253,6 +253,12 @@ class Airtable_Sync_CLI {
 	 * [--force]
 	 * : Force re-download photos even if they already exist.
 	 *
+	 * [--limit=<number>]
+	 * : Limit the number of records to process (useful for batch processing).
+	 *
+	 * [--offset=<number>]
+	 * : Skip the first N records (useful for batch processing).
+	 *
 	 * [--dry-run]
 	 * : Run in dry-run mode (no changes will be made).
 	 *
@@ -267,6 +273,12 @@ class Airtable_Sync_CLI {
 	 *     # Force re-download all photos
 	 *     wp airtable sync-photos --force
 	 *
+	 *     # Sync first 20 people only (batch 1)
+	 *     wp airtable sync-photos --limit=20
+	 *
+	 *     # Sync next 20 people (batch 2)
+	 *     wp airtable sync-photos --limit=20 --offset=20
+	 *
 	 *     # Preview changes without applying
 	 *     wp airtable sync-photos --dry-run
 	 *
@@ -276,6 +288,8 @@ class Airtable_Sync_CLI {
 		$record_id = isset( $assoc_args['record-id'] ) ? $assoc_args['record-id'] : null;
 		$force = isset( $assoc_args['force'] );
 		$dry_run = isset( $assoc_args['dry-run'] );
+		$limit = isset( $assoc_args['limit'] ) ? intval( $assoc_args['limit'] ) : null;
+		$offset = isset( $assoc_args['offset'] ) ? intval( $assoc_args['offset'] ) : 0;
 
 		if ( $dry_run ) {
 			WP_CLI::warning( 'Running in DRY-RUN mode. No changes will be made.' );
@@ -336,6 +350,8 @@ class Airtable_Sync_CLI {
 			'errors'    => 0,
 		);
 
+		$total_records = 0;
+
 		// If specific record ID provided, sync only that one
 		if ( $record_id ) {
 			WP_CLI::log( sprintf( 'Syncing photo for record: %s', $record_id ) );
@@ -358,7 +374,20 @@ class Airtable_Sync_CLI {
 				return;
 			}
 
-			WP_CLI::log( sprintf( 'Found %d records in Airtable', count( $records ) ) );
+			$total_records = count( $records );
+			WP_CLI::log( sprintf( 'Found %d records in Airtable', $total_records ) );
+
+			// Apply offset and limit
+			if ( $offset > 0 || $limit !== null ) {
+				$records = array_slice( $records, $offset, $limit );
+				WP_CLI::log( sprintf( 'Processing records %d to %d (limit: %d, offset: %d)',
+					$offset + 1,
+					$offset + count( $records ),
+					$limit !== null ? $limit : 'none',
+					$offset
+				) );
+			}
+
 			WP_CLI::log( '' );
 
 			// Process each record
@@ -391,6 +420,28 @@ class Airtable_Sync_CLI {
 			WP_CLI::log( WP_CLI::colorize( sprintf( '%%RErrors:     %d%%n', $stats['errors'] ) ) );
 		} else {
 			WP_CLI::log( sprintf( 'Errors:     %d', $stats['errors'] ) );
+		}
+
+		// Show batch info if using limit/offset
+		if ( ! $record_id && ( $limit !== null || $offset > 0 ) ) {
+			WP_CLI::log( '' );
+			WP_CLI::log( sprintf( 'Batch: Records %d-%d of %d total',
+				$offset + 1,
+				min( $offset + ( $limit !== null ? $limit : $total_records ), $total_records ),
+				$total_records
+			) );
+
+			// Calculate and show next batch command
+			$next_offset = $offset + ( $limit !== null ? $limit : 0 );
+			if ( $next_offset < $total_records ) {
+				$remaining = $total_records - $next_offset;
+				WP_CLI::log( WP_CLI::colorize( sprintf(
+					'%%yNext batch: wp airtable sync-photos --limit=%d --offset=%d (%d remaining)%%n',
+					$limit !== null ? $limit : 20,
+					$next_offset,
+					$remaining
+				) ) );
+			}
 		}
 
 		if ( $stats['errors'] > 0 ) {
