@@ -1,0 +1,50 @@
+{
+  "name": "group_block_featured-work-carousel",
+  "title": "Block Details: Featured Work Carousel",
+  "fields": [
+    {
+      "label": "Intro Copy",
+      "name": "intro_copy",
+      "type": "wysiwyg"
+    },
+    {
+      "label": "Headline",
+      "name": "headline",
+      "type": "text"
+    },
+    {
+      "label": "Archive Link",
+      "name": "archive_link",
+      "type": "link"
+    },
+    {
+      "label": "Show link at bottom",
+      "name": "show_link_at_bottom",
+      "type": "true_false",
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "selection_type",
+            "operator": "!=empty",
+            "value": ""
+          }
+        ]
+      ]
+    },
+    {
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
+      "label": "Featured Works",
+      "name": "featured_works",
+      "post_type": ["project", "publication", "post"]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "limerock/featured-work-carousel"
+      }
+    ]
+  ]
+}

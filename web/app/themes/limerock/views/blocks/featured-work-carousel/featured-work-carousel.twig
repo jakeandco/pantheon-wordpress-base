@@ -1,0 +1,40 @@
+{% embed '@partial/block_wrapper.twig' with {
+  extra_classes: 'block_featured-work-carousel',
+} %}
+  {% block content %}
+    {% macro archive_link(link) %}
+      {% if link is not empty %}
+        <a href="{{link.url}}" class="btn btn-primary" target="{{link.target}}">{{ link.title }}</a>
+      {% endif %}
+    {% endmacro %}
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          {% if fields.intro_copy %}
+            <p class="featured-work-carousel_intro-copy">{{ fields.intro_copy }}</p>
+          {% endif %}
+          <div>
+            {% if fields.headline %}
+              <h5 class="block-title">{{ fields.headline }}</h5>
+            {% endif %}
+            {% if not fields.show_link_at_bottom %}
+              {{_self.archive_link(fields.archive_link)}}
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12">
+          {% include '@partial/post-repeater.twig' with {
+            posts: get_posts(fields.featured_works),
+            tease_options: { variant: 'featured' }
+          } only %}
+        </div>
+
+        <div class="col-12">
+          {% if fields.show_link_at_bottom %}
+            {{_self.archive_link(fields.archive_link)}}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>{% endblock %}{% endembed %}
