@@ -4,12 +4,22 @@
   padding: 27px 0 11px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     padding: 75px 0 53px;
+    border-left: 6px solid white;
+    border-right: 6px solid white;
+  }
+
+  .text-callouts-list.row {
+    margin: 0 -18px;
+
+    .col-12 {
+      padding: 0 18px;
+    }
   }
 
   .block-title {
     margin-bottom: 14px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-bottom: 18px;
+      margin-bottom: 9px;
     }
   }
 
@@ -74,7 +84,7 @@
     flex-direction: column;
     justify-content: space-between;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding: 20px 27px;
+      padding: 21px 27px;
       margin-bottom: 33px;
       height: calc(100% - 33px);
       min-height: 320px;
