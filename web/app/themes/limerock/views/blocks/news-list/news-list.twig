@@ -5,7 +5,6 @@
         {% if fields.title %}
           <span class="d-block block-title mb-0">{{ fields.title }}</span>
         {% endif %}
-
         {% if selections is not empty %}
           <div class="posts-wrap posts-list">
             {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'list' } only %}

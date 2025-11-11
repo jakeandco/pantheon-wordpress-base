@@ -146,6 +146,71 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $context['selections'] = $selections;
     }
 
+    if ($slug === 'events-list') {
+        $fields = $context['fields'];
+        $post_type = 'event';
+        $selections = [];
+
+        switch ($fields['selection_type'] ?? '') {
+            case 'manual':
+                $selections = $fields['selections'] ?? [];
+                break;
+
+            case 'all':
+                $selections = Timber::get_posts(['post_type' => $post_type]);
+                break;
+
+            case 'past':
+                $today = getdate();
+                $selections = Timber::get_posts([
+                    'post_type'  => $post_type,
+                    'date_query' => [
+                        [
+                            'year'  => $today['year'],
+                            'month' => $today['mon'],
+                            'day'   => $today['mday'],
+                        ],
+                    ],
+                ]);
+                break;
+
+            case 'related':
+                if (!empty($post_id)) {
+                    $relation_taxonomies = ['tax-research-area', 'event-category'];
+                    $tax_query = [];
+
+                    foreach ($relation_taxonomies as $taxonomy) {
+                        $terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'slugs']);
+                        if (!empty($terms)) {
+                            $tax_query[] = [
+                                'taxonomy' => $taxonomy,
+                                'field'    => 'slug',
+                                'terms'    => $terms,
+                            ];
+                        }
+                    }
+
+                    if (!empty($tax_query)) {
+                        $tax_query = [
+                            'relation' => 'OR',
+                            ...$tax_query,
+                        ];
+
+                        $selections = Timber::get_posts([
+                            'post_type'    => $post_type,
+                            'post__not_in' => [$post_id],
+                            'tax_query'    => $tax_query,
+                        ]);
+                    } else {
+                        $selections = [];
+                    }
+                }
+                break;
+        }
+
+        $context['selections'] = $selections;
+    }
+
 	if (! empty($block['data']['is_example'])) {
 		$context['is_example'] = true;
 		$context['fields'] = $block['data'];
