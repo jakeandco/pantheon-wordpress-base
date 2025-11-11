@@ -75,6 +75,7 @@ svg {
   --btn-bg: var(--#{$prefix}btn-bg);
   --btn-hover-color: var(--#{$prefix}btn-hover-color);
   --btn-hover-bg: var(--#{$prefix}btn-hover-bg);
+  --entry-point-card-hover-bg: var(--#{$prefix}entry-point-card-hover-bg);
 
   .btn-primary {
     color: var(--btn-color);
@@ -85,6 +86,13 @@ svg {
       color: var(--btn-hover-color);
       background: var(--btn-hover-bg);
       border-color: var(--btn-hover-bg);
+    }
+  }
+
+  .entry-point-card {
+
+    &:hover {
+      background: var(--entry-point-card-hover-bg);
     }
   }
 }

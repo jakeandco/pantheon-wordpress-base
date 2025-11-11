@@ -9,6 +9,7 @@
   $dynamic-btn-color: 'light-text';
   $dynamic-btn-hover-bg: 'bright-red';
   $dynamic-btn-hover-color: 'light-text';
+  $dynamic-entry-point-card-hover-bg: 'warm-light';
 
   @include dynamic-theme(
     $dynamic-color-label,
@@ -19,6 +20,7 @@
     $dynamic-btn-bg,
     $dynamic-btn-hover-bg,
     $dynamic-btn-color,
-    $dynamic-btn-hover-color
+    $dynamic-btn-hover-color,
+    $dynamic-entry-point-card-hover-bg
   );
 }

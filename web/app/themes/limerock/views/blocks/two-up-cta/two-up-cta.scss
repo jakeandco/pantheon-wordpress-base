@@ -43,8 +43,10 @@
     text-decoration: none;
   }
 
-  &:hover a {
-    text-decoration: underline;
+  .text-holder {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   figure {
