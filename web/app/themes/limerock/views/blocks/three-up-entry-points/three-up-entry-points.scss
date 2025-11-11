@@ -5,11 +5,56 @@
     padding: 84px 0 54px;
   }
 
-  .row {
-    margin: 0 -6px;
+  &:has(.col-md-4) {
+    .row {
+      margin: 0 -6px;
 
-    .col-12 {
-      padding: 0 6px;
+      .col-12 {
+        padding: 0 6px;
+      }
+    }
+  }
+
+  &:has(.col-md-6) {
+    .row {
+      margin: 0 -16px;
+
+      .col-12 {
+        padding: 0 16px;
+      }
+    }
+  }
+
+  .col-md-4 {
+
+    .entry-point-card {
+
+      .btn {
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+          margin-left: -15px;
+        }
+      }
+    }
+  }
+
+  .col-md-6 {
+    .entry-point-card {
+      &:has(.btn) p:last-of-type {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 41px;
+        }
+      }
+
+      .btn {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 11px;
+        }
+      }
+
+      .icon {
+        top: 12px;
+        right: 15px;
+      }
     }
   }
 }
@@ -26,8 +71,12 @@
 
   border-radius: 12px;
   margin-bottom: 30px;
+  transition: background-color 0.3s ease-in-out;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     height: calc(100% - 30px);
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
   }
   @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
     --entry-point-card--padding--top: 45px;
@@ -40,22 +89,85 @@
     font-size: 20px;
     line-height: 1.273;
     font-weight: 600;
+    text-decoration: underline;
+    width: 100%;
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       font-size: 22px;
       line-height: 28px;
     }
   }
 
-  &:hover &--title {
-    text-decoration: underline;
+  &:hover {
+
+    .icon {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+  &:has(.btn) {
+    p:last-of-type {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 44px;
+      }
+    }
   }
 
   figure {
-    $top-margin: calc((var(--entry-point-card--padding--top) * -1) + 10px);
-    $horizontal-margin: calc((var(--entry-point-card--padding--horizontal) * -1) + 10px);
+    margin: 0;
+
+    .media-item_holder {
+      padding-bottom: 63%;
+      position: relative;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+    }
+  }
+
+  .btn {
+    margin-top: auto;
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      margin-bottom: 5px;
+    }
+  }
+
+  .img {
+    position: relative;
+    $top-margin: calc((var(--entry-point-card--padding--top) * -1) + 9px);
+    $horizontal-margin: calc((var(--entry-point-card--padding--horizontal) * -1) + 9px);
     margin-top: $top-margin;
     margin-right: $horizontal-margin;
     margin-left: $horizontal-margin;
     margin-bottom: var(--entry-point-card--padding--bottom);
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      width: calc(100% + 32px);
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+      width: calc(100% + 60px);
+      margin-bottom: 46px;
+    }
+  }
+
+  .icon {
+    background-color: $light;
+    color: $black;
+    position: absolute;
+    top: 11px;
+    right: 9px;
+    border-radius: 30px;
+    width: 25px;
+    height: 25px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
   }
 }

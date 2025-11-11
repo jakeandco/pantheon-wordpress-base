@@ -5,9 +5,11 @@
         {% for row in fields.ctas %}
 
           <div class="col-12 col-md-6 cta-item" data-bs-theme="{{ row.background_color.slug }}">
-            <a href="{{row.button.url}}" alt="{{row.button.alt}}" class="img-holder" data-bs-theme="{{ row.background_color.slug }}">
-              {% include '@partial/media-item.twig' with { image: row.background_image } only %}
-            </a>
+            {% if row.background_image %}
+              <a href="{{row.button.url}}" alt="{{row.button.alt}}" class="img-holder" data-bs-theme="{{ row.background_color.slug }}">
+                {% include '@partial/media-item.twig' with { image: row.background_image } only %}
+              </a>
+            {% endif %}
 
             {% if row.text %}
               <div class="wrap">

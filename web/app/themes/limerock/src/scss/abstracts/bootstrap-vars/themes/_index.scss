@@ -13,7 +13,8 @@
   $dynamic-btn-bg,
   $dynamic-btn-hover-bg,
   $dynamic-btn-color,
-  $dynamic-btn-hover-color) {
+  $dynamic-btn-hover-color,
+  $dynamic-entry-point-card-hover-bg) {
     [data-bs-theme='#{$dynamic-color-label}'] {
       --#{$prefix}body-color: #{map-get($theme-colors, $dynamic-text-color)};
       --#{$prefix}body-color-rgb: #{map-get(
@@ -160,6 +161,12 @@
         $dynamic-btn-hover-color )
       };
 
+      --#{$prefix}entry-point-card-hover-bg: #{map-get($theme-colors, $dynamic-entry-point-card-hover-bg)};
+      --#{$prefix}entry-point-card-hover-bg: #{map-get(
+        $theme-colors,
+        $dynamic-entry-point-card-hover-bg )
+      };
+
       --#{$prefix}border-color: #{$dynamic-text-color};
   }
 }
@@ -202,3 +209,4 @@
 @import 'light-text';
 @import 'light';
 @import 'white-30';
+@import 'white-20';

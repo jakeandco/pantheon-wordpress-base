@@ -30,6 +30,7 @@ body:has(.hero) {
   margin-bottom: 19px;
   letter-spacing: 0;
   border-bottom: 1px solid;
+  font-weight: 400;
 
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     font-size: 22px;
