@@ -5,10 +5,17 @@
     padding: 90px 0 71px;
   }
 
-  h5 {
+  &:has(.block-title) {
+    h5 {
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  .block-title {
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-      font-size: 44px;
-      line-height: 50px;
+      margin-bottom: 51px;
     }
   }
 

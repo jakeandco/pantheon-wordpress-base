@@ -5,7 +5,8 @@
     padding: 53px 0 78px;
   }
 
-  &[data-bs-theme="warm-light"] {
+  &[data-bs-theme="warm-light"],
+  &[data-bs-theme="light-text"] {
     .tease:not(.tease-research-area):hover {
       background-color: $white;
     }

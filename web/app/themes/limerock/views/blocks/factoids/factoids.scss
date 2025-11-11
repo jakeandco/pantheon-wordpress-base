@@ -19,8 +19,11 @@
   }
 
   .caption {
+    font-weight: 600;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       margin-bottom: 14px;
+      font-size: 16px;
+      line-height: 28px;
     }
   }
 }
