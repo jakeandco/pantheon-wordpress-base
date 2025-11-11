@@ -93,6 +93,59 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $context['leadership_people'] = $leadership_people;
     }
 
+    if ($slug === 'news-list') {
+        $post_type = 'post';
+        $fields = $context['fields'];
+        $selections = [];
+
+        if (!empty($fields['selection_type'])) {
+            switch ($fields['selection_type']) {
+                case 'manual':
+                    $selections = $fields['selections'] ?? [];
+                    break;
+
+                case 'all':
+                    $selections = Timber::get_posts(['post_type' => $post_type]);
+                    break;
+
+                case 'past':
+                    $today = getdate();
+                    $selections = Timber::get_posts([
+                        'post_type'  => $post_type,
+                        'date_query' => [
+                            [
+                                'year'  => $today['year'],
+                                'month' => $today['mon'],
+                                'day'   => $today['mday'],
+                            ],
+                        ],
+                    ]);
+                    break;
+
+                case 'related':
+                    if (!empty($post_id)) {
+                        $terms = wp_get_post_terms($post_id, 'tax-research-area', ['fields' => 'slugs']);
+                        if (!empty($terms)) {
+                            $selections = Timber::get_posts([
+                                'post_type'      => $post_type,
+                                'post__not_in'   => [$post_id],
+                                'tax_query'      => [
+                                    [
+                                        'taxonomy' => 'tax-research-area',
+                                        'field'    => 'slug',
+                                        'terms'    => $terms,
+                                    ],
+                                ],
+                            ]);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        $context['selections'] = $selections;
+    }
+
 	if (! empty($block['data']['is_example'])) {
 		$context['is_example'] = true;
 		$context['fields'] = $block['data'];
