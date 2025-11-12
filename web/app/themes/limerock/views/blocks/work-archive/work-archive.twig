@@ -1,6 +1,10 @@
+{% set post = get_post(post_id) %}
+{% set headerBackgroundColor =  post.meta('header_background').slug %}
+{% set blockBackgroundColor = block.backgroundColor|default('white') %}
+
 {% embed '@partial/block_wrapper.twig' with {
   extra_classes: 'block_work-archive',
-  extra_attributes: 'data-bs-theme="green"'
+  extra_attributes: 'data-bs-theme="' ~ headerBackgroundColor ~ '"'
 } %}
   {% block content %}
     <form
@@ -9,7 +13,7 @@
       class="ajax-form-js hide-selected-labels"
     >
       {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
-      <div class="works-wrap" data-bs-theme="white">
+      <div class="works-wrap" data-bs-theme="{{ blockBackgroundColor }}">
         <div class="container">
           {% include '@blocks/work-archive/filters.twig' with { fields: fields } %}
           <div class="ajax-results-js">
