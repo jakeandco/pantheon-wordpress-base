@@ -1,6 +1,11 @@
 {% embed '@views/tease.twig' with {
   tease_options: tease_options|merge({
-    extra_classes: html_classes(tease_options.extra_classes ?: '', 'swiper-slide'),
+    extra_classes: html_classes(
+      tease_options.extra_classes ?: '',
+      'swiper-slide',
+      { 'style-svg': tease_options.animate }
+
+    ),
     extra_attributes: theme_attr
   }),
   post
@@ -15,9 +20,7 @@
           <p>{{post.excerpt}}</p>
         </div>
         {% if post.meta('research_area_icon_svg') %}
-        {% set holder_classes = html_classes('image-holder', ('image-holder--' ~ post.ID), { 'style-svg': tease_options.animate } ) %}
-        
-          <div class="{{ holder_classes }}">
+          <div class="image-holder image-holder--{{ post.ID }}">
             <a href="{{post.link}}">
               {% include '@partial/raw-svg.twig' with { svg_file: post.meta('research_area_icon_svg') } only %}
             </a>

@@ -20,11 +20,12 @@
       <ul class="menu main-nav list-unstyled">
         {% for subrow in row.sub_menu_items %}
           {% set page_post = get_post(subrow.page) %}
-          <li class="dropdown-item">
+          <li class="dropdown-item style-svg">
             <a href="{{ page_post.path }}">
-              {% if '.svg' in subrow.image.filename %}
-                <figure class="image-holder style-svg">
-                  {% include '@partial/raw-svg.twig' with { svg_file: subrow.image.url } only %}
+              {% set svg_file = subrow.image is iterable ? subrow.image.url : subrow.image %}
+              {% if '.svg' in svg_file %}
+                <figure class="image-holder">
+                  {% include '@partial/raw-svg.twig' with { svg_file } only %}
                 </figure>
               {% else %}
                 {% include '@partial/media-item.twig' with { image: subrow.image } only %}
