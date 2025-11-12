@@ -1,5 +1,9 @@
 {% set header_fields = options.site.header %}
-
+{% set post = get_post(post_id) %}
+{% set backgroundColor =  post.meta('header_background').slug|default('white') %}
+{% if is_search %}
+  {% set backgroundColor = 'warm-light' %}
+{% endif %}
 {# Example of fields for banner nav #}
 <div class="top-navigation" data-bs-theme="black">
   <div class="container">
@@ -13,7 +17,7 @@
   </div>
 </div>
 
-<header class="header fixed-top" id="header" role="banner">
+<header class="header fixed-top" id="header" role="banner" data-bs-theme="{{ backgroundColor }}">
   <div class="container">
     <nav class="navbar navbar-expand-md bg-body-tertiary">
       <a class="navbar-brand" href="{{ site.url }}">

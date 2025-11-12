@@ -1,5 +1,10 @@
+{% set post = get_post(post_id) %}
+{% set headerBackgroundColor =  post.meta('header_background').slug %}
+{% set blockBackgroundColor = block.backgroundColor|default('light-text') %}
+
 {% embed '@partial/block_wrapper.twig' with {
-  extra_classes: 'block_people-archive'
+  extra_classes: 'block_people-archive',
+  extra_attributes: 'data-bs-theme="' ~ headerBackgroundColor ~ '"'
   } %}
   {% block content %}
     <form
@@ -9,7 +14,7 @@
     >
       {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
 
-      <div class="people-wrap" data-bs-theme="light-text">
+      <div class="people-wrap" data-bs-theme="{{ blockBackgroundColor }}">
         <div class="container">
           {% if fields.text %}
             <div class="row people-wrap-heading">

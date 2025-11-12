@@ -42,5 +42,6 @@ $context['ajax_url']       = esc_url(home_url());
 $context['sort_options']   = get_archive_sort_options();
 $context['research_terms'] = $research_terms;
 $context['type_options']   = $post_type_options;
+$context['is_search']      = is_search();
 
 Timber::render($templates, $context);
