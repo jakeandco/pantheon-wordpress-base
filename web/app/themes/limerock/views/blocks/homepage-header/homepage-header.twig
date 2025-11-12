@@ -11,7 +11,7 @@
         <span class="d-xl-block">{{fields.headline['secondary']}}</span>
 
         <div class="animating-text-holder swiper-container">
-          <div class="animating-text-wrapper swiper-wrapper">
+          <div class="animating-text-wrapper swiper-wrapper" aria-live="polite">
             {% for row in fields.headline['animating_text'] %}
               <div class="swiper-slide animating-text mark">{{row['text']}}</div>
             {% endfor %}

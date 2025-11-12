@@ -49,6 +49,9 @@ export function setup() {
   window.addEventListener("resize", debounce(readyAndMeasure, 120));
 
   const swiper = new Swiper(".animating-text-holder", {
+    a11y: {
+      enabled: true,
+    },
     modules: [Autoplay],
     direction: "vertical",
     effect: "slide",
