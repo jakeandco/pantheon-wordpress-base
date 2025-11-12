@@ -74,12 +74,6 @@ body.search-results {
       }
     }
 
-    .btn-holder {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        padding-bottom: 59px;
-      }
-    }
-
     .filters-blocks {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding-top: 50px;
@@ -118,24 +112,12 @@ body.search-results {
       border-bottom: 1px solid;
       margin-bottom: 42px;
     }
-
-    .btn-holder {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        display: none;
-      }
-    }
   }
 
-  .collapse-holder {
+  &:has(.collapse.show) {
 
-    &.show {
-
-      .btn-holder {
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          visibility: visible;
-          opacity: 1;
-        }
-      }
+    &:after {
+      opacity: 1;
     }
   }
 
@@ -242,26 +224,6 @@ body.search-results {
       margin-left: 4px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         margin-left: 0px;
-      }
-    }
-  }
-
-  .btn-holder {
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      position: absolute;
-      bottom: 100%;
-      left: 25px;
-      padding-bottom: 62px;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    .btn {
-      letter-spacing: 1px;
-      margin-right: 4px;
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        letter-spacing: 0;
       }
     }
   }

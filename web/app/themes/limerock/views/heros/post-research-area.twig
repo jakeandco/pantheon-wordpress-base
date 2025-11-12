@@ -3,7 +3,7 @@
     <div class="container">
       <h1>{{title|default(post.title)}}</h1>
       {% if post.meta('research_area_icon_svg') %}
-        <div class="image-holder style-svg image-holder--{{ post.ID }}">
+        <div class="image-holder image-holder--{{ post.ID }}">
           {% set chars = 'abcdefghijklmnopqrstuvwxyz0123456789'|split('') %}
           {% set unique_prefix = 'svg-' ~ (range(1, 6)|map(i => random(chars))|join) %}
 
