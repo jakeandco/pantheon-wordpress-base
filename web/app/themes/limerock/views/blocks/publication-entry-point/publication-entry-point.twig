@@ -11,13 +11,13 @@
         <div class="col-12 col-md-6 quote-holder">
 
           <div class="quote h5">
-            {{fields.quote['content']}}
+            {{fields.quote.content}}
           </div>
 
           <div class="entry-point-attribution">
-            <p class="title">{{fields.quote['attribution']['title']}}</p>
+            <p class="title">{{fields.quote.attribution.title}}</p>
 
-            <p>{{fields.quote['attribution']['subtitle']}}</p>
+            <p>{{fields.quote.attribution.subtitle}}</p>
           </div>
 
           <a href="{{ post.link }}" class="btn btn-primary">{{fields.read_more_text}}</a>
