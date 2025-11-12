@@ -63,12 +63,36 @@
     max-width: 100%;
     margin: 0;
   }
+
+  .tease-research-area {
+    transition-property: all !important;
+
+    &:hover {
+      background-color: $stanford-red !important;
+      color: $white !important;
+
+      svg {
+        path {
+          &[fill="#7F1414"] {
+            fill: $dark-red;
+          }
+          &[stroke="#7F1414"] {
+            stroke: $dark-red;
+          }
+        }
+        rect[fill="#7F1414"] {
+          fill: $dark-red;
+        }
+      }
+    }
+  }
 }
 
 .tease-research-area {
   border-radius: 12px;
   margin-bottom: 21px;
   padding: 19px 18px 13px;
+  transition: all 0.3s ease-in-out;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     margin-bottom: 8px;
     padding: 25px 0;
@@ -87,6 +111,7 @@
 
     a {
       text-decoration: none;
+      color: inherit;
 
       &:hover {
         text-decoration: underline;

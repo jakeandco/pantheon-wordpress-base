@@ -118,10 +118,15 @@
         opacity: 0.5;
         position: relative;
         cursor: pointer;
-        transition: opacity 0.2s ease;
+        transition: all 0.2s ease;
 
         &:hover {
           opacity: 1;
+          color: $stanford-red;
+
+          &:before {
+            opacity: 1;
+          }
         }
 
         &:before {
@@ -142,15 +147,16 @@
           top: 0;
           left: 0;
           right: 100%;
-          border-top: 1px solid;
+          border-top: 1px solid $stanford-red;
         }
 
         &.is-active {
           opacity: 1;
+          color: $stanford-red;
 
           &:after {
             right: 0;
-            transition: all 3s ease;
+            transition: all 5s ease;
           }
         }
       }

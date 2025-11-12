@@ -92,6 +92,7 @@
 
   h5 {
     font-family: 'FT System Grotesk';
+    font-weight: 400;
     font-size: 16px;
     line-height: 22px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {

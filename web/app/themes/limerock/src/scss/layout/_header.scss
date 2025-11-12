@@ -13,6 +13,14 @@
   }
 }
 
+.navbar-brand {
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: $bright-red;
+  }
+}
+
 .navbar {
   padding: 7px 0;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
