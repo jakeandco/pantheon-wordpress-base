@@ -17,7 +17,9 @@
     }
   }
 
-  &[data-bs-theme="white"] {
+  &[data-bs-theme="white"],
+  &[data-bs-theme="warm-light"],
+  &[data-bs-theme="light"] {
     .quote-content {
       color: $stanford-red;
     }
