@@ -535,16 +535,33 @@ function custom_template_redirect() {
 }
 add_action('template_redirect', 'custom_template_redirect', 0);
 
+function acf_event_datetime( $date_string ) {
+    if ( empty( $date_string ) ) {
+        return null;
+    }
+
+    $dt = DateTime::createFromFormat('d/m/Y h:i a', $date_string);
+
+    if ( ! $dt ) {
+        return null;
+    }
+
+    return $dt;
+}
+
 add_filter('timber/twig', function($twig) {
     $twig->addFilter(new \Twig\TwigFilter('file_get_contents_raw', function($url) {
         $uploads = wp_upload_dir();
-        $baseurl = $uploads['baseurl'];   // URL до папки uploads
-        $basedir = $uploads['basedir'];   // Фізичний шлях до папки uploads
+        $baseurl = $uploads['baseurl'];   // URL to the uploads folder
+        $basedir = $uploads['basedir'];   // Physical path to the uploads folder
 
         $relative_path = str_replace($baseurl, '', $url); // /2025/10/research-area-icon-1.svg
         $path = $basedir . $relative_path;
 
         return file_exists($path) ? file_get_contents($path) : '';
     }));
+
+    $twig->addFunction(new \Twig\TwigFunction('acf_event_datetime', 'acf_event_datetime'));
+
     return $twig;
 });
