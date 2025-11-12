@@ -98,6 +98,11 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $fields = $context['fields'];
         $selections = [];
 
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $posts_per_page = !empty($fields['posts_per_page'])
+        ? intval($fields['posts_per_page'])
+        : 3;
+
         if (!empty($fields['selection_type'])) {
             switch ($fields['selection_type']) {
                 case 'manual':
@@ -105,39 +110,31 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                     break;
 
                 case 'all':
-                    $selections = Timber::get_posts(['post_type' => $post_type]);
-                    break;
-
-                case 'past':
-                    $today = getdate();
                     $selections = Timber::get_posts([
-                        'post_type'  => $post_type,
-                        'date_query' => [
-                            [
-                                'year'  => $today['year'],
-                                'month' => $today['mon'],
-                                'day'   => $today['mday'],
-                            ],
-                        ],
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
                     ]);
                     break;
 
                 case 'related':
-                    if (!empty($post_id)) {
-                        $terms = wp_get_post_terms($post_id, 'tax-research-area', ['fields' => 'slugs']);
-                        if (!empty($terms)) {
-                            $selections = Timber::get_posts([
-                                'post_type'      => $post_type,
-                                'post__not_in'   => [$post_id],
-                                'tax_query'      => [
-                                    [
-                                        'taxonomy' => 'tax-research-area',
-                                        'field'    => 'slug',
-                                        'terms'    => $terms,
-                                    ],
-                                ],
-                            ]);
-                        }
+                    $query_args = [
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                    ];
+
+                    if (!empty($fields['related_research_areas'])) {
+                        $query_args['tax_query'] = [
+                            [
+                                'taxonomy' => 'tax-research-area',
+                                'field'    => 'term_id',
+                                'terms'    => $fields['related_research_areas'],
+                            ],
+                        ];
+                        $selections = Timber::get_posts($query_args);
                     }
                     break;
             }

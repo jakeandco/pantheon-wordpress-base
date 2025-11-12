@@ -13,7 +13,6 @@
       "type": "select",
       "choices": {
         "all": "All",
-        "past": "Past",
         "related": "Related",
         "manual": "Manual"
       }
@@ -32,6 +31,34 @@
           }
         ]
       ]
+    },
+    {
+      "label": "Select related Research Areas",
+      "name": "related_research_areas",
+      "type": "taxonomy",
+      "taxonomy": "tax-research-area",
+      "field_type": "multi_select",
+      "add_term": false,
+      "save_terms": false,
+      "load_terms": false,
+      "return_format": "id",
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "selection_type",
+            "operator": "==",
+            "value": "related"
+          }
+        ]
+      ]
+    },
+    {
+      "label": "Posts per page",
+      "name": "posts_per_page",
+      "type": "number",
+      "min": 1,
+      "step": 1,
+      "default_value": 3
     }
   ],
   "location": [
