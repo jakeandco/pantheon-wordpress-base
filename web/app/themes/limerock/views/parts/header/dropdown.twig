@@ -22,7 +22,14 @@
           {% set page_post = get_post(subrow.page) %}
           <li class="dropdown-item">
             <a href="{{ page_post.path }}">
-              {% include '@partial/media-item.twig' with { image: subrow.image } only %}
+              {% if '.svg' in subrow.image.filename %}
+                <figure>
+                  {% include '@partial/raw-svg.twig' with { svg_file: subrow.image.url } only %}
+                </figure>
+              {% else %}
+                {% include '@partial/media-item.twig' with { image: subrow.image } only %}
+              {% endif %}
+
               <div class="text">
                 <h4>{{ page_post.title }}</h4>
 
