@@ -33,7 +33,7 @@
           <div class="col-12">
             {% include '@partial/post-repeater.twig' with {
               posts: get_posts(fields.additional_items),
-              tease_options: { variant: 'archive' }
+              variant: 'archive'
             } only %}
           </div>
         {% endif %}
