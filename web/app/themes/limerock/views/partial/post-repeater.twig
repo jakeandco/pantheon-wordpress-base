@@ -6,5 +6,5 @@
   {{ parent() }}
 {% endblock %}
 {% block row %}
-  {% include '@partial/tease_switcher.twig' with { post: get_post(row_data), tease_options: { variant: variant|default('') }, theme_attr: theme_attr } only %}
+  {% include '@partial/tease_switcher.twig' with { post: get_post(row_data), tease_options: tease_options|default({})|merge({ variant: variant|default('') }), theme_attr: theme_attr } only %}
 {% endblock %}
