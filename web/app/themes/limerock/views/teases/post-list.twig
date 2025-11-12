@@ -12,11 +12,6 @@
           {% set source = 'Insights' %}
           {% if post.meta('is_external_link') and post.meta('external_link') %}
             {% set source = post.meta('external_link').title %}
-          {% else %}
-            {% set category = post.terms('category')|first %}
-            {% if category %}
-              {% set source = category.name %}
-            {% endif %}
           {% endif %}
           {{ source }}
           <span class="mark"> · </span>
