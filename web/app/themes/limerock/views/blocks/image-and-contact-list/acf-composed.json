@@ -8,6 +8,15 @@
       "name": "image"
     },
     {
+      "label": "Image on right",
+      "name": "image_on_right",
+      "type": "true_false",
+      "ui": true,
+      "ui_on_text": "Right",
+      "ui_off_text": "Left",
+      "default_value": false
+    },
+    {
       "acf_composer_extend": "LimeRockTheme/ACF/fields/single-line-basic-wysiwyg",
       "label": "Title",
       "name": "title",

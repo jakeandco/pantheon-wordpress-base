@@ -1,7 +1,7 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_image-and-contact-list' } %}
   {% block content %}
     <div class="container">
-      <div class="row">
+      <div class="row {% if fields.image_on_right %}img-right{% endif %}">
         <div class="col-12 col-md-6 image-holder">
           {% include '@partial/media-item.twig' with { image: fields.image } only %}
         </div>

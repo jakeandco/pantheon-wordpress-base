@@ -3,11 +3,33 @@
   position: relative;
   overflow: hidden;
 
+  .container {
+    position: relative;
+    z-index: 1;
+    padding-top: 35px;
+    padding-bottom: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 56px;
+      padding-bottom: 20px;
+      min-height: 594px;
+    }
+
+    &.full-bleed-cta-large {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-bottom: 11px;
+      }
+    }
+  }
+
   .full-bleed-cta-large {
+
     h5 {
       font-size: 32px;
       line-height: 36px;
-      margin-bottom: 15px;
+      margin-bottom: 22px;
       font-weight: 350;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         font-size: 40px;
@@ -16,7 +38,14 @@
       @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
         font-size: 75px;
         line-height: 81px;
-        margin-bottom: 49px;
+        margin-bottom: 44px;
+        max-width: 80%;
+      }
+    }
+
+    .btn-primary {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-width: 211px;
       }
     }
   }
@@ -50,6 +79,19 @@
           color: $white;
         }
       }
+
+      .btn-primary {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          background-color: rgba($white,0.3) !important;
+          color: $white !important;
+        }
+
+        &:hover {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            background-color: $bright-red !important;
+          }
+        }
+      }
     }
 
     &:before {
@@ -78,21 +120,6 @@
     }
   }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    padding-top: 35px;
-    padding-bottom: 3px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding-top: 56px;
-      padding-bottom: 34px;
-      min-height: 594px;
-    }
-  }
-
   h5 {
     font-family: 'FT System Grotesk';
     font-size: 24px;
@@ -104,7 +131,7 @@
       font-weight: 300;
       font-size: 40px;
       line-height: 48px;
-      margin-bottom: 34px;
+      margin-bottom: 27px;
       letter-spacing: 0;
     }
   }
@@ -117,17 +144,93 @@
       margin-bottom: 10px;
       margin-right: 10px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        margin-right: 35px;
+        margin-right: 9px;
       }
     }
   }
 
   .btn-primary {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding: 19px 20px;
-      line-height: 1;
+      padding: 17px 18px;
+      line-height: 19px;
       font-size: 18px;
-      background: rgba($white,0.3);
+      min-width: 168px;
+      text-align: center;
+    }
+
+    svg {
+      width: 9px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 15px;
+        margin-left: 2px;
+      }
+    }
+  }
+
+  &[data-bs-theme="warm-dark"] {
+
+    .btn-primary {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background: rgba($white,0.3) !important;
+        color: $black !important;
+      }
+
+      &:hover {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          background: $white !important;
+        }
+      }
+    }
+  }
+
+  &[data-bs-theme="stanford-red"] {
+
+    .full-bleed-cta {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
+        min-height: 594px;
+      }
+    }
+
+    .btn-primary {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md'))  {
+        min-width: 180px;
+        background: rgba($white,0.2) !important;
+        color: $white !important;
+      }
+
+      &:hover {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          background: $black !important;
+        }
+      }
+    }
+  }
+}
+
+.home {
+
+  .block_full-bleed-cta {
+
+    h5 {
+      @media screen and (max-width: map-get($grid-breakpoints, 'lg')) {
+        font-size: 32px;
+        line-height: 36px;
+        margin-bottom: 22px;
+        font-weight: 350;
+      }
+    }
+  }
+}
+
+.block_two-up-media-item {
+
+  & + .block_full-bleed-cta {
+
+    .full-bleed-cta {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-height: 460px;
+        padding-bottom: 20px;
+      }
     }
   }
 }

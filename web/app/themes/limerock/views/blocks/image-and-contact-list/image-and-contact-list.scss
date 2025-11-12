@@ -20,7 +20,8 @@
       margin: 0;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         width: 50vw;
-        left: 0;
+        left: auto;
+        right: 0;
         transform: none;
         top: 0;
         position: absolute;
@@ -52,8 +53,21 @@
   }
 
   .row {
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      flex-direction: row-reverse;
+
+    &.img-right {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        flex-direction: row-reverse;
+      }
+
+      .image-holder {
+
+        figure {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            left: 0;
+            right: auto;
+          }
+        }
+      }
     }
   }
 
