@@ -10,7 +10,7 @@
       {% set selections = get_posts({ post_type }) %}
 
       <div class="research-area-circle">
-        {% include '@partial/post-repeater.twig' with { posts: selections } only %}
+        {% include '@partial/post-repeater.twig' with { posts: selections, tease_options: { animate: true } } only %}
 
         <svg class="svg-decor d-none d-md-block">
           <circle class="circle d-none d-md-block" cx="335" cy="335" r="335" stroke="#BCAC9B" stroke-width="1" fill="none"></circle>

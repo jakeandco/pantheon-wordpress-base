@@ -13,7 +13,7 @@
     {% if fields.variation == 'cards' %}
 
       <div class="research-area-wrapper research-area-wrapper--{{fields.variation}}">
-        {% include '@partial/post-repeater.twig' with { posts: selections, theme_attr: 'data-bs-theme="white"' } only %}
+        {% include '@partial/post-repeater.twig' with { posts: selections, tease_options: { animate: true }, theme_attr: 'data-bs-theme="white"' } only %}
       </div>
 
     {% else %}

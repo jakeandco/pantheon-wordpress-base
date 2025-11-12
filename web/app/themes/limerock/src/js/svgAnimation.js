@@ -4,7 +4,7 @@ function setupSvgAnimation() {
   console.log('Svg Animation');
 
   function initAnimations() {
-    const holders = document.querySelectorAll('.image-holder.style-svg');
+    const holders = document.querySelectorAll('.style-svg');
     console.log('Found holders:', holders.length);
 
     holders.forEach((holder) => {

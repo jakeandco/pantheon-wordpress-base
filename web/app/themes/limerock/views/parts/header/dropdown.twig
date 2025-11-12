@@ -23,7 +23,7 @@
           <li class="dropdown-item">
             <a href="{{ page_post.path }}">
               {% if '.svg' in subrow.image.filename %}
-                <figure>
+                <figure class="image-holder style-svg">
                   {% include '@partial/raw-svg.twig' with { svg_file: subrow.image.url } only %}
                 </figure>
               {% else %}

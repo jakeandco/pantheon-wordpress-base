@@ -15,7 +15,9 @@
           <p>{{post.excerpt}}</p>
         </div>
         {% if post.meta('research_area_icon_svg') %}
-          <div class="image-holder image-holder--{{ post.ID }}">
+        {% set holder_classes = html_classes('image-holder', ('image-holder--' ~ post.ID), { 'style-svg': tease_options.animate } ) %}
+        
+          <div class="{{ holder_classes }}">
             <a href="{{post.link}}">
               {% include '@partial/raw-svg.twig' with { svg_file: post.meta('research_area_icon_svg') } only %}
             </a>
