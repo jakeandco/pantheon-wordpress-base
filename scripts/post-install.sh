@@ -16,9 +16,9 @@ if [[ -n "$PANTHEON_ENVIRONMENT" ]]
         # in lieu of restarting the shell
         \. "$HOME/.nvm/nvm.sh"
         # Download and install Node.js:
-        nvm install 24
+        nvm install 24.11.1
         # Verify the Node.js version:
-        node -v # Should print "v24.9.0".
+        node -v # Should print "v24.11.1".
         # Verify npm version:
         npm -v # Should print "11.6.0".
     fi
