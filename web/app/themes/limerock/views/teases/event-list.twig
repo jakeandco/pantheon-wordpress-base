@@ -18,12 +18,27 @@
         </div>
       </div>
       <div class="col-12 col-md-6 text-holder">
-        <div class="date">Friday May, 23 <span class="mark">/</span> 11:30a to 12:30p Pacific Time</div>
+        {% set event_start = acf_event_datetime(post.meta('event_start_date')) %}
+        {% set event_end   = acf_event_datetime(post.meta('event_end_date')) %}
+
+        {% if event_start and event_end %}
+          <div class="date">
+            {{ event_start|date("l F, j") }}
+            <span class="mark">/</span>
+            {{ event_start|date("g:ia") }} to {{ event_end|date("g:ia") }} Pacific Time
+          </div>
+        {% endif %}
+
         <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
 
-        <ul class="category-list list-unstyled">
-          <li><a href="#" class="btn btn-secondary">Research area tag</a></li>
-        </ul>
+        {% set research_areas = post.terms('tax-research-area') %}
+        {% if research_areas %}
+          <ul class="category-list list-unstyled">
+            {% for term in research_areas %}
+              <li><a href="{{ term.link }}" class="btn btn-secondary">{{ term.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
 
       <div class="col-12 col-md-2 text-end btn-holder d-none d-md-block">

@@ -93,6 +93,124 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $context['leadership_people'] = $leadership_people;
     }
 
+    if ($slug === 'news-list') {
+        $post_type = 'post';
+        $fields = $context['fields'];
+        $selections = [];
+
+        if (!empty($fields['selection_type'])) {
+            switch ($fields['selection_type']) {
+                case 'manual':
+                    $selections = $fields['selections'] ?? [];
+                    break;
+
+                case 'all':
+                    $selections = Timber::get_posts(['post_type' => $post_type]);
+                    break;
+
+                case 'past':
+                    $today = getdate();
+                    $selections = Timber::get_posts([
+                        'post_type'  => $post_type,
+                        'date_query' => [
+                            [
+                                'year'  => $today['year'],
+                                'month' => $today['mon'],
+                                'day'   => $today['mday'],
+                            ],
+                        ],
+                    ]);
+                    break;
+
+                case 'related':
+                    if (!empty($post_id)) {
+                        $terms = wp_get_post_terms($post_id, 'tax-research-area', ['fields' => 'slugs']);
+                        if (!empty($terms)) {
+                            $selections = Timber::get_posts([
+                                'post_type'      => $post_type,
+                                'post__not_in'   => [$post_id],
+                                'tax_query'      => [
+                                    [
+                                        'taxonomy' => 'tax-research-area',
+                                        'field'    => 'slug',
+                                        'terms'    => $terms,
+                                    ],
+                                ],
+                            ]);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        $context['selections'] = $selections;
+    }
+
+    if ($slug === 'events-list') {
+        $fields = $context['fields'];
+        $post_type = 'event';
+        $selections = [];
+
+        switch ($fields['selection_type'] ?? '') {
+            case 'manual':
+                $selections = $fields['selections'] ?? [];
+                break;
+
+            case 'all':
+                $selections = Timber::get_posts(['post_type' => $post_type]);
+                break;
+
+            case 'past':
+                $today = getdate();
+                $selections = Timber::get_posts([
+                    'post_type'  => $post_type,
+                    'date_query' => [
+                        [
+                            'year'  => $today['year'],
+                            'month' => $today['mon'],
+                            'day'   => $today['mday'],
+                        ],
+                    ],
+                ]);
+                break;
+
+            case 'related':
+                if (!empty($post_id)) {
+                    $relation_taxonomies = ['tax-research-area', 'event-category'];
+                    $tax_query = [];
+
+                    foreach ($relation_taxonomies as $taxonomy) {
+                        $terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'slugs']);
+                        if (!empty($terms)) {
+                            $tax_query[] = [
+                                'taxonomy' => $taxonomy,
+                                'field'    => 'slug',
+                                'terms'    => $terms,
+                            ];
+                        }
+                    }
+
+                    if (!empty($tax_query)) {
+                        $tax_query = [
+                            'relation' => 'OR',
+                            ...$tax_query,
+                        ];
+
+                        $selections = Timber::get_posts([
+                            'post_type'    => $post_type,
+                            'post__not_in' => [$post_id],
+                            'tax_query'    => $tax_query,
+                        ]);
+                    } else {
+                        $selections = [];
+                    }
+                }
+                break;
+        }
+
+        $context['selections'] = $selections;
+    }
+
 	if (! empty($block['data']['is_example'])) {
 		$context['is_example'] = true;
 		$context['fields'] = $block['data'];
@@ -417,16 +535,33 @@ function custom_template_redirect() {
 }
 add_action('template_redirect', 'custom_template_redirect', 0);
 
+function acf_event_datetime( $date_string ) {
+    if ( empty( $date_string ) ) {
+        return null;
+    }
+
+    $dt = DateTime::createFromFormat('d/m/Y h:i a', $date_string);
+
+    if ( ! $dt ) {
+        return null;
+    }
+
+    return $dt;
+}
+
 add_filter('timber/twig', function($twig) {
     $twig->addFilter(new \Twig\TwigFilter('file_get_contents_raw', function($url) {
         $uploads = wp_upload_dir();
-        $baseurl = $uploads['baseurl'];   // URL до папки uploads
-        $basedir = $uploads['basedir'];   // Фізичний шлях до папки uploads
+        $baseurl = $uploads['baseurl'];   // URL to the uploads folder
+        $basedir = $uploads['basedir'];   // Physical path to the uploads folder
 
         $relative_path = str_replace($baseurl, '', $url); // /2025/10/research-area-icon-1.svg
         $path = $basedir . $relative_path;
 
         return file_exists($path) ? file_get_contents($path) : '';
     }));
+
+    $twig->addFunction(new \Twig\TwigFunction('acf_event_datetime', 'acf_event_datetime'));
+
     return $twig;
 });
