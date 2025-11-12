@@ -5,11 +5,13 @@
     {
       "label": "Publication",
       "name": "publication",
-      "type": "post_object"
+      "type": "post_object",
+      "post_type": ["publication"]
     },
     {
       "label": "Read More Text",
       "name": "read_more_text",
+      "default_value": "Read publication",
       "type": "text"
     },
     {

@@ -49,7 +49,7 @@ jobs:
       - name: Install & build (theme)
         working-directory: web/app/themes/limerock
         run: |
-          npm ci
+          npm ci --omit=optional
           npm run build
   deploy:
     needs: verify
