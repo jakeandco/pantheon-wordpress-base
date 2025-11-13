@@ -11,6 +11,7 @@ import * as video from './video';
 import * as svgAnimation from './svgAnimation';
 import * as archiveAjax from './archiveAjax';
 import * as headerSearch from './headerSearch';
+import * as headerPosition from './headerPosition';
 import * as postsAjax from './postsAjax';
 
 export function setup() {
@@ -27,6 +28,7 @@ export function setup() {
   svgAnimation.setup();
   archiveAjax.setup();
   headerSearch.setup();
+  headerPosition.setup();
   postsAjax.setup();
 }
 
@@ -45,6 +47,7 @@ export function teardown() {
   svgAnimation.teardown();
   archiveAjax.teardown();
   headerSearch.teardown();
+  headerPosition.teardown();
   postsAjax.teardown();
 }
 
