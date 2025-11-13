@@ -155,6 +155,9 @@ body.search-results {
           color: $white;
           background-color: $black;
           border-color: $black;
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            border-color: $warm-dark;
+          }
         }
       }
 
@@ -164,7 +167,7 @@ body.search-results {
         vertical-align: top;
         text-transform: uppercase;
         border-radius: 12px;
-        background-color: $white;
+        background-color: $light-text;
         border: 1px solid $warm-dark;
         font-size: 12px;
         line-height: 20px;
@@ -185,6 +188,9 @@ body.search-results {
         color: $white;
         background-color: $black;
         border-color: $black;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          border-color: $warm-dark;
+        }
       }
     }
   }
@@ -192,8 +198,7 @@ body.search-results {
   .btn-secondary {
     border: 1px solid $black;
     color: $black;
-    background-color: $warm-light;
-
+    background-color: $light-text;
 
     &:hover {
       background-color: $black;
@@ -218,6 +223,10 @@ body.search-results {
           padding: 6px 14px;
         }
       }
+    }
+
+    &[data-bs-toggle="collapse"] {
+      font-weight: 600;
     }
 
     svg {
