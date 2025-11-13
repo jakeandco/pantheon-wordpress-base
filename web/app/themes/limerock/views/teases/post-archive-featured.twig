@@ -1,0 +1,39 @@
+{% embed '@views/tease.twig' with {
+  tease_options: {
+    extra_classes: 'tease-archive-featured post-' ~ post.post_type,
+  },
+  post
+} only %}
+  {% block content %}
+    <div class="row">
+      {% if post.thumbnail %}
+        <div class="col-12 col-md-6 img-holder">
+          {% include "@partial/media-item.twig" with { image: post.thumbnail } only %}
+        </div>
+      {% endif %}
+      <div class="col-12 col-md-6 text-holder">
+        <div class="date">
+          {% set source = 'Insights' %}
+          {% if post.meta('is_external_link') and post.meta('external_link') %}
+            {% set source = post.meta('external_link').title %}
+          {% endif %}
+          {{ source }}
+          <span class="mark"> · </span>
+          {{ post.date|date('F j, Y') }}
+        </div>
+        <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        {% include '@partial/post-taxonomy-list.twig' with {
+          post: post,
+          taxonomy: 'tax-research-area'
+        } only %}
+        <a href="{{post.link}}">
+          <span class="btn btn-secondary more-link">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.44738 8.14616L0.851562 7.55034L6.69624 1.70566H1.33389V0.854492H8.14323V7.66383H7.29206V2.30148L1.44738 8.14616Z" fill="currentColor"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  {% endblock %}
+{% endembed %}

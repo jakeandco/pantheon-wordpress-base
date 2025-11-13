@@ -34,7 +34,11 @@ export function setup() {
         .then(html => {
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = html;
-          const newGrid = tempDiv.querySelector('.ajax-results-js');
+          let newGrid;
+
+          if (block.id) {
+            newGrid = tempDiv.querySelector(`#${block.id} .ajax-results-js`);
+          }
 
           if (newGrid) {
             resultsContainer.innerHTML = newGrid.innerHTML;

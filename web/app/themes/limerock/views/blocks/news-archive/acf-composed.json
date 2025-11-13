@@ -1,0 +1,29 @@
+{
+  "name": "group_block_news-archive",
+  "title": "Block Details: News Archive",
+  "fields": [
+    {
+      "label": "Featured News",
+      "name": "featured_news",
+      "type": "relationship",
+      "post_type": ["post"]
+    },
+    {
+      "label": "Posts per page",
+      "name": "posts_per_page",
+      "type": "number",
+      "min": 1,
+      "step": 1,
+      "default_value": 5
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "limerock/news-archive"
+      }
+    ]
+  ]
+}
