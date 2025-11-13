@@ -12,7 +12,9 @@
       method="get"
       class="ajax-form-js hide-selected-labels"
     >
-      {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
+      <div data-bs-theme="green">
+        {% include '@partial/archive-heading.twig' with { fields: fields, request: request } only %}
+      </div>
       <div class="works-wrap" data-bs-theme="{{ blockBackgroundColor }}">
         <div class="container">
           {% include '@blocks/work-archive/filters.twig' with { fields: fields } %}

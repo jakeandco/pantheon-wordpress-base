@@ -44,6 +44,7 @@
     padding: 6px 0;
     border: 1px solid transparent;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      font-weight: 400;
       font-size: 22px;
       line-height: 30px;
       padding: 4px 16px;
