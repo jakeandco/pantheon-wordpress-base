@@ -1,3 +1,5 @@
+import { scrollToBlock } from './utils.js';
+
 export function setup() {
   const form = document.querySelector('.ajax-form-js');
   if (!form) return;
@@ -48,7 +50,7 @@ export function setup() {
     const url = link.getAttribute('href');
 
     ajaxLoadPosts(url);
-    scrollToResults(resultsContainer);
+    scrollToBlock(resultsContainer);
   });
 
   // remove filter
@@ -217,17 +219,6 @@ export function setup() {
 
   function triggerSubmit() {
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-  }
-
-  function scrollToResults(containerToScrollTo) {
-    const header = document.getElementById('header');
-    const headerHeight = header ? header.offsetHeight : 0;
-    const offsetTop = containerToScrollTo.getBoundingClientRect().top + window.scrollY - headerHeight;
-
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    });
   }
 
   function handleAllFilterOption(option) {

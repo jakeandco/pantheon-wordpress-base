@@ -12,11 +12,6 @@
           {% set source = 'Insights' %}
           {% if post.meta('is_external_link') and post.meta('external_link') %}
             {% set source = post.meta('external_link').title %}
-          {% else %}
-            {% set category = post.terms('category')|first %}
-            {% if category %}
-              {% set source = category.name %}
-            {% endif %}
           {% endif %}
           {{ source }}
           <span class="mark"> · </span>
@@ -24,9 +19,10 @@
         </div>
         <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
 
-        <ul class="category-list list-unstyled">
-          <li><a href="#" class="btn btn-secondary">Research area tag</a></li>
-        </ul>
+        {% include '@partial/post-taxonomy-list.twig' with {
+          post: post,
+          taxonomy: 'tax-research-area'
+        } only %}
       </div>
 
       <div class="col-2 col-md-4 col-xl-3 img-holder">

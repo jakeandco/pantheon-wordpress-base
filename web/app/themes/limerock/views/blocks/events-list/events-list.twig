@@ -8,6 +8,9 @@
         {% if selections is not empty %}
           <div class="posts-wrap events-list">
             {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'list' } only %}
+            <div class="mt-4">
+              {% include '@partial/pagination-alt.twig' with { posts: selections } only %}
+            </div>
           </div>
         {% elseif is_preview %}
           <p class="no-posts">No events found.</p>

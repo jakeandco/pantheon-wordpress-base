@@ -32,6 +32,10 @@
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     padding: 60px 0 84px;
   }
+
+  .collapse-button[aria-expanded="true"] {
+    display: none;
+  }
 }
 
 .posts-wrap {
