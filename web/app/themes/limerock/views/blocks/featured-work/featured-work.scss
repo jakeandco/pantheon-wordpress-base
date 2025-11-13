@@ -1,2 +1,35 @@
 .block_featured-work {
+
+  .featured-post-wrap {
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  .bottom-btn-holder {
+    padding-top: 40px;
+    padding-bottom: 80px;
+
+    .btn-primary {
+      background-color: $dark-gray;
+    }
+  }
+
+  .featured-work_intro-copy {
+    padding: 80px 0 40px;
+  }
+
+  .post-card-list {
+
+    .tease-archive-holder {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        min-height: 500px;
+      }
+
+      .category-list {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-top: auto;
+        }
+      }
+    }
+  }
 }
