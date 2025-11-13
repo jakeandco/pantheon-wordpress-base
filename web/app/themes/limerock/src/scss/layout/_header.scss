@@ -2,6 +2,17 @@
 // This file contains all styles related to the header of the site
 // -----------------------------------------------------------------------------
 
+.admin-bar {
+  .fixed-top {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      top: 46px;
+    }
+    @media screen and (min-width: '783px') {
+      top: 32px;
+    }
+  }
+}
+
 .header {
   background: var(--#{$prefix}body-bg);
 

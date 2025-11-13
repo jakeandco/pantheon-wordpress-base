@@ -2,24 +2,31 @@
 // This file contains all styles related to the common layout of the site
 // -----------------------------------------------------------------------------
 
-body:has(.hero) {
+// body:has(.hero) {
+//   .content-wrapper {
+//     --content-wrapper--margin-top: 0;
+//   }
+// }
+
+body.search-results {
+
   .content-wrapper {
-    --content-wrapper--margin-top: 0;
+    // margin-top: 0 !important;
   }
 }
 
 .content-wrapper {
-  --content-wrapper--margin-top: 54px;
+  // --content-wrapper--margin-top: 54px;
 
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    --content-wrapper--margin-top: 184px;
-  }
+  // @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+  //   --content-wrapper--margin-top: 184px;
+  // }
 
-  @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-    --content-wrapper--margin-top: 188px;
-  }
+  // @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+  //   --content-wrapper--margin-top: 188px;
+  // }
 
-  margin-top: var(--content-wrapper--margin-top);
+  // margin-top: var(--content-wrapper--margin-top);
 }
 
 .block-title {
