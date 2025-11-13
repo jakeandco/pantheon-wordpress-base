@@ -100,8 +100,8 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
         $posts_per_page = !empty($fields['posts_per_page'])
-        ? intval($fields['posts_per_page'])
-        : 3;
+            ? intval($fields['posts_per_page'])
+            : 3;
 
         if (!empty($fields['selection_type'])) {
             switch ($fields['selection_type']) {
@@ -144,65 +144,79 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
     }
 
     if ($slug === 'events-list') {
-        $fields = $context['fields'];
         $post_type = 'event';
+        $fields = $context['fields'];
         $selections = [];
 
-        switch ($fields['selection_type'] ?? '') {
-            case 'manual':
-                $selections = $fields['selections'] ?? [];
-                break;
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $posts_per_page = !empty($fields['posts_per_page'])
+            ? intval($fields['posts_per_page'])
+            : 3;
 
-            case 'all':
-                $selections = Timber::get_posts(['post_type' => $post_type]);
-                break;
+        if (!empty($fields['selection_type'])) {
+            switch ($fields['selection_type']) {
+                case 'manual':
+                    $selections = $fields['selections'] ?? [];
+                    break;
 
-            case 'past':
-                $today = getdate();
-                $selections = Timber::get_posts([
-                    'post_type'  => $post_type,
-                    'date_query' => [
-                        [
-                            'year'  => $today['year'],
-                            'month' => $today['mon'],
-                            'day'   => $today['mday'],
+                case 'all':
+                    $selections = Timber::get_posts([
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish', 'future'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                    ]);
+                    break;
+
+                case 'past':
+                    $today = date('Y-m-d');
+                    $selections = Timber::get_posts([
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish', 'future'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                        'meta_query'     => [
+                            [
+                                'key'     => 'event_start_date',
+                                'value'   => $today,
+                                'compare' => 'LIKE',
+                            ],
                         ],
-                    ],
-                ]);
-                break;
+                    ]);
+                    break;
 
-            case 'related':
-                if (!empty($post_id)) {
-                    $relation_taxonomies = ['tax-research-area', 'event-category'];
-                    $tax_query = [];
+                case 'related':
+                    $query_args = [
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish', 'future'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                    ];
 
-                    foreach ($relation_taxonomies as $taxonomy) {
-                        $terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'slugs']);
-                        if (!empty($terms)) {
-                            $tax_query[] = [
-                                'taxonomy' => $taxonomy,
-                                'field'    => 'slug',
-                                'terms'    => $terms,
-                            ];
-                        }
-                    }
+                    $tax_query = ['relation' => 'OR'];
 
-                    if (!empty($tax_query)) {
-                        $tax_query = [
-                            'relation' => 'OR',
-                            ...$tax_query,
+                    if (!empty($fields['related_research_areas'])) {
+                        $tax_query[] = [
+                            'taxonomy' => 'tax-research-area',
+                            'field'    => 'term_id',
+                            'terms'    => $fields['related_research_areas'],
                         ];
-
-                        $selections = Timber::get_posts([
-                            'post_type'    => $post_type,
-                            'post__not_in' => [$post_id],
-                            'tax_query'    => $tax_query,
-                        ]);
-                    } else {
-                        $selections = [];
                     }
-                }
-                break;
+
+                    if (!empty($fields['related_event_categories'])) {
+                        $tax_query[] = [
+                            'taxonomy' => 'event-category',
+                            'field'    => 'term_id',
+                            'terms'    => $fields['related_event_categories'],
+                        ];
+                    }
+
+                    if (count($tax_query) > 1) {
+                        $query_args['tax_query'] = $tax_query;
+                        $selections = Timber::get_posts($query_args);
+                    }
+                    break;
+            }
         }
 
         $context['selections'] = $selections;
