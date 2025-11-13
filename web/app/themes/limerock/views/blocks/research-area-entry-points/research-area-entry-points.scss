@@ -7,6 +7,141 @@
       border: 0;
     }
   }
+
+  &[data-bs-theme="stanford-red"],
+  &[data-bs-theme="bright-red"] {
+    .research-area-wrapper--carousel {
+      .swiper-stop-play,
+      .swiper-button-next,
+      .swiper-button-prev {
+        background-color: rgba($white,0.3);
+        color: $white;
+
+        &:hover {
+          background-color: $black;
+        }
+
+        svg {
+          opacity: 1;
+        }
+      }
+
+      .swiper-titles-pagination {
+        .pagination-item {
+          opacity: 0.8;
+
+          &::before {
+            border-top-color: $white;
+            opacity: 0.4;
+          }
+
+          &:after {
+            border-top-color: $white;
+          }
+
+          &:hover {
+            color: $white;
+            opacity: 1;
+
+            &:before {
+              opacity: 1;
+            }
+          }
+
+           &.is-active {
+            opacity: 1;
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  &[data-bs-theme="bright-red"] {
+    .research-area-wrapper--carousel {
+      .image-holder {
+
+        svg {
+          path[fill="#E54A2B"] {
+            fill: $stanford-red;
+          }
+          rect[fill="#E54A2B"] {
+            fill: $stanford-red;
+          }
+          path[fill="#7F1414"] {
+            fill: $dark-red;
+          }
+          rect[fill="#7F1414"] {
+            fill: $dark-red;
+          }
+        }
+      }
+    }
+  }
+
+  &[data-bs-theme="white"] {
+    .research-area-wrapper--carousel {
+      .swiper-stop-play,
+      .swiper-button-next,
+      .swiper-button-prev {
+        color: $white;
+        background-color: $black;
+
+        &:hover {
+          background-color: $bright-red;
+        }
+
+        svg {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &[data-bs-theme="black"],
+  &[data-bs-theme="dark-red"],
+  &[data-bs-theme="dark-color"],
+  &[data-bs-theme="violet"] {
+    .research-area-wrapper--carousel {
+      .swiper-stop-play,
+      .swiper-button-next,
+      .swiper-button-prev {
+
+        &:hover {
+          background-color: $bright-red;
+        }
+      }
+
+      .swiper-titles-pagination {
+        .pagination-item {
+          opacity: 0.8;
+
+          &::before {
+            border-top-color: $white;
+            opacity: 0.4;
+          }
+
+          &:after {
+            border-top-color: $white;
+          }
+
+          &:hover {
+            color: $white;
+            opacity: 1;
+
+            &:before {
+              opacity: 1;
+            }
+          }
+
+           &.is-active {
+            opacity: 1;
+            color: $bright-red;
+          }
+        }
+      }
+    }
+  }
 }
 
 .research-area-wrapper {
@@ -126,6 +261,7 @@
 
           &:before {
             opacity: 1;
+            border-color: $stanford-red;
           }
         }
 
@@ -152,11 +288,11 @@
 
         &.is-active {
           opacity: 1;
-          color: $stanford-red;
+          color: $black;
 
           &:after {
             right: 0;
-            transition: all 5s ease;
+            transition: all 7s ease;
           }
         }
       }
@@ -217,6 +353,7 @@
     .swiper-button-next,
     .swiper-stop-play {
       background: $white;
+      color: $black;
       width: 32px;
       height: 32px;
       display: flex;
@@ -227,6 +364,7 @@
       position: absolute;
       top: 31px;
       margin-top: 0;
+      z-index: 2;
       transition: color 0.3s ease-in-out,
                   background-color 0.3s ease-in-out;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {

@@ -21,7 +21,7 @@ export function setup() {
     slidesPerView: 1,
     loop: true,
     autoplay: {
-      delay: 5000,
+      delay: 7000,
       disableOnInteraction: false,
     },
     navigation: {
