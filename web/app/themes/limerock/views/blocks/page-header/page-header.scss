@@ -238,6 +238,7 @@
       max-width: 100%;
       background: transparent;
       margin-bottom: 13px;
+      outline: none;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 0 0 21px;
         font-size: 22px;

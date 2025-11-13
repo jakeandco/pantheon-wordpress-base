@@ -260,6 +260,20 @@
       background-color: $white;
     }
   }
+
+  [data-bs-theme="green"] {
+    &>.block_page-header {
+      .form-holder {
+        input[type=text] {
+          border-bottom-color: $green-dark;
+
+          &:focus {
+            border-bottom-color: $black;
+          }
+        }
+      }
+    }
+  }
 }
 
 .clear-all {
