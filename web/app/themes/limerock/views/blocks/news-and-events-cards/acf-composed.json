@@ -5,7 +5,23 @@
     {
       "label": "Title",
       "name": "title",
-      "type": "text"
+      "type": "text",
+      "wrapper": {
+        "width": 60
+      }
+    },
+    {
+      "label": "Variation",
+      "name": "variation",
+      "type": "select",
+      "choices": {
+        "with_image": "With Image",
+        "without_image": "Without Image"
+      },
+      "default_value": "with_image",
+      "wrapper": {
+        "width": 40
+      }
     },
     {
       "label": "Selection Type",
@@ -13,10 +29,29 @@
       "type": "select",
       "choices": {
         "all": "All",
-        "past": "Past",
         "related": "Related",
         "manual": "Manual"
+      },
+      "wrapper": {
+        "width": 60
       }
+    },
+    {
+      "label": "Manually set related taxonomy",
+      "name": "manually_set_taxonomy",
+      "type": "true_false",
+      "wrapper": {
+        "width": 40
+      },
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "selection_type",
+            "operator": "==",
+            "value": "related"
+          }
+        ]
+      ]
     },
     {
       "label": "Selections",
@@ -34,14 +69,24 @@
       ]
     },
     {
-      "label": "Variation",
-      "name": "variation",
-      "type": "select",
-      "choices": {
-        "with_image": "With Image",
-        "without_image": "Without Image"
-      },
-      "default_value": "with_image"
+      "label": "Related Taxonomies",
+      "name": "related_taxonomies",
+      "acf_composer_extend": "LimeRockTheme/ACF/fields/terms",
+      "taxonomy": ["tax-research-area", "event-category"],
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "selection_type",
+            "operator": "==",
+            "value": "related"
+          },
+          {
+            "fieldPath": "manually_set_taxonomy",
+            "operator": "==",
+            "value": 1
+          }
+        ]
+      ]
     }
   ],
   "location": [
