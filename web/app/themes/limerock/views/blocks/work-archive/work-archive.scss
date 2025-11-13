@@ -295,9 +295,17 @@
       border: 0;
       padding-bottom: 0;
     }
+
+    .btn-primary {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        border: 1px solid #BCAC9B;
+      }
+    }
   }
 
   .btn-sm {
+    display: flex;
+    align-items: center;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding: 2px 10px;
     }
@@ -319,6 +327,17 @@
   .selected-filter {
     margin-right: 12px;
     margin-bottom: 10px;
+  }
+
+  .btn-secondary.clear-all {
+    background-color: $light-text;
+    border-color: $warm-dark;
+    color: $black;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
   }
 }
 
@@ -365,6 +384,11 @@
       margin-left: auto;
     }
 
+    .open-text {
+      display: flex;
+      align-items: center;
+    }
+
     .close-text {
       display: none;
       margin: 0 7px;
@@ -380,12 +404,17 @@
       }
 
       .close-text {
-        display: inline;
+        display: flex;
+        align-items: center;
       }
 
       .open-text {
         display: none;
       }
+    }
+
+    svg {
+      margin-left: 10px;
     }
   }
 
