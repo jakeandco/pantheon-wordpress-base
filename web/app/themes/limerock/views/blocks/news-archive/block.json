@@ -1,0 +1,34 @@
+{
+  "name": "limerock/news-archive",
+  "title": "News Archive",
+  "description": "Displays all news posts for the purposes of the News archive page",
+  "category": "post-type",
+  "icon": "archive",
+  "keywords": [],
+  "acf": {
+    "blockVersion": 3,
+    "mode": "preview",
+    "renderCallback": "LimeRockTheme_block_render_callback"
+  },
+  "supports": {
+    "className": false,
+    "align": false,
+    "anchor": true,
+    "color": {
+      "gradient": true,
+      "background": true,
+      "text": false
+    },
+    "spacing": {
+      "padding": ["top", "bottom"],
+      "margin": ["top", "bottom"]
+    }
+  },
+  "example": {
+    "attributes": {
+      "data": {
+        "is_example": true
+      }
+    }
+  }
+}

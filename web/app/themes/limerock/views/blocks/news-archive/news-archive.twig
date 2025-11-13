@@ -1,0 +1,42 @@
+{% if featured_news is not empty %}
+  {% set featured_class = 'has-featured' %}
+{% else %}
+  {% set featured_class = 'no-featured' %}
+{% endif %}
+
+{% embed '@partial/block_wrapper.twig' with {
+  extra_classes: 'block_news-archive block_post-list ' ~ featured_class
+} %}
+  {% block content %}
+    {% if featured_news is not empty %}
+      <div class="container">
+        <span class="d-block block-title mb-0">Featured News</span>
+        <div class="posts-wrap featured-list pb-8">
+          {% include '@partial/post-repeater.twig' with { posts: featured_news, variant: 'archive-featured' } only %}
+        </div>
+      </div>
+    {% endif %}
+    <div
+      class="news-archive-all-news ajax-posts-js{% if featured_news is not empty %} pt-8{% endif %}"
+      data-bs-theme="white"
+      id="news-all"
+    >
+      <div class="container">
+        <span class="d-block block-title mb-0">All News</span>
+        {% if posts is not empty %}
+          <div class="ajax-results-js">
+            <div class="posts-wrap posts-list">
+              {% include '@partial/post-repeater.twig' with { posts: posts, variant: 'list' } only %}
+              <div class="mt-4">
+                {% include '@partial/pagination-alt.twig' with { posts: posts } only %}
+              </div>
+            </div>
+            {% include '@partial/loader.twig' %}
+          </div>
+        {% else %}
+          <p class="no-posts">No posts found.</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endblock %}
+{% endembed %}
