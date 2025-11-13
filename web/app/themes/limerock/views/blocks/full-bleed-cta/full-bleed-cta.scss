@@ -200,7 +200,8 @@
 
       &:hover {
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          background: $black !important;
+          background: $white !important;
+          color: $black !important;
         }
       }
     }

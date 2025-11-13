@@ -30,9 +30,10 @@
     }
 
     figure {
-      margin-bottom: 12px;
+      margin: 0;
+      padding-bottom: 12px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        margin-bottom: 30px;
+        padding-bottom: 30px;
         margin-right: -9px;
       }
     }
