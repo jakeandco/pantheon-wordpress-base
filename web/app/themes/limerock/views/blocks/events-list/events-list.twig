@@ -1,19 +1,44 @@
 {% if is_preview or selections is not empty %}
-  {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_events-list block_post-list' } %}
+  {% embed '@partial/block_wrapper.twig' with {
+    extra_classes: 'block_events-list block_post-list ajax-posts-js'
+  } %}
     {% block content %}
       <div class="container">
         {% if fields.title %}
           <span class="d-block block-title mb-0">{{ fields.title }}</span>
         {% endif %}
         {% if selections is not empty %}
-          <div class="posts-wrap events-list">
-            {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'list' } only %}
-            <div class="mt-4">
-              {% include '@partial/pagination-alt.twig' with { posts: selections } only %}
+          <div class="ajax-results-js">
+            <div class="posts-wrap events-list">
+              {% if fields.selection_type == 'manual' %}
+                <div class="visible-posts">
+                  {% set visible_posts = selections|slice(0, fields.posts_per_page) %}
+                  {% include '@partial/post-repeater.twig' with { posts: visible_posts, variant: 'list' } only %}
+                </div>
+
+                {% set hidden_posts = selections|slice(fields.posts_per_page) %}
+                {% if hidden_posts is not empty %}
+                  <div class="collapse hidden-posts" id="hiddenPosts-{{ block.anchor|default(block.id) }}">
+                    {% include '@partial/post-repeater.twig' with { posts: hidden_posts, variant: 'list' } only %}
+                  </div>
+
+                  <div class="text-center">
+                    <button class="btn btn-primary collapse-button mt-8" type="button" data-bs-toggle="collapse" data-bs-target="#hiddenPosts-{{ block.anchor|default(block.id) }}" aria-expanded="false" aria-controls="hiddenPosts-{{ block.anchor|default(block.id) }}">
+                      Expand all ({{ hidden_posts|length }})
+                    </button>
+                  </div>
+                {% endif %}
+              {% else %}
+                {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'list' } only %}
+                <div class="mt-4">
+                  {% include '@partial/pagination-alt.twig' with { posts: selections } only %}
+                </div>
+              {% endif %}
             </div>
+            {% include '@partial/loader.twig' %}
           </div>
         {% elseif is_preview %}
-          <p class="no-posts">No events found.</p>
+          <p class="no-posts">No posts found.</p>
         {% endif %}
       </div>
     {% endblock %}
