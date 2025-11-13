@@ -222,6 +222,37 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $context['selections'] = $selections;
     }
 
+    if ($slug === 'news-archive') {
+        $fields = $context['fields'];
+
+        $featured_news = !empty($fields['featured_news'])
+            ? Timber::get_posts($fields['featured_news'])
+            : [];
+
+        $paged = get_query_var('paged') ?: 1;
+        $posts_per_page = !empty($fields['posts_per_page'])
+            ? intval($fields['posts_per_page'])
+            : 5;
+
+        $exclude_ids = [];
+        foreach ($featured_news as $post) {
+            $exclude_ids[] = $post->ID;
+        }
+
+        $query_args = [
+            'post_type'      => 'post',
+            'post_status'    => 'publish',
+            'posts_per_page' => $posts_per_page,
+            'paged'          => $paged,
+            'post__not_in'   => $exclude_ids,
+        ];
+
+        $wp_query = new WP_Query($query_args);
+
+        $context['featured_news'] = $featured_news;
+        $context['posts'] = new Timber\PostQuery($wp_query);
+    }
+
 	if (! empty($block['data']['is_example'])) {
 		$context['is_example'] = true;
 		$context['fields'] = $block['data'];
