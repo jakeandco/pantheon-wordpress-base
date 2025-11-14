@@ -1,163 +1,169 @@
-{% if post.post_type == 'event' %}
-  {% set event_start        = acf_event_datetime(post.meta('event_start_date')) %}
-  {% set event_end          = acf_event_datetime(post.meta('event_end_date')) %}
-  {% set location           = post.meta('location') %}
-  {% set map_link           = post.meta('map_link') %}
-  {% set registration_links = post.meta('registration_links') %}
+{% set post = get_post(post_id) %}
 
-  {% if event_start %}
-    <div class="sidebar-title">Date</div>
-    <div class="text mb-5">
-      {{ event_start|date("l, F j, Y") }}
-    </div>
-  {% endif %}
+{% if post %}
 
-  {% if event_start and event_end %}
-    <div class="sidebar-title">Time</div>
-    <div class="text mb-5">
-      {{ event_start|date("g:ia") }} to {{ event_end|date("g:ia") }} PT
-    </div>
-  {% endif %}
+  {% if post.post_type == 'event' %}
+    {% set event_start        = acf_event_datetime(post.meta('event_start_date')) %}
+    {% set event_end          = acf_event_datetime(post.meta('event_end_date')) %}
+    {% set location           = post.meta('location') %}
+    {% set map_link           = post.meta('map_link') %}
+    {% set registration_links = post.meta('registration_links') %}
 
-  {% if location %}
-    <div class="sidebar-title">Location</div>
-    <div class="text mb-2">
-      {{location }}
-    </div>
-  {% endif %}
-
-  {% if map_link and map_link.url %}
-    <div class="text">
-      <a href="{{ map_link.url }}" target="_blank" rel="noopener">
-        View on Google Maps
-      </a>
-    </div>
-  {% endif %}
-
-  {% if event_start %}
-    {% set start_dt = date(event_start|date('Y-m-d H:i:s'), 'UTC') %}
-    {% set gcal_start = start_dt|date("Ymd\\THis") %}
-
-    {% if event_end %}
-        {% set end_dt = date(event_end|date('Y-m-d H:i:s'), 'UTC') %}
-        {% set gcal_end = end_dt|date("Ymd\\THis") %}
-    {% else %}
-        {% set gcal_end = '' %}
+    {% if event_start %}
+      <div class="sidebar-title">Date</div>
+      <div class="text mb-5">
+        {{ event_start|date("l, F j, Y") }}
+      </div>
     {% endif %}
 
-    {% set gcal_text     = post.title|url_encode %}
-    {% set gcal_details  = post.meta('event_description')|default('')|url_encode %}
-    {% set gcal_location = location|default('')|url_encode %}
-    {% set gcal_ctz      = 'America/Los_Angeles' %} {# Pacific Time #}
-
-    <div class="text mt-2">
-      <a
-        href="https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ gcal_text }}&dates={{ gcal_start }}{% if gcal_end %}/{{ gcal_end }}{% endif %}&details={{ gcal_details }}&location={{ gcal_location }}&ctz={{ gcal_ctz }}"
-        target="_blank"
-        rel="noopener"
-      >
-        Add to Calendar
-      </a>
-    </div>
-  {% endif %}
-
-  {% if registration_links %}
-    {% set reg_links = registration_links|filter(l => l.link and l.link.url) %}
-
-    {% if reg_links|length %}
-      <div class="text my-5">
-        {% for item in reg_links %}
-          <a
-            href="{{ item.link.url }}"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-primary btn-sm my-1"
-          >
-            {{ item.link.title ?: 'Register' }}
-          </a>
-        {% endfor %}
+    {% if event_start and event_end %}
+      <div class="sidebar-title">Time</div>
+      <div class="text mb-5">
+        {{ event_start|date("g:ia") }} to {{ event_end|date("g:ia") }} PT
       </div>
+    {% endif %}
+
+    {% if location %}
+      <div class="sidebar-title">Location</div>
+      <div class="text mb-2">
+        {{location }}
+      </div>
+    {% endif %}
+
+    {% if map_link and map_link.url %}
+      <div class="text">
+        <a href="{{ map_link.url }}" target="_blank" rel="noopener">
+          View on Google Maps
+        </a>
+      </div>
+    {% endif %}
+
+    {% if event_start %}
+      {% set start_dt = date(event_start|date('Y-m-d H:i:s'), 'UTC') %}
+      {% set gcal_start = start_dt|date("Ymd\\THis") %}
+
+      {% if event_end %}
+          {% set end_dt = date(event_end|date('Y-m-d H:i:s'), 'UTC') %}
+          {% set gcal_end = end_dt|date("Ymd\\THis") %}
+      {% else %}
+          {% set gcal_end = '' %}
+      {% endif %}
+
+      {% set gcal_text     = post.title|url_encode %}
+      {% set gcal_details  = post.meta('event_description')|default('')|url_encode %}
+      {% set gcal_location = location|default('')|url_encode %}
+      {% set gcal_ctz      = 'America/Los_Angeles' %} {# Pacific Time #}
+
+      <div class="text mt-2">
+        <a
+          href="https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ gcal_text }}&dates={{ gcal_start }}{% if gcal_end %}/{{ gcal_end }}{% endif %}&details={{ gcal_details }}&location={{ gcal_location }}&ctz={{ gcal_ctz }}"
+          target="_blank"
+          rel="noopener"
+        >
+          Add to Calendar
+        </a>
+      </div>
+    {% endif %}
+
+    {% if registration_links %}
+      {% set reg_links = registration_links|filter(l => l.link and l.link.url) %}
+
+      {% if reg_links|length %}
+        <div class="text my-5">
+          {% for item in reg_links %}
+            <a
+              href="{{ item.link.url }}"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary btn-sm my-1"
+            >
+              {{ item.link.title ?: 'Register' }}
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="sidebar-title my-5">By invitation only</div>
+      {% endif %}
     {% else %}
       <div class="sidebar-title my-5">By invitation only</div>
     {% endif %}
-  {% else %}
-    <div class="sidebar-title my-5">By invitation only</div>
-  {% endif %}
 
-  <div class="sidebar-title">Share this event</div>
-  <div class="text mb-5">
-    <a
-      href="{{ post.url }}"
-      class="doi-link btn btn-primary btn-sm m-0"
-    >copy link</a>
-  </div>
-{% endif %}
-
-{% if post.post_type == 'publication' %}
-  <div class="sidebar-title">Share this publication</div>
-  <div class="text mb-5">
-    <a
-      href="{{ post.url }}"
-      class="doi-link btn btn-primary btn-sm m-0"
-    >copy link</a>
-  </div>
-{% endif %}
-
-{% if post.post_type == 'project' %}
-  {% set researchers = post.meta('researchers') %}
-  {% set authors = post.meta('authors') %}
-  {% set people = researchers|length ? researchers : (authors|length ? authors : []) %}
-
-  {% if people|length %}
-    <div class="sidebar-title">Research team</div>
+    <div class="sidebar-title">Share this event</div>
     <div class="text mb-5">
-      {% for person in people %}
-        {% set person_post = get_post(person) %}
-        <a href="{{ person_post.link }}">
-          {{ person_post.post_title }}
-        </a>{% if not loop.last %}, {% endif %}
-      {% endfor %}
+      <a
+        href="{{ post.url }}"
+        class="doi-link btn btn-primary btn-sm m-0"
+      >copy link</a>
     </div>
   {% endif %}
 
-  <div class="sidebar-title">Share this project</div>
-  <div class="text mb-5">
-    <a
-      href="{{ post.url }}"
-      class="doi-link btn btn-primary btn-sm m-0"
-    >copy link</a>
-  </div>
-{% endif %}
-
-{% if post.post_type == 'person' %}
-  {% set email = post.meta('email') %}
-  {% set social_channels = post.meta('social_channels') %}
-
-  {% if email %}
-    <div class="sidebar-title">Contact</div>
+  {% if post.post_type == 'publication' %}
+    <div class="sidebar-title">Share this publication</div>
     <div class="text mb-5">
-      <a href="mailto:{{ email }}">{{ email }}</a>
+      <a
+        href="{{ post.url }}"
+        class="doi-link btn btn-primary btn-sm m-0"
+      >copy link</a>
     </div>
   {% endif %}
 
-  {% if social_channels %}
-    {% set soc_links = social_channels|filter(l => l.social_link and l.social_link.url) %}
+  {% if post.post_type == 'project' %}
+    {% set researchers = post.meta('researchers') %}
+    {% set authors = post.meta('authors') %}
+    {% set people = researchers|length ? researchers : (authors|length ? authors : []) %}
 
-    {% if soc_links|length %}
-      <div class="my-5">
-        {% for item in soc_links %}
-          <div class="my-1">
-            <a
-              href="{{ item.social_link.url }}"
-              target="_blank"
-              rel="noopener"
-              class="soc-link"
-            >
-              {{ item.social_link.title }}
-            </a>
-          </div>
+    {% if people|length %}
+      <div class="sidebar-title">Research team</div>
+      <div class="text mb-5">
+        {% for person in people %}
+          {% set person_post = get_post(person) %}
+          <a href="{{ person_post.link }}">
+            {{ person_post.post_title }}
+          </a>{% if not loop.last %}, {% endif %}
         {% endfor %}
       </div>
     {% endif %}
+
+    <div class="sidebar-title">Share this project</div>
+    <div class="text mb-5">
+      <a
+        href="{{ post.url }}"
+        class="doi-link btn btn-primary btn-sm m-0"
+      >copy link</a>
+    </div>
   {% endif %}
+
+  {% if post.post_type == 'person' %}
+    {% set email = post.meta('email') %}
+    {% set social_channels = post.meta('social_channels') %}
+
+    {% if email %}
+      <div class="sidebar-title">Contact</div>
+      <div class="text mb-5">
+        <a href="mailto:{{ email }}">{{ email }}</a>
+      </div>
+    {% endif %}
+
+    {% if social_channels %}
+      {% set soc_links = social_channels|filter(l => l.social_link and l.social_link.url) %}
+
+      {% if soc_links|length %}
+        <div class="my-5">
+          {% for item in soc_links %}
+            <div class="my-1">
+              <a
+                href="{{ item.social_link.url }}"
+                target="_blank"
+                rel="noopener"
+                class="soc-link"
+              >
+                {{ item.social_link.title }}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
 {% endif %}
