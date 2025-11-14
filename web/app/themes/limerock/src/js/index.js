@@ -13,6 +13,7 @@ import * as archiveAjax from './archiveAjax';
 import * as headerSearch from './headerSearch';
 import * as headerPosition from './headerPosition';
 import * as postsAjax from './postsAjax';
+import * as doiLink from './doi-link';
 
 export function setup() {
   accordion.setup();
@@ -30,6 +31,7 @@ export function setup() {
   headerSearch.setup();
   headerPosition.setup();
   postsAjax.setup();
+  doiLink.setup();
 }
 
 // necessary for storybook to use this file in its entirety
@@ -49,6 +51,7 @@ export function teardown() {
   headerSearch.teardown();
   headerPosition.teardown();
   postsAjax.teardown();
+  doiLink.teardown();
 }
 
 document.addEventListener('DOMContentLoaded', setup, false);

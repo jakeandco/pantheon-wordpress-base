@@ -40,13 +40,18 @@
     }
 
     .sidebar-title {
-      margin-bottom: 0px;
+      margin-bottom: 4px;
+      margin-top: 1rem;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        margin-bottom: 7px;
+        margin-bottom: 5px;
       }
 
       & + .btn {
         margin-top: 2px;
+      }
+
+      &:first-child {
+        margin-top: 0;
       }
     }
 
@@ -70,6 +75,25 @@
     margin-bottom: 14px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       margin-bottom: 17px;
+    }
+  }
+
+  .text {
+    color: rgba(0, 0, 0, 0.5);
+
+    a:not(.btn) {
+      color: rgba(0, 0, 0, 0.5);
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  .soc-link {
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }
