@@ -2,8 +2,8 @@
   padding-top: 39px;
   padding-bottom: 30px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-top: 107px;
     padding-bottom: 63px;
+    padding-top: 60px;
   }
 
   .featured-post-wrap {
@@ -90,9 +90,9 @@
   .container {
     display: flex;
     flex-direction: column;
-     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       display: block;
-     }
+    }
   }
 
   .featured-work-title-wrap {
@@ -103,16 +103,6 @@
     .block-title {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         letter-spacing: 0;
-      }
-    }
-
-    .btn {
-      background-color: $white;
-      color: $black;
-
-      &:hover {
-        background-color: $black;
-        color: $white;
       }
     }
   }

@@ -1,10 +1,18 @@
 .block_featured-work {
+  padding-top: 39px;
+  padding-bottom: 46px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: 60px;
+    padding-bottom: 86px;
+  }
 
   .featured-post-wrap {
     border: 0;
     margin-bottom: 0;
     padding-bottom: 28px;
+    padding-top: 13px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 15px;
       padding-bottom: 35px;
     }
 
@@ -110,22 +118,29 @@
       }
     }
   }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      display: block;
+    }
+  }
 }
 
 .featured-work_intro-copy {
   padding: 25px 0 26px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding: 0 0 35px;
+    padding: 20px 0 35px;
   }
   @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+    padding: 47px 0 35px;
     max-width: 70%;
   }
 }
 
 .featured-bottom-btn-holder {
-  padding-bottom: 46px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-bottom: 86px;
     padding-top: 51px;
   }
 
@@ -153,7 +168,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 37px;
+    margin-bottom: 30px;
+    padding-top: 12px;
     order: inherit;
   }
 
@@ -165,14 +181,21 @@
     letter-spacing: -0.1px;
     max-width: calc(100% - 80px);
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      letter-spacing: -1px;
+      letter-spacing: 0;
       max-width: calc(100% - 300px);
     }
   }
 
   .btn {
+    background-color: $white !important;
+    color: $black !important;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       padding: 14px 21px;
+    }
+
+    &:hover {
+      background-color: $black !important;
+      color: $white !important;
     }
   }
 }
