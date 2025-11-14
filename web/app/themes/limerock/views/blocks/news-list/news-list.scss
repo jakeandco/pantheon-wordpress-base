@@ -25,16 +25,31 @@
       padding: 40px 12px 10px;
     }
   }
+
+  .pagination-block-alt {
+    border-top: 0;
+    padding-bottom: 30px;
+  }
 }
 
 .block_post-list {
-  padding: 37px 0 60px;
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding: 60px 0 84px;
+
+  &>.container {
+    padding-top: 37px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-top: 64px;
+    }
   }
 
   .collapse-button[aria-expanded="true"] {
     display: none;
+  }
+
+  .news-archive-all-news {
+    padding-top: 60px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 84px;
+    }
   }
 }
 

@@ -74,11 +74,15 @@
 
 [data-bs-theme="green"] {
 
-  .btn-secondary {
-    background: $white;
+  &:not(&:has(.news-archive-all-news)) {
 
-    &:hover {
-      background-color: $black;
+    .btn-secondary {
+      background: $white;
+
+      &:hover {
+        background-color: $black;
+      }
     }
   }
+
 }
