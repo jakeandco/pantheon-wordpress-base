@@ -292,7 +292,7 @@
 
           &:after {
             right: 0;
-            transition: all 7s ease;
+            transition: all 5s ease;
           }
         }
       }
@@ -352,39 +352,26 @@
     .swiper-button-prev,
     .swiper-button-next,
     .swiper-stop-play {
-      background: $white;
-      color: $black;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      padding: 0;
-      justify-content: center;
-      border-radius: 50px;
-      position: absolute;
       top: 31px;
+      transform: none;
       margin-top: 0;
-      z-index: 2;
-      transition: color 0.3s ease-in-out,
-                  background-color 0.3s ease-in-out;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         position: static;
-        width: 65px;
-        height: 65px;
         margin-right: 15px;
       }
 
-      &:hover {
-        background: $black;
+      &.swiper-button-disabled {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          background: $white;
+          color: $black;
+          opacity: 1;
+        }
 
         svg {
-          opacity: 1;
-          filter: brightness(0) invert(1);
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            opacity: 0.2;
+          }
         }
-      }
-
-      &:after {
-        display: none;
       }
 
       svg {
@@ -393,6 +380,7 @@
         max-width: 16px;
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
           max-width: 25px;
+          opacity: 1;
         }
       }
     }
@@ -408,8 +396,24 @@
     }
 
     .swiper-stop-play {
-      &:hover {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background-color: $white;
+        color: $black;
+      }
+
+      svg {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          opacity: 0.2;
+        }
+      }
+
+      &:hover, &.is-paused {
         background: $bright-red;
+        color: $white;
+
+        svg {
+          opacity: 1;
+        }
       }
     }
 

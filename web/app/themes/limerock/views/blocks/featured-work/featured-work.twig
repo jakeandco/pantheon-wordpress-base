@@ -20,7 +20,7 @@
         </div>
       {% endif %}
 
-      <div class="block-title-wrap">
+      <div class="block-title-wrap featured-work-title-wrap">
         {% if fields.headline %}
           <h2 class="block-title">{{ fields.headline }}</h2>
         {% endif %}
@@ -48,7 +48,7 @@
       </div>
 
       {% if fields.show_link_at_bottom %}
-        <div class="bottom-btn-holder">
+        <div class="featured-bottom-btn-holder">
           {{_self.archive_link(fields.archive_link)}}
         </div>
       {% endif %}

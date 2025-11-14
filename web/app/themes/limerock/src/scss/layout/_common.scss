@@ -2,33 +2,6 @@
 // This file contains all styles related to the common layout of the site
 // -----------------------------------------------------------------------------
 
-// body:has(.hero) {
-//   .content-wrapper {
-//     --content-wrapper--margin-top: 0;
-//   }
-// }
-
-body.search-results {
-
-  .content-wrapper {
-    // margin-top: 0 !important;
-  }
-}
-
-.content-wrapper {
-  // --content-wrapper--margin-top: 54px;
-
-  // @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-  //   --content-wrapper--margin-top: 184px;
-  // }
-
-  // @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-  //   --content-wrapper--margin-top: 188px;
-  // }
-
-  // margin-top: var(--content-wrapper--margin-top);
-}
-
 .block-title {
   font-family: 'FT System Grotesk';
   font-size: 16px;
@@ -216,5 +189,70 @@ figure {
         margin-bottom: 30px;
       }
     }
+  }
+}
+
+div.swiper-button-prev,
+div.swiper-button-next,
+.swiper-stop-play {
+  background: $black;
+  color: $white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50px;
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  transform: translateY(-50%);
+  margin-top: 0;
+  transition: color 0.3s ease-in-out,
+              background-color 0.3s ease-in-out;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    width: 65px;
+    height: 65px;
+  }
+
+  &.swiper-button-disabled {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      opacity: 0;
+    }
+  }
+
+  &:hover {
+    background: $white;
+    color: $black;
+  }
+
+  &:after {
+    display: none;
+  }
+
+  svg {
+    height: auto;
+    max-width: 16px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      max-width: 25px;
+    }
+  }
+}
+
+div.swiper-button-prev {
+  left: auto;
+  right: 43px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    left: -8px;
+    right: auto
+  }
+}
+
+div.swiper-button-next {
+  left: auto;
+  right: 6px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    right: -8px;
   }
 }

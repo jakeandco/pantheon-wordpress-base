@@ -1,14 +1,5 @@
 .block_featured-work {
 
-  .block-title {
-    border: 0;
-    margin-bottom: 17px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-bottom: 37px;
-      letter-spacing: -1px;
-    }
-  }
-
   .featured-post-wrap {
     border: 0;
     margin-bottom: 0;
@@ -69,35 +60,6 @@
     }
   }
 
-  .bottom-btn-holder {
-    padding-bottom: 46px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      padding-bottom: 86px;
-      padding-top: 51px;
-    }
-
-    .btn-primary {
-      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-        background-color: $dark-gray;
-        padding: 14px 29px;
-      }
-
-      svg {
-        width: 9px;
-        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-          width: 15px;
-        }
-      }
-    }
-  }
-
-  .featured-work_intro-copy {
-    padding: 80px 0 40px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      max-width: 60%;
-    }
-  }
-
   .post-card-list {
 
     .tease-archive-holder {
@@ -146,6 +108,55 @@
           line-height: 18px;
         }
       }
+    }
+  }
+}
+
+.featured-work_intro-copy {
+  padding: 80px 0 40px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    max-width: 60%;
+  }
+}
+
+.featured-bottom-btn-holder {
+  padding-bottom: 46px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-bottom: 86px;
+    padding-top: 51px;
+  }
+
+  .btn-primary {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      background-color: $dark-gray;
+      padding: 14px 29px;
+    }
+
+    svg {
+      width: 9px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        width: 15px;
+      }
+    }
+  }
+}
+
+.featured-work-title-wrap {
+  margin-bottom: 17px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 37px;
+  }
+
+  .block-title {
+    border: 0;
+    margin-bottom: 0;
+    padding: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      letter-spacing: -1px;
+      max-width: calc(100% - 300px);
     }
   }
 }
