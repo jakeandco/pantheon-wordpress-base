@@ -19,9 +19,9 @@ export function setup() {
     direction: "horizontal",
     effect: "slide",
     slidesPerView: 1,
-    loop: true,
+    loop: false,
     autoplay: {
-      delay: 7000,
+      delay: 5000,
       disableOnInteraction: false,
     },
     navigation: {

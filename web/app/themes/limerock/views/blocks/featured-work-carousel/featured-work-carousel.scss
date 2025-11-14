@@ -1,1 +1,150 @@
-.block_featured-work-carousel {}
+.block_featured-work-carousel {
+  padding-top: 39px;
+  padding-bottom: 30px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-bottom: 63px;
+    padding-top: 60px;
+  }
+
+  .featured-post-wrap {
+    border: 0;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+
+    .tease-featured {
+      padding: 0 19px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding: 0;
+      }
+
+      .row {
+        flex-direction: column;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          flex-direction: row;
+        }
+      }
+
+      .media-item_holder {
+        padding-bottom: 86%;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          padding-bottom: 106.5%;
+          height: 100%;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          min-height: 728px;
+        }
+      }
+
+      .text-holder {
+        min-height: 290px;
+        padding-top: 17px;
+        display: flex;
+        flex-direction: column;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          min-height: 100%;
+          padding: 26px 50px 12px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          padding: 47px 65px 12px;
+        }
+      }
+
+      .h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 15px;
+        }
+      }
+
+      .img-holder {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          display: flex;
+          flex-direction: column;
+        }
+
+        figure {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            margin: 0 -47px 0 0;
+            height: 100%;
+          }
+        }
+      }
+
+      .category-list {
+        margin-top: auto;
+        margin-bottom: 17px;
+
+        li {
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  .featured-work-swiper-wrap {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      position: relative;
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      display: block;
+    }
+  }
+
+  .featured-work-title-wrap {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 28px;
+    }
+
+    .block-title {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        letter-spacing: 0;
+      }
+    }
+  }
+}
+
+.featured-work-swiper-nav-holder {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    position: static;
+  }
+
+  div.swiper-button {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      top: 49%;
+    }
+
+    &.swiper-button-next {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        right: -5px;
+      }
+    }
+
+    &.swiper-button-prev {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        left: -5px;
+      }
+    }
+  }
+}
+
+.featured-post-swiper.swiper {
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    overflow: visible;
+    width: calc(100% - 13px);
+  }
+
+  .swiper-slide {
+    box-sizing: border-box;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-right: 35px;
+    }
+  }
+}

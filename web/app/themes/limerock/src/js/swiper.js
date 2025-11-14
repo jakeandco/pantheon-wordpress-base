@@ -3,6 +3,7 @@ import { setup as photoAndCaptionCarousel } from "@blocks/photo-and-caption-caro
 import { setup as researchAreaEntryPoints } from "@blocks/research-area-entry-points";
 import { setup as videoCarousel } from "@blocks/video-carousel";
 import { setup as yearCarousel } from "@blocks/year-carousel";
+import { setup as featuredWorkСarousel } from "@blocks/featured-work-carousel";
 
 import "swiper/css";
 import "swiper/css/autoplay"; // Import Autoplay CSS
@@ -34,6 +35,11 @@ export function setup() {
     yearCarousel();
   } catch (e) {
     console.warn("Error in @blocks/year-carousel/index.js", e);
+  }
+  try {
+    featuredWorkСarousel();
+  } catch (e) {
+    console.warn("Error in @blocks/featuredWorkСarousel/index.js", e);
   }
 }
 
