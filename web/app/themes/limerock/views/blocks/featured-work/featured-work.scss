@@ -113,9 +113,12 @@
 }
 
 .featured-work_intro-copy {
-  padding: 80px 0 40px;
+  padding: 25px 0 26px;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    max-width: 60%;
+    padding: 0 0 35px;
+  }
+  @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+    max-width: 70%;
   }
 }
 
@@ -143,20 +146,33 @@
 
 .featured-work-title-wrap {
   margin-bottom: 17px;
+  position: relative;
+  order: -1;
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    position: static;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 37px;
+    order: inherit;
   }
 
   .block-title {
     border: 0;
     margin-bottom: 0;
     padding: 0;
+    margin-right: auto;
+    letter-spacing: -0.1px;
+    max-width: calc(100% - 80px);
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       letter-spacing: -1px;
       max-width: calc(100% - 300px);
+    }
+  }
+
+  .btn {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding: 14px 21px;
     }
   }
 }

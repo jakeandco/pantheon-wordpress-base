@@ -6,5 +6,13 @@
   {{ parent() }}
 {% endblock %}
 {% block row %}
-  {% include '@partial/tease_switcher.twig' with { post: get_post(row_data), tease_options: tease_options|default({})|merge({ variant: variant|default('') }), theme_attr: theme_attr } only %}
+  {% set inner %}
+    {% include '@partial/tease_switcher.twig' with { post: get_post(row_data), tease_options: tease_options|default({})|merge({ variant: variant|default('') }), theme_attr: theme_attr } only %}
+  {% endset %}
+
+  {% if wrap_in_slide %}
+    <div class="swiper-slide">{{ inner|raw }}</div>
+  {% else %}
+    {{ inner|raw }}
+  {% endif %}
 {% endblock %}
