@@ -1,45 +1,70 @@
 {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_news-and-events-cards' } %}
   {% block content %}
     <div class="container">
-      {% set post_type = ['event', 'post'] %}
+      {% set current_date = current_date.format('Y-m-d H:i:s') %}
+      {% set post_limit = 3 %}
+      {% set event_query = {
+        post_type: 'event',
+        order: "ASC",
+        posts_per_page: 1,
+        orderby: 'meta_value',
+        meta_key: 'event_start_date',
+        meta_query: [
+          {
+            key: 'event_start_date',
+            value: current_date,
+            compare: '>=',
+            type: "DATETIME",
+          },
+          {
+            key: 'event_end_date',
+            value: current_date,
+            compare: '<=',
+            type: "DATETIME",
+          }
+        ]|merge({
+          relation: "AND"
+        })
+      } %}
+      {% set news_query = {
+        post_type: 'post',
+        posts_per_page: post_limit - 1,
+      } %}
+
 
       <span class="d-block block-title mb-0">{{fields.title}}</span>
 
       {% set selections = [] %}
-      {% if fields.selection_type == 'manual' %}
-        {% set selections = fields.selections %}
-      {% elseif fields.selection_type == 'all' %}
-        {% set selections = get_posts({ post_type }) %}
-      {% elseif fields.selection_type == 'past' %}
-        {% set today = fn('getdate') %}
-        {% set selections = get_posts({
-          post_type,
-          date_query:
-            { 
-              before: {
-                year : today.year,
-                month : today.mon,
-                day : today.mday,
-              },
-             },
-        }) %}
-      {% elseif fields.selection_type == 'related' %}
-        {% set relation_taxonomies = ['tax-research-area', 'event-category' ] %}
+
+      {% if fields.selection_type == 'related' %}
+        {% set relation_taxonomies = ['tax-research-area', 'event-category'] %}
+        {% set manual_terms = fields.manually_set_taxonomy ? fields.related_taxonomies : [] %}
         {% set tax_query = relation_taxonomies|map(relation_taxonomy => ({
           taxonomy: relation_taxonomy,
           field: 'slug',
-          terms: post.terms(relation_taxonomy)|default([])|map(t => t.slug)
+          terms: (manual_terms is not empty) ? manual_terms : post.terms(relation_taxonomy)|default([])|map(t => t.slug)
         })) %}
 
-        {% set tax_query = tax_query|merge({
-          relation: "OR"
-        }) %}
-
-        {% set selections = get_posts({
-          post_type,
+        {% set related_query = {
           post__not_in: [post.ID],
-          tax_query,
-        }) %}
+          tax_query: tax_query|merge({
+            relation: "OR"
+          }),
+        } %}
+
+        {% set event_query = event_query|merge(related_query) %}
+        {% set news_query = news_query|merge(related_query) %}
+      {% endif %}
+
+      {% if fields.selection_type == 'manual' %}
+        {% set selections = fields.selections %}
+      {% else %}
+        {% set events = get_posts(event_query) %}
+
+        {% if events is empty %}
+          {% set news_query = news_query|merge({posts_per_page: post_limit }) %}
+        {% endif %}
+        {% set selections = events|merge(get_posts(news_query)) %}
       {% endif %}
 
       <div class="posts-cards-list">
