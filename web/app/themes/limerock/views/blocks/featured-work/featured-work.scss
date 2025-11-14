@@ -1,33 +1,149 @@
 .block_featured-work {
 
+  .block-title {
+    border: 0;
+    margin-bottom: 17px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-bottom: 37px;
+      letter-spacing: -1px;
+    }
+  }
+
   .featured-post-wrap {
     border: 0;
     margin-bottom: 0;
+    padding-bottom: 28px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 35px;
+    }
+
+    .tease-featured {
+
+      .h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 15px;
+        }
+      }
+
+      .excerpt {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 4px;
+        }
+      }
+
+      .media-item_holder {
+        padding-bottom: 86%;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          padding-bottom: 108%;
+        }
+      }
+
+      .category-list {
+        margin-top: auto;
+        margin-bottom: 17px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 26px;
+        }
+      }
+
+      .img-holder {
+
+        figure {
+          @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+            margin: 0 -38px 0 0;
+          }
+        }
+      }
+
+      .text-holder {
+        min-height: 273px;
+        display: flex;
+        flex-direction: column;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          min-height: 100%;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          padding-left: 65px;
+        }
+      }
+    }
   }
 
   .bottom-btn-holder {
-    padding-top: 40px;
-    padding-bottom: 80px;
+    padding-bottom: 46px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 86px;
+      padding-top: 51px;
+    }
 
     .btn-primary {
-      background-color: $dark-gray;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        background-color: $dark-gray;
+        padding: 14px 29px;
+      }
+
+      svg {
+        width: 9px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          width: 15px;
+        }
+      }
     }
   }
 
   .featured-work_intro-copy {
     padding: 80px 0 40px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      max-width: 60%;
+    }
   }
 
   .post-card-list {
 
     .tease-archive-holder {
+      padding: 17px 18px 5px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         min-height: 500px;
+        padding: 24px 28px 0px;
       }
 
       .category-list {
+        margin-bottom: 19px;
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
           margin-top: auto;
+          margin-bottom: 3px;
+        }
+      }
+
+      .media-item_holder {
+        @media screen and (max-width: "767px") {
+          padding-bottom: 86.1%;
+        }
+      }
+
+      .text-holder {
+        min-height: 275px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          min-height: 226px;
+        }
+      }
+
+      .h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 16px;
+        }
+      }
+
+      .img-holder {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin: auto -28px 0;
+        }
+      }
+
+      .researchers {
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          font-size: 14px;
+          line-height: 18px;
         }
       }
     }

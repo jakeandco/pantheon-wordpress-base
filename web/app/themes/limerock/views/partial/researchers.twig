@@ -1,7 +1,10 @@
 {% set researchers = post.meta('researchers') %}
 {% set authors = post.meta('authors') %}
-{% set people = researchers|length ? researchers : (authors|length ? authors : []) %}
-{% set label = researchers|length ? 'Researchers' : (authors|length ? 'Authors' : '') %}
+{% set related_people = post.meta('related_people') %}
+
+{% set people = researchers|length ? researchers : (related_people|length ? related_people : (authors|length ? authors : [])) %}
+
+{% set label = (researchers|length or related_people|length) ? 'Researchers' : (authors|length ? 'Authors' : '') %}
 
 {% if people|length %}
   <div class="researchers">

@@ -8,19 +8,6 @@
     }
   }
 
-  .researchers {
-    font-family: 'FT System Grotesk';
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
-    margin-bottom: 20px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
-      font-size: 16px;
-      line-height: 20px;
-      margin-bottom: 27px;
-    }
-  }
-
   .btn.view-results {
     @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
       background: $black;
@@ -48,6 +35,23 @@
         }
       }
     }
+  }
+}
+
+.researchers {
+  font-family: 'FT System Grotesk';
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 27px;
+  }
+
+  .title {
+    text-transform: capitalize;
   }
 }
 
@@ -228,10 +232,17 @@
 
     .text-holder {
       min-height: 223px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-top: 20px;
+        padding-right: 40px;
+      }
       @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
         width: 46.5%;
         padding-left: 38px;
         padding-top: 46px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        padding-right: 60px;
       }
     }
 
@@ -296,6 +307,17 @@
 
     .tease-featured {
       background-color: $white;
+
+      .category-list {
+
+        .btn-secondary {
+          background-color: $warm-light;
+
+          &:hover {
+            background-color: $black;
+          }
+        }
+      }
     }
   }
 
