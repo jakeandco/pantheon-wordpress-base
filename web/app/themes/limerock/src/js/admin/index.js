@@ -2,8 +2,8 @@ import acfFields from './acf-fields.js';
 import * as swiper from '../swiper';
 import * as accordion from '../accordion';
 
-document.onreadystatechange = function () {
-  if (document.readyState == 'complete' && typeof acf !== 'undefined') {
+document.addEventListener('readystatechange', function () {
+  if (document.readyState === 'complete' && typeof acf !== 'undefined') {
     acfFields.setup();
     swiper.setup();
     accordion.setup();
@@ -15,4 +15,4 @@ document.onreadystatechange = function () {
       });
     }
   }
-};
+});

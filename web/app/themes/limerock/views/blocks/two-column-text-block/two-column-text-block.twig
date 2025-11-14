@@ -1,5 +1,5 @@
 {% set has_sidebar = fields.variation in ['two_cols_sidebar', 'two_cols_heading_sidebar'] %}
-{% set col_class = has_sidebar ? 'col-12 col-md d-flex col-xxl-5' : 'col-12 col-md-6' %}
+{% set col_class = 'col-12 col-md d-flex col-xxl-5' %}
 
 {% set extra_classes = [extra_classes, 'block_two-column-text-block']|filter(v => v)|join(' ') %}
 
@@ -12,14 +12,14 @@
     {% endif %}
 
     <div class="row">
-      {% if has_sidebar %}
-        <div class="col-12 col-md-3 col-xxl-2 two-column-sidebar">
+      <div class="col-12 col-md-3 col-xxl-2 two-column-sidebar{% if not has_sidebar %} mb-0{% endif %}">
+        {% if has_sidebar %}
           {% include '@blocks/two-column-text-block/post-details.twig' %}
           {% if fields.sidebar_content %}
-            <div class="text">{{ fields.sidebar_content|raw }}</div>
+            <div class="text mb-5">{{ fields.sidebar_content|raw }}</div>
           {% endif %}
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
 
       {# col 1 text #}
       {% if fields.variation in ['two_cols', 'two_cols_sidebar'] %}
