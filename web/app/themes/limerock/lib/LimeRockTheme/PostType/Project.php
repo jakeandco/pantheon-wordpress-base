@@ -3,11 +3,11 @@
 namespace LimeRockTheme\PostType;
 
 /**
- * Class Post
+ * Class Project
  */
-class Post extends PostTypeClass
+class Project extends PostTypeClass
 {
-  public static string $post_slug = 'post';
+  public static string $post_slug = 'project';
   public static ?int $posts_per_page = 15;
 
   public static array $post_type_template = [
@@ -32,7 +32,6 @@ class Post extends PostTypeClass
           'text' => '<h5>Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam sit dolor amet odum.</h5>',
           'image_size' => 'large',
         ],
-
       ]
     ],
 
@@ -47,7 +46,6 @@ class Post extends PostTypeClass
           'column_2' => 'Cras mattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur.\r\n\r\nMattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
           'sidebar_content' => 'Get involved\r\n\r\nInterested in getting participating? Contact <a href="mailto:christieko@stanford.edu">christieko@stanford.edu</a>\r\n\r\n&nbsp;\r\n\r\n&nbsp;',
         ],
-
         'backgroundColor' => 'warm-light',
         'style' => [
           'spacing' => [
@@ -68,7 +66,6 @@ class Post extends PostTypeClass
           'content' => 'If you would like to participate ras mattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis. Praesent commodo cursus.',
           'button' => ['title' => 'Optional button', 'url' => '#', 'target' => ''],
         ],
-
         'backgroundColor' => 'warm-light'
       ]
     ],
@@ -85,7 +82,6 @@ class Post extends PostTypeClass
           'featured_work' => '',
           'additional_items' => ['363', '325', '1288', '1289', '1291', '1284'],
         ],
-
         'backgroundColor' => 'light-text'
       ]
     ],
@@ -136,7 +132,6 @@ class Post extends PostTypeClass
           'media_item_title' => '',
         ],
         'align' => 'center',
-
         'backgroundColor' => 'stanford-red',
         'style' => [
           'spacing' => [
@@ -173,7 +168,6 @@ class Post extends PostTypeClass
           'quote_source' => 112,
           'cta' => '',
         ],
-
         'backgroundColor' => 'warm-dark'
       ]
     ],
@@ -233,7 +227,6 @@ class Post extends PostTypeClass
           'rows_2_content' => ['body_copy'],
           'rows' => 3,
         ],
-
         'backgroundColor' => 'green',
         'style' => [
           'spacing' => [
@@ -255,7 +248,6 @@ class Post extends PostTypeClass
           'media_item_title' => 'Video title lorem ipsum dolor sit amet',
         ],
         'align' => 'full',
-
         'style' => [
           'spacing' => [
             'padding' => [
@@ -276,7 +268,6 @@ class Post extends PostTypeClass
           'variation' => 'cards',
           'items_per_row' => '4',
         ],
-
         'backgroundColor' => 'warm-light',
         'style' => [
           'spacing' => [
@@ -298,7 +289,6 @@ class Post extends PostTypeClass
           'variation' => 'cards',
           'items_per_row' => '4',
         ],
-
         'backgroundColor' => 'warm-light',
         'style' => [
           'spacing' => [
@@ -320,7 +310,6 @@ class Post extends PostTypeClass
           'selection_type' => 'manual',
           'selections' => ['1313', '1320', '1316'],
         ],
-
         'style' => [
           'spacing' => [
             'padding' => [
@@ -342,7 +331,6 @@ class Post extends PostTypeClass
           'image' => '',
           'button' => '',
         ],
-
         'backgroundColor' => 'warm-light',
         'style' => [
           'spacing' => [
@@ -355,34 +343,4 @@ class Post extends PostTypeClass
       ]
     ],
   ];
-
-  public static function init()
-  {
-    parent::init();
-    add_action('init', function () {
-      unregister_taxonomy_for_object_type('post_tag', 'post');
-    });
-  }
-
-  // public static function register_post_type() {
-  //   parent::register_post_type();
-  // }
-
-  // public static function register_template() {
-  //   parent::register_template();
-  // }
-
-  // public static function register_supports() {
-  //   parent::register_supports();
-  // }
-
-  // static function register_save_hooks() {
-  //   parent::register_save_hooks();
-  // }
-
-  // static function register_filters() {
-  //   parent::register_filters();
-  // }
-
-
 }

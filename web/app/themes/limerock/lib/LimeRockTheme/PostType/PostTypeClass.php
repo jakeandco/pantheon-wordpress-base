@@ -2,6 +2,7 @@
 
 namespace LimeRockTheme\PostType;
 
+use LimeRockTheme\Util;
 use Timber\Timber;
 
 /**
@@ -39,7 +40,16 @@ class PostTypeClass
    */
   public static function register_template()
   {
-    static::get_object()->template = static::$post_type_template;
+    if (!empty(static::$post_type_template)) {
+      $post_labels = static::get_object()->labels;
+      // register_block_pattern("limerock/" . static::$post_slug, array(
+      //   'title'      => __($post_labels->singular_name, 'themeslug'),
+      //   'categories' => ['featured'],
+      //   'source'     => 'theme',
+      //   'content'    => '<!-- Block pattern goes here. -->'
+      // ));
+      static::get_object()->template = static::$post_type_template;
+    }
   }
 
   /**
