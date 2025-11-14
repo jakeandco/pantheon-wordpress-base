@@ -10,6 +10,7 @@ class AdminCustomizer
   public static function init()
   {
     add_action('admin_enqueue_scripts', 'LimeRockTheme\AdminCustomizer::includes');
+    add_action('enqueue_block_assets', 'LimeRockTheme\AdminCustomizer::gutenberg_iframe_scripts');
     add_action('after_setup_theme', 'LimeRockTheme\AdminCustomizer::mce');
     add_filter('upload_mimes', 'LimeRockTheme\AdminCustomizer::mime_types');
   }
@@ -92,4 +93,45 @@ class AdminCustomizer
 
     return $init_array;
   }
+
+  public static function gutenberg_iframe_scripts()
+    {
+        if (!is_admin()) return;
+
+        global $pagenow, $post;
+
+        $classes = '';
+
+        if ($pagenow === 'post.php' || $pagenow === 'post-new.php') {
+            $post_type = get_post_type($post->ID);
+            $class1 = 'my-default-class-1';
+            $class2 = 'my-default-class-2';
+
+            if (class_exists('ACF')) {
+                if ($post_type === 'wp_block') {
+                    $class1 = 'pattern-class-1';
+                    $class2 = 'pattern-class-2';
+                } else {
+                    $class1 = get_field('my_key', $post->ID) ?: $class1;
+                    $class2 = get_field('my_other_key', $post->ID) ?: $class2;
+                }
+            }
+
+            $classes .= 'post-type-' . $post_type . ' ';
+            $classes .= 'my-class-' . $class1 . ' ';
+            $classes .= 'my-class-' . $class2;
+        }
+
+        wp_enqueue_script(
+            'custom-iframe-classes',
+            get_template_directory_uri() . '/dist/js/admin.js',
+            ['wp-blocks', 'wp-dom'],
+            filemtime(get_template_directory() . '/dist/js/admin.js'),
+            true
+        );
+
+        wp_localize_script('custom-iframe-classes', 'iframeBodyData', [
+            'classes' => $classes,
+        ]);
+    }
 }
