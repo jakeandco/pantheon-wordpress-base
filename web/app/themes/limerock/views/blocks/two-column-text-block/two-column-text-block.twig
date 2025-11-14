@@ -1,3 +1,6 @@
+{% set has_sidebar = fields.variation in ['two_cols_sidebar', 'two_cols_heading_sidebar'] %}
+{% set col_class = has_sidebar ? 'col-12 col-md-5' : 'col-12 col-md-6' %}
+
 {% set extra_classes = [extra_classes, 'block_two-column-text-block']|filter(v => v)|join(' ') %}
 
 {% extends '@partial/block_wrapper.twig' %}
@@ -5,24 +8,33 @@
 {% block content %}
   <div class="container">
     {% if fields.heading %}
-      <h2 class="block-title">{{fields.heading}}</h2>
+      <h2 class="block-title">{{ fields.heading }}</h2>
     {% endif %}
 
     <div class="row">
-      <div class="col-12 col-md-2 two-column-sidebar">
-        {% block sidebar_content %}
-          {{fields.sidebar_content}}
-        {% endblock %}
-      </div>
-      <div class="col-12 col-md-5">
-        {% block column_1_content %}
-          {{fields.column_1}}
-        {% endblock %}
-      </div>
-      <div class="col-12 col-md-5">
-        {% block column_2_content %}
-          {{fields.column_2}}
-        {% endblock %}
+      {% if has_sidebar %}
+        <div class="col-12 col-md-2 two-column-sidebar">
+          {{ fields.sidebar_content|raw }}
+        </div>
+      {% endif %}
+
+      {# col 1 text #}
+      {% if fields.variation in ['two_cols', 'two_cols_sidebar'] %}
+        <div class="{{ col_class }}">
+          {{ fields.column_1|raw }}
+        </div>
+      {% endif %}
+
+      {# col 1 heading #}
+      {% if fields.variation in ['two_cols_heading', 'two_cols_heading_sidebar'] %}
+        <div class="{{ col_class }}">
+          <h2 class="h5 col-heading-title">{{ fields.column_1_heading }}</h2>
+        </div>
+      {% endif %}
+
+      {# col 2 #}
+      <div class="{{ col_class }}">
+        {{ fields.column_2|raw }}
       </div>
     </div>
   </div>
