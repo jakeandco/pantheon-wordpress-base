@@ -4,7 +4,7 @@ export function setup() {
   const collapseElementList = document.querySelectorAll('.collapse');
   const header = document.querySelector('#header');
   const navbarCollapseElement = document.querySelectorAll('.navbar-collapse');
-  alert('ff');
+
   // Create collapse instance
   for (const collapseElement of collapseElementList) {
     let inner_jump_links = [];
