@@ -98,6 +98,43 @@
   {% endif %}
 
   {% if post.post_type == 'publication' %}
+    {% set authors          = post.meta('authors') %}
+    {% set publication_name = post.meta('publication_name') %}
+    {% set publication_url  = post.meta('url') %}
+    {% set publication_date = post.meta('publication_date') %}
+
+    {% if publication_date %}
+      <div class="sidebar-title">Date</div>
+      <div class="text mb-5">
+        {{ publication_date }}
+      </div>
+    {% endif %}
+
+    {% if publication_name %}
+      <div class="sidebar-title">Publication</div>
+      <div class="text mb-5">
+        {% if publication_url %}
+          <a href="{{ publication_url }}" target="_blank" rel="noopener">
+        {% endif %}
+        {{ publication_name }}
+        {% if publication_url %}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if authors|length %}
+      <div class="sidebar-title">Authors</div>
+      <div class="text mb-5">
+        {% for person in authors %}
+          {% set person_post = get_post(person) %}
+          <a href="{{ person_post.link }}">
+            {{ person_post.post_title }}
+          </a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <div class="sidebar-title">Share this publication</div>
     <div class="text mb-5">
       <a
@@ -109,13 +146,11 @@
 
   {% if post.post_type == 'project' %}
     {% set researchers = post.meta('researchers') %}
-    {% set authors = post.meta('authors') %}
-    {% set people = researchers|length ? researchers : (authors|length ? authors : []) %}
 
-    {% if people|length %}
+    {% if researchers|length %}
       <div class="sidebar-title">Research team</div>
       <div class="text mb-5">
-        {% for person in people %}
+        {% for person in researchers %}
           {% set person_post = get_post(person) %}
           <a href="{{ person_post.link }}">
             {{ person_post.post_title }}
