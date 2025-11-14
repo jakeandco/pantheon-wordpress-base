@@ -8,12 +8,63 @@
       "type": "text"
     },
     {
+      "label": "Select Block Variation",
+      "name": "variation",
+      "type": "select",
+      "choices": {
+        "two_cols": "Two columns (no sidebar)",
+        "two_cols_sidebar": "Two columns with sidebar",
+        "two_cols_heading": "Two columns with heading as first column (no sidebar)",
+        "two_cols_heading_sidebar": "Two columns with heading as first column with sidebar"
+      }
+    },
+    {
       "label": "Column 1",
       "name": "column_1",
       "type": "wysiwyg",
       "wrapper": {
         "width": 50
-      }
+      },
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols"
+          }
+        ],
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols_sidebar"
+          }
+        ]
+      ]
+    },
+    {
+      "label": "Column 1 Heading",
+      "name": "column_1_heading",
+      "type": "textarea",
+      "wrapper": {
+        "width": 50
+      },
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols_heading"
+          }
+        ],
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols_heading_sidebar"
+          }
+        ]
+      ]
     },
     {
       "label": "Column 2",
@@ -24,9 +75,25 @@
       }
     },
     {
-      "label": "Sidebar Content",
+      "label": "Sidebar Additional Сontent",
       "name": "sidebar_content",
-      "type": "wysiwyg"
+      "type": "wysiwyg",
+      "conditional_logic": [
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols_sidebar"
+          }
+        ],
+        [
+          {
+            "fieldPath": "variation",
+            "operator": "==",
+            "value": "two_cols_heading_sidebar"
+          }
+        ]
+      ]
     }
   ],
   "location": [
