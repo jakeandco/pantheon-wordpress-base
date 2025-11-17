@@ -1,20 +1,31 @@
 {% set post_type = post_type|default(post.post_type) %}
+{% set breadcrumbs = [] %}
+
 {% set ancestors = fn('get_post_ancestors', post)|default([]) %}
+{% set archive_page = null %}
+{% set archive_ancestors = [] %}
 
 {% if post_type != 'page' %}
   {% set archive_page = get_post_type_archive(post_type) %}
   {% if archive_page %}
-    {% set ancestors = ancestors|merge([archive_page.post_id]) %}
-    {% set ancestors = ancestors|merge(fn('get_post_ancestors', archive_page.post_id)|default([])) %}
+    {% set archive_ancestors = fn('get_post_ancestors', archive_page.post_id)|default([]) %}
   {% endif %}
 {% endif %}
 
-
 {% if ancestors is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge(get_posts(ancestors)|default([])) %}
+{% endif %}
+{% if archive_page is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge([archive_page]) %}
+{% endif %}
+{% if archive_ancestors is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge(get_posts(archive_ancestors)|default([])) %}
+{% endif %}
+
+{% if breadcrumbs is not empty %}
   <nav class="back-link" aria-label="breadcrumb">
     <ol class="list-group-horizontal list-group list-unstyled">
-      {% for item in ancestors|reverse %}
-        {% set breadcrumb = get_post(item) %}
+      {% for breadcrumb in breadcrumbs|reverse %}
         <li class="list-group-item border-0">
           <a href="{{ breadcrumb.path }}">
             <?xml version="1.0" encoding="utf-8"?>
