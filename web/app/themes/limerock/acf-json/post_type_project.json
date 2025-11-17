@@ -44,7 +44,7 @@
     },
     "description": "",
     "public": true,
-    "hierarchical": false,
+    "hierarchical": true,
     "exclude_from_search": false,
     "publicly_queryable": true,
     "show_ui": true,
@@ -66,6 +66,7 @@
     "plural_capability_name": "posts",
     "supports": [
         "title",
+        "page-attributes",
         "editor",
         "thumbnail",
         "custom-fields"
@@ -86,5 +87,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "",
-    "modified": 1760120950
+    "modified": 1763357111
 }

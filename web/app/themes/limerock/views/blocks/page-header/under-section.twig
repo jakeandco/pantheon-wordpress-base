@@ -1,0 +1,90 @@
+{% if post.post_type == 'person' %}
+  {% if post.meta('quote') is not empty  %}
+    {% set text_content %}
+      {% set research_areas = post.terms('tax-research-area') %}
+      {{post.meta('quote')}}
+
+      {% if research_areas is not empty %}
+        <div class="areas-of-research">
+          <span>Areas of Research</span>
+
+          <ul class="category-list list-unstyled">
+            {% for term in research_areas%}
+              <li>
+                <a href="{{term.link}}" class="btn btn-secondary">{{ term.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+    {% endset %}
+
+    {% set backgroundColor =  post.meta('header_background').slug %}
+    {% include '@blocks/image-and-text-callout/image-and-text-callout.twig' with {
+       block: {
+        align: 'left',
+        backgroundColor,
+        style: {
+          spacing: {
+            padding: {
+              top: 0,
+              bottom: 0
+            }
+          }
+        }
+      },
+      fields: {
+        image_size: 'large',
+        image: post.thumbnail,
+        text: text_content
+      }
+    } only %}
+  {% endif %}
+{% elseif post.post_type in ['project', 'event', 'publication'] %}
+  {% if fields.intro_copy is not empty  %}
+    {% set text_content = fields.intro_copy %}
+
+    {% set backgroundColor =  post.meta('header_background').slug %}
+    <div class="position-relative">
+      {% include '@blocks/image-and-text-callout/image-and-text-callout.twig' with {
+        block: {
+          align: 'left',
+          backgroundColor,
+          style: {
+            spacing: {
+              padding: {
+                top: 0,
+                bottom: 0
+              }
+            }
+          }
+        },
+        fields: {
+          image_size: 'large',
+          image: post.thumbnail,
+          text: text_content
+        }
+      } only %}
+      {% if fields.jump_links %}
+      <div class="container">
+        <div class="jump-links">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" >
+              <span class="grayed-out">Jump to: </span><span>{{fields.jump_links[0].link.title}}</span>
+            </button>
+            <ul class="dropdown-menu list-unstyled">
+              {% for row in fields.jump_links %}
+                <li>
+                  <a href="{{ row.link.url }}" class="dropdown-item" {% if is_active %} aria-current="page" {% endif %}>{{ row.link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+{% endif %}

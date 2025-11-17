@@ -38,7 +38,7 @@ class TwigCustomizer
 
 		$twig->addFilter(new Twig\TwigFilter(
 			'datetime',
-			function($datetime, $to_format = 'Y.m.d', $from_format = 'd/m/Y') {
+			function ($datetime, $to_format = 'Y.m.d', $from_format = 'd/m/Y') {
 				if (Util::array_value($datetime, 'prefix') == 'acf') {
 					$from_format = Util::array_value($datetime, 'return_format');
 					$datetime = Util::array_value($datetime, 'value');
@@ -62,8 +62,16 @@ class TwigCustomizer
 
 				$archive_link  = get_post_type_archive_link($post_type);
 				$archive_title = $object->labels->menu_name;
-				$archive_path  = wp_make_link_relative($archive_link);
 
+				if (empty($archive_link)) {
+					$options = get_fields('site-settings');
+					$post_type_link = Util::array_value($options, ['post_types', $post_type, 'archive_link']);
+
+					$archive_link = Util::array_value($post_type_link, 'url');
+					$archive_title = Util::array_value($post_type_link, 'title');
+				}
+
+				$archive_path  = wp_make_link_relative($archive_link);
 
 				$archive_post_id = url_to_postid($archive_link);
 				if (!empty($archive_post_id)) {
@@ -74,6 +82,7 @@ class TwigCustomizer
 					$archive_link  = $archive_post->link;
 					$archive_path  = $archive_post->path;
 				}
+
 
 				return [
 					'post_id' => $archive_post_id,

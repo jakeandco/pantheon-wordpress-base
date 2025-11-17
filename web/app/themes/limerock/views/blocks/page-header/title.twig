@@ -1,0 +1,32 @@
+{% set header_sizes = {
+  small: "h4",
+  medium: "h3",
+  large: "h2",
+  extra_large: "h1",
+} %}
+
+<div class="row block_page-header_title">
+  <div class="col block_page-header_title_text-section">
+    <div class="title">
+      <h1 class="{{ header_sizes[fields.title_size] }}">{{ post.title }}</h1>
+
+      {% if post.post_type == 'person' %}
+        {% set appointment_types = post.terms('appointment-type') %}
+        {% if appointment_types %}
+          <small>{{ appointment_types|join(' • ') }} </small>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% if fields.intro_copy and (post.post_type not in ['project', 'event', 'publication'] ) %}
+      <strong class="subtitle h5 d-block">{{ fields.intro_copy }}</strong>
+    {% endif %}
+  </div>
+
+  {% if post.post_type == 'person' and post.meta('quote') is empty %}
+    <div class="col-12 col-md-3 block_page-header_title_img-section">
+      {% include '@partial/media-item.twig' with { image: post.thumbnail } only %}
+    </div>
+  {% endif %}
+</div>
+
+

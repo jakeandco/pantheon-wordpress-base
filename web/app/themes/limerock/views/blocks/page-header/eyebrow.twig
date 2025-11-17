@@ -1,0 +1,49 @@
+{{global_context().options.site.post_types.post.internal_news_label|console_log}}
+{% if post.post_type in ['event', 'post'] %}
+  {% set bolded = 'bolded' %}
+  {% set normal = 'normal' %}
+
+
+  {% if post.post_type == 'post' %}
+    {% set bolded = global_context().options.site.post_types.post.internal_news_label %}
+    {% set normal = post.date('F d, Y') %}
+  {% elseif post.post_type == 'event' %}
+  {% set start_time_obj = post.field_object('event_start_date')  %}
+  {% set end_time_obj = post.field_object('event_end_date') %}
+
+  {% set start_day = start_time_obj|datetime('l, F j') %}
+  {% set start_time = start_time_obj|datetime('ga') %}
+
+  {% set end_day = end_time_obj|datetime('l, F j')  %}
+  {% set end_time = end_time_obj|datetime('ga') %}
+    {% set before_mark = [start_day] %}
+    {% set after_mark = [] %}
+
+    {% if start_day == end_day %}
+      {% set after_mark = after_mark|merge([start_time])  %}
+
+      {% if start_time != end_time %}
+        {% set after_mark = after_mark|merge(['to', end_time])  %}
+      {% endif %}
+      {% set after_mark = after_mark|merge(['PT'])  %}
+    {% else %}
+      {% set before_mark = before_mark|merge(['to', end_day])  %}
+    {% endif %}
+
+
+    {% set bolded = before_mark|join(' ') %}
+    {% set normal = after_mark|join(' ') %}
+  {% endif %}
+  
+  <p class="block_page-header_eyebrow">
+    {% if bolded is not empty %}
+      <strong>{{ bolded }}</strong>
+    {% endif %}
+    {% if normal is not empty and bolded is not empty %}
+      <span class="mark">/</span>
+    {% endif %}
+    {% if normal is not empty %}
+      <span>{{ normal }}</span>
+    {% endif %}
+  </p>
+{% endif %}

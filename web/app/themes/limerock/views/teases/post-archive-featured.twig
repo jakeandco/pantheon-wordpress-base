@@ -13,7 +13,7 @@
       {% endif %}
       <div class="col-12 col-md-6 text-holder">
         <div class="date">
-          {% set source = 'Insights' %}
+          {% set source = global_context().options.site.post_types.post.internal_news_label ~ 's' %}
           {% if post.meta('is_external_link') and post.meta('external_link') %}
             {% set source = post.meta('external_link').title %}
           {% endif %}

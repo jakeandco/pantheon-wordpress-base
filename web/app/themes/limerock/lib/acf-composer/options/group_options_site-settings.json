@@ -279,8 +279,60 @@
       "type": "group",
       "sub_fields": [
         {
+          "label": "Events",
+          "name": "event",
+          "type": "group",
+          "sub_fields": [
+            {
+              "label": "Archive Link",
+              "name": "archive_link",
+              "instructions": "For the purposes of linking back to the correct archive in breadcrumbs",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "label": "People",
+          "name": "person",
+          "type": "group",
+          "sub_fields": [
+            {
+              "label": "Archive Link",
+              "name": "archive_link",
+              "instructions": "For the purposes of linking back to the correct archive in breadcrumbs",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "label": "Projects",
+          "name": "project",
+          "type": "group",
+          "sub_fields": [
+            {
+              "label": "Archive Link",
+              "name": "archive_link",
+              "instructions": "For the purposes of linking back to the correct archive in breadcrumbs",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "label": "Publications",
+          "name": "publication",
+          "type": "group",
+          "sub_fields": [
+            {
+              "label": "Archive Link",
+              "name": "archive_link",
+              "instructions": "For the purposes of linking back to the correct archive in breadcrumbs",
+              "type": "link"
+            }
+          ]
+        },
+        {
           "label": "News",
-          "name": "news",
+          "name": "post",
           "type": "group",
           "sub_fields": [
             {
@@ -288,6 +340,12 @@
               "name": "internal_news_label",
               "instructions": "For the purposes of the \"Insight\" label as seen in the design.",
               "type": "text"
+            },
+            {
+              "label": "Archive Link",
+              "name": "archive_link",
+              "instructions": "For the purposes of linking back to the correct archive in breadcrumbs",
+              "type": "link"
             }
           ]
         }

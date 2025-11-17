@@ -16,7 +16,7 @@
   @import 'editor/wp-root';
 }
 
-@scope (.editor-styles-wrapper .acf-block-preview ) {
+@scope (.editor-styles-wrapper .acf-block-preview) {
   @import 'editor/wp-reset';
 
   @import 'general-styles';
@@ -31,6 +31,7 @@
   font-size: 16px;
   line-height: 22px;
   font-weight: 400;
+
   @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
     font-size: 22px;
     line-height: 30px;
@@ -38,5 +39,14 @@
 
   .full-block-width {
     width: 100%;
+  }
+}
+
+.acf-field-group-block-page-header-jump-links {
+  display: none;
+
+  .post-type-event &,
+  .post-type-project & {
+    display: block;
   }
 }

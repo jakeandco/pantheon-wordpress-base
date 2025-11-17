@@ -1,0 +1,9 @@
+{% if post.terms is not empty and (post.post_type != 'person' or post.meta('quote') is empty )%}
+  <ul class="category-list list-unstyled">
+    {% for term in post.terms %}
+      <li>
+        <a href="{{term.link}}" class="btn btn-secondary">{{ term.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

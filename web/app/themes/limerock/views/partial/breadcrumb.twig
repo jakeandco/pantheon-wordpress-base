@@ -1,11 +1,14 @@
+{% set post_type = post_type|default(post.post_type) %}
 {% set ancestors = fn('get_post_ancestors', post)|default([]) %}
 
 {% if post_type != 'page' %}
   {% set archive_page = get_post_type_archive(post_type) %}
   {% if archive_page %}
-    {% set ancestors = ancestors|merge([archive_page]) %}
+    {% set ancestors = ancestors|merge([archive_page.post_id]) %}
+    {% set ancestors = ancestors|merge(fn('get_post_ancestors', archive_page.post_id)|default([])) %}
   {% endif %}
 {% endif %}
+
 
 {% if ancestors is not empty %}
   <nav class="back-link" aria-label="breadcrumb">

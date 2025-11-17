@@ -22,7 +22,7 @@
         <div class="col-10 col-md-11 text-holder">
       {% endif %}
 
-        <div class="date">{{ is_external_link ? external_link.title : 'Insight' }} <span class="mark">·</span> {{ full_post.date }}</div>
+        <div class="date">{{ is_external_link ? external_link.title : global_context().options.site.post_types.post.internal_news_label }} <span class="mark">·</span> {{ full_post.date }}</div>
         <h2 class="h5"><a href="{{ actual_link }}" target="{{ actual_target }}">{{full_post.post_title}}</a></h2>
 
         {% if terms is not empty %}

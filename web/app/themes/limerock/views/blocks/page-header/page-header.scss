@@ -3,18 +3,48 @@
   margin-top: calc(var(--content-wrapper--margin-top) * -1);
   padding-top: var(--content-wrapper--margin-top);
 
+  .title {
+    --page-header--title--margin-bottom: 30px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      --page-header--title--margin-bottom: 23px;
+    }
+
+    &:has(.h1) {
+    }
+    &:has(.h2) {
+      --page-header--title--margin-bottom: 63px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        --page-header--title--margin-bottom: 25px;
+      }
+    }
+    &:has(.h3) {
+      --page-header--title--margin-bottom: 38px;
+    }
+    &:has(.h4) {
+
+    --page-header--title--margin-bottom: 20px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      --page-header--title--margin-bottom: 43px;
+    }
+    }
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    margin-bottom: var(--page-header--title--margin-bottom);
+  }
+
   h1 {
     @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
       min-height: 115px;
       display: flex;
       align-items: flex-end;
-      margin-bottom: 30px;
     }
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       min-height: 177px;
       display: flex;
       align-items: flex-end;
-      margin-bottom: 23px;
     }
 
     &.title-size {
@@ -46,12 +76,10 @@
   }
 
   .h2 {
-    margin-bottom: 63px;
     min-height: 116px;
     display: flex;
     align-items: flex-end;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-bottom: 25px;
       min-height: 188px;
     }
   }
@@ -61,7 +89,6 @@
     line-height: 39px;
     font-weight: 350;
     min-height: 0;
-    margin-bottom: 38px;
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       font-size: 75px;
       line-height: 81px;
@@ -72,10 +99,8 @@
 
   .h4 {
     min-height: 103px;
-    margin-bottom: 20px;
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       min-height: 86px;
-      margin-bottom: 43px;
     }
   }
 
@@ -296,6 +321,71 @@
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         margin-bottom: 0;
         margin-top: 31px;
+      }
+    }
+  }
+
+  &_eyebrow {
+    .mark {
+      color: currentColor;
+      background-color: transparent;
+      font-weight: inherit;
+    }
+  }
+  &_title {
+    &_text-section {
+      .title {
+        small {
+          display: block;
+          font-size: 24px;
+          margin-top: 40px;
+        }
+      }
+    }
+    &_img-section {}
+  }
+
+  .jump-links {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .single-event &,
+  .single-person & {
+    .block_image-and-text-callout {
+      .container {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  }
+  .single-person & {
+    .block_image-and-text-callout {
+      .text-holder {
+        align-self: stretch;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .quote-content {
+          justify-self: flex-start;
+        }
+
+        .areas-of-research {
+          span {
+            font-family: "FT System Grotesk";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+          }
+          
+        }
       }
     }
   }

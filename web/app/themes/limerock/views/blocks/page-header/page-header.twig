@@ -14,11 +14,9 @@
       <div class="row">
         <div class="col-12">
           {% include "@partial/breadcrumb.twig" with { post } only %}
-
-          <h1 class="{{ header_sizes[fields.title_size] }}">{{ post.title }}</h1>
-          {% if fields.intro_copy %}
-            <strong class="subtitle h5 d-block">{{ fields.intro_copy }}</strong>
-          {% endif %}
+          {% include "@blocks/page-header/eyebrow.twig" %}
+          {% include "@blocks/page-header/title.twig" %}
+          {% include "@blocks/page-header/terms.twig" %}
         </div>
 
         {% if post.children is not empty %}
@@ -47,5 +45,7 @@
         {% endif %}
       </div>
     </div>
+
+    {% include "@blocks/page-header/under-section.twig" with { post, fields } only %}
   {% endblock %}
 {% endembed %}

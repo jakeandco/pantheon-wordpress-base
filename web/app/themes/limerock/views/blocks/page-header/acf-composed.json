@@ -17,6 +17,18 @@
       "acf_composer_extend": "LimeRockTheme/ACF/fields/single-line-basic-wysiwyg",
       "label": "Intro Copy",
       "name": "intro_copy"
+    },
+    {
+      "label": "Jump Links",
+      "name": "jump_links",
+      "type": "repeater",
+      "sub_fields": [
+        {
+          "label": "Link",
+          "name": "link",
+          "type": "link"
+        }
+      ]
     }
   ],
   "location": [
