@@ -29,6 +29,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 	$context['fields'] = get_fields();
 	$context['field_objects'] = get_field_objects();
 
+    if ($is_preview && empty($context['fields']) && !empty($block['data'])) {
+        $context['fields'] = $block['data'];
+    }
+
     if ($slug === 'work-archive') {
         $featured_post = $context['fields']['featured_work'] ?? null;
         $posts_per_page = $context['fields']['posts_per_page'] ?? 12;

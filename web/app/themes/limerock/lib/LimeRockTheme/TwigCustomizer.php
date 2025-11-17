@@ -44,6 +44,8 @@ class TwigCustomizer
 					$datetime = Util::array_value($datetime, 'value');
 				}
 
+				if (empty($datetime)) return '';
+
 				$formatter = DateTimeImmutable::createFromFormat($from_format, $datetime);;
 				return $formatter->format($to_format);
 			}
