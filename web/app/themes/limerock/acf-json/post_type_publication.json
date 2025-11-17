@@ -66,6 +66,7 @@
     "plural_capability_name": "posts",
     "supports": [
         "title",
+        "excerpt",
         "editor",
         "thumbnail",
         "custom-fields"
