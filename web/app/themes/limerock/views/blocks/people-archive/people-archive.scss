@@ -75,6 +75,8 @@
   }
 
   .block_people-archive {
+    position: relative;
+    z-index: 5;
 
     .filter-title {
       display: none;
@@ -89,6 +91,7 @@
       align-items: flex-start;
       margin-bottom: 51px;
     }
+
   }
 
   .btn[data-bs-toggle=collapse] {
@@ -96,6 +99,8 @@
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       display: inline-block;
       vertical-align: top;
+      position: relative;
+      z-index: 5;
     }
   }
 

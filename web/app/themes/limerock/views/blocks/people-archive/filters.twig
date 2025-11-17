@@ -34,38 +34,39 @@
   </button>
 
   <div class="collapse collapse-holder" id="filtersPeopleCollapse">
-    <button type="button" class="btn btn-outline-primary">View results</button>
-    <button type="button" class="btn btn-outline-primary reset-js" disabled>Reset</button>
-    <div class="filters-blocks">
-      {# Filter by Research Area #}
-      {% embed '@partial/filter-radio-checkbox.twig' with {
-        title: 'Filter by research area',
-        name: 'research_area',
-        type: 'checkbox',
-        options: research_terms,
-        selected: request.get.research_area|default([]),
-        add_all: true,
-        create_labels: true
-      } %}
-      {% endembed %}
+    <div class="container">
+      <button type="button" class="btn btn-outline-primary">View results</button>
+      <button type="button" class="btn btn-outline-primary reset-js" disabled>Reset</button>
+      <div class="filters-blocks">
+        {# Filter by Research Area #}
+        {% embed '@partial/filter-radio-checkbox.twig' with {
+          title: 'Filter by research area',
+          name: 'research_area',
+          type: 'checkbox',
+          options: research_terms,
+          selected: request.get.research_area|default([]),
+          add_all: true,
+          create_labels: true
+        } %}
+        {% endembed %}
 
-      {# Sort Options #}
-      {% embed '@partial/filter-radio-checkbox.twig' with {
-        title: 'Sort',
-        name: 'sort',
-        type: 'radio',
-        options: sort_options,
-        selected: request.get.sort|default(['newest']),
-        default_option: 'newest',
-        create_labels: true,
-      } %}
-      {% endembed %}
+        {# Sort Options #}
+        {% embed '@partial/filter-radio-checkbox.twig' with {
+          title: 'Sort',
+          name: 'sort',
+          type: 'radio',
+          options: sort_options,
+          selected: request.get.sort|default(['newest']),
+          default_option: 'newest',
+          create_labels: true,
+        } %}
+        {% endembed %}
+      </div>
 
-    </div>
-    <div class="selected-filters-wrap">
-      <div class="selected-fitlers selected-filters-js"></div>
-      <button type="button" class="btn btn-outline-primary reset-js" disabled>Clear All</button>
+      <div class="selected-filters-wrap">
+        <div class="selected-fitlers selected-filters-js"></div>
+        <button type="button" class="btn btn-outline-primary reset-js" disabled>Clear All</button>
+      </div>
     </div>
   </div>
-
 </div>

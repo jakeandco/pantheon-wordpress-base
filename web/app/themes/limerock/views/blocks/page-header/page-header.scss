@@ -3,6 +3,31 @@
   margin-top: calc(var(--content-wrapper--margin-top) * -1);
   padding-top: var(--content-wrapper--margin-top);
 
+  &:has(h1.title-size-medium) {
+    .form-heading {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        padding-top: 45px;
+        padding-bottom: 35px;
+      }
+    }
+
+    .back-link {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 23px;
+      }
+    }
+  }
+
+  &:has(h1.title-size-extra_large) {
+
+    .form-holder input[type=text] {
+      margin-bottom: 3px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
   .title {
     --page-header--title--margin-bottom: 30px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -11,21 +36,23 @@
 
     &:has(.h1) {
     }
+
     &:has(.h2) {
       --page-header--title--margin-bottom: 63px;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         --page-header--title--margin-bottom: 25px;
       }
     }
+
     &:has(.h3) {
       --page-header--title--margin-bottom: 38px;
     }
-    &:has(.h4) {
 
-    --page-header--title--margin-bottom: 20px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-      --page-header--title--margin-bottom: 43px;
-    }
+    &:has(.h4) {
+      --page-header--title--margin-bottom: 20px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        --page-header--title--margin-bottom: 43px;
+      }
     }
 
     h1 {
@@ -55,6 +82,13 @@
           font-size: 50px;
           line-height: 1;
           font-weight: 400;
+          margin-bottom: 27px !important;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-top: 43px !important;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          letter-spacing: -4px;
         }
       }
 
@@ -66,6 +100,9 @@
         @extend .h3;
         @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
           margin-bottom: 36px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-top: 26px !important;
         }
       }
 
@@ -247,7 +284,11 @@
 
   .form-holder {
     position: relative;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-top: 30px;
+    }
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      margin-top: 0px;
       padding-left: 5px;
     }
 
@@ -268,6 +309,7 @@
         padding: 0 0 21px;
         font-size: 22px;
         line-height: 30px;
+        margin-bottom: 7px;
       }
     }
 
@@ -419,6 +461,15 @@
       }
     }
 
+    svg {
+      margin-right: 2px;
+      width: 9px;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-right: 9px;
+        width: 15px;
+      }
+    }
+
     &:after {
       content: '';
       position: absolute;
@@ -453,8 +504,8 @@
           &::before {
             display: none;
           }
+
           svg {
-            margin-right: 0.5ch;
             display: inline-block;
           }
         }
