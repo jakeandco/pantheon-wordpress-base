@@ -358,20 +358,20 @@
         margin-bottom: 38px;
         display: block;
       }
+    }
 
-      &:hover {
+    a.callout-item:hover {
 
-        h3 {
-          text-decoration: underline;
-        }
+      h3 {
+        text-decoration: underline;
+      }
 
-        .media-item {
-          transform: scale(1.05);
-        }
+      .media-item {
+        transform: scale(1.05);
+      }
 
-        .more-link {
-          opacity: 1;
-        }
+      .more-link {
+        opacity: 1;
       }
     }
 

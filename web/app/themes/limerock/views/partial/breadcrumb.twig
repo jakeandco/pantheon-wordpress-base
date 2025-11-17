@@ -16,7 +16,11 @@
       {% for item in ancestors|reverse %}
         {% set breadcrumb = get_post(item) %}
         <li class="list-group-item border-0">
-          <a href="{{ breadcrumb.path }}">{{breadcrumb.title}}</a>
+          <a href="{{ breadcrumb.path }}">
+            <?xml version="1.0" encoding="utf-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 5.302 15.224 5.148" width="15.224px" height="5.148px"><path d="M 2.904 10.45 C 2.449 9.907 1.98 9.438 1.496 9.042 C 1.012 8.646 0.513 8.323 0 8.074 L 0 7.678 C 1.012 7.165 1.98 6.373 2.904 5.302 L 3.674 5.302 C 3.439 5.801 3.205 6.241 2.97 6.622 C 2.735 6.989 2.508 7.297 2.288 7.546 L 2.288 8.206 C 2.508 8.441 2.735 8.749 2.97 9.13 C 3.205 9.497 3.439 9.937 3.674 10.45 L 2.904 10.45 Z M 2.178 8.338 L 2.178 7.414 L 15.224 7.414 L 15.224 8.338 L 2.178 8.338 Z" fill="currentColor" id="object-0" transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, -7.105427357601002e-15, 0)"/></svg>
+            {{breadcrumb.title}}
+          </a>
         </li>
       {% endfor %}
     </ol>
