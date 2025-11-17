@@ -394,13 +394,14 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    transform: translateX(-10px);
   }
 
   .single-publication &,
   .single-project &,
   .single-event &,
   .single-person & {
-    .block_image-and-text-callout {
+    .page-header_under-section {
       .container {
         width: 100%;
         max-width: none;
