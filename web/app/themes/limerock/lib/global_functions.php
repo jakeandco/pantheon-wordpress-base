@@ -175,11 +175,27 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+
                         'meta_query'     => [
+                            'relation' => 'AND',
                             [
                                 'key'     => 'event_start_date',
                                 'value'   => $today,
-                                'compare' => 'LIKE',
+                                'compare' => '<',
+                                'type'    => 'DATE',
+                            ],
+                            [
+                                'relation' => 'OR',
+                                [
+                                    'key'     => 'event_end_date',
+                                    'compare' => 'NOT EXISTS',
+                                ],
+                                [
+                                    'key'     => 'event_end_date',
+                                    'value'   => $today,
+                                    'compare' => '<',
+                                    'type'    => 'DATE',
+                                ],
                             ],
                         ],
                     ]);
