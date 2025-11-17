@@ -19,9 +19,10 @@
           {% include "@blocks/page-header/terms.twig" %}
         </div>
 
-        {% if post.children is not empty and fields.hide_subnav is empty %}
+        {% set children = post.children(post.post_type) %}
+        {% if children is not empty and fields.hide_subnav is empty %}
           <div class="col-12">
-            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <nav aria-label="breadcrumb" class="child-nav">
               <button class="btn d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navigation2" aria-expanded="false" aria-controls="navigation2">
                 <span>
                   <span class="text text-show">Show</span>
@@ -33,7 +34,7 @@
               </button>
               <div class="collapse d-md-block" id="navigation2">
                 <ol class="breadcrumb list-unstyled">
-                  {% for child in post.children(post.post_type) %}
+                  {% for child in children %}
                     <li class="breadcrumb-item">
                       <a href="{{ child.path }}">{{ child.title }}</a>
                     </li>
