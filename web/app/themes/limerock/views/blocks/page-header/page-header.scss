@@ -384,7 +384,7 @@
             font-weight: 400;
             line-height: 20px;
           }
-          
+
         }
       }
     }
@@ -409,16 +409,14 @@
   a {
     position: relative;
     text-decoration: none;
+    display: flex;
+    align-items: center;
 
     &:hover {
 
       &:after {
         left: 22px;
       }
-    }
-
-    &:before {
-      content: '← ';
     }
 
     &:after {
@@ -441,12 +439,24 @@
 
       a::before {
         padding-right: 0.5ch;
+        font-family: inherit;
         content: '/';
       }
 
+      svg {
+        display: none;
+      }
+
       &:first-of-type {
-        a::before {
-          content: '←';
+
+        a {
+          &::before {
+            display: none;
+          }
+          svg {
+            margin-right: 0.5ch;
+            display: inline-block;
+          }
         }
       }
     }
