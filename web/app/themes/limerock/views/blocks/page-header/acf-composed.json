@@ -19,6 +19,11 @@
       "name": "intro_copy"
     },
     {
+      "label": "Hide subnav",
+      "name": "hide_subnav",
+      "type": "true_false"
+    },
+    {
       "label": "Jump Links",
       "name": "jump_links",
       "type": "repeater",

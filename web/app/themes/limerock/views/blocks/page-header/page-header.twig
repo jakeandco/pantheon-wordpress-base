@@ -19,7 +19,7 @@
           {% include "@blocks/page-header/terms.twig" %}
         </div>
 
-        {% if post.children is not empty %}
+        {% if post.children is not empty and fields.hide_subnav is empty %}
           <div class="col-12">
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
               <button class="btn d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navigation2" aria-expanded="false" aria-controls="navigation2">
