@@ -13,11 +13,15 @@
           {% if post.meta('is_external_link') and post.meta('external_link') %}
             {% set source = post.meta('external_link').title %}
           {% endif %}
+
+          {% set is_external = post.meta('is_external_link') and post.meta('external_link') %}
+          {% set block_link = is_external ? post.meta('external_link').url : post.link %}
+
           {{ source }}
           <span class="mark"> · </span>
           {{ post.date|date('F j, Y') }}
         </div>
-        <h2 class="h5"><a href="{{post.link}}">{{post.post_title}}</a></h2>
+        <h2 class="h5"><a href="{{block_link}}">{{post.post_title}}</a></h2>
 
         {% include '@partial/post-taxonomy-list.twig' with {
           post: post,
@@ -26,7 +30,7 @@
       </div>
 
       <div class="col-2 col-md-4 col-xl-3 img-holder">
-        <a href="{{post.link}}">
+        <a href="{{block_link}}">
 
           {% if post.thumbnail %}
             <div class="d-none d-md-block">

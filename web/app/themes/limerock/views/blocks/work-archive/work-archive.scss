@@ -303,10 +303,10 @@
   }
 }
 
-[data-bs-theme="green"] {
-  .featured-post-wrap {
+.works-wrap[data-bs-theme="green"] {
+  .post-card-list {
 
-    .tease-featured {
+    .tease-archive-holder {
       background-color: $white;
 
       .category-list {
@@ -322,9 +322,9 @@
     }
   }
 
-  .post-card-list {
+  .featured-post-wrap {
 
-    .tease-archive-holder {
+    .tease-featured {
       background-color: $white;
 
       .category-list {

@@ -4,16 +4,23 @@
 
 {% set people = researchers|length ? researchers : (related_people|length ? related_people : (authors|length ? authors : [])) %}
 
-{% set label = (researchers|length or related_people|length) ? 'Researchers' : (authors|length ? 'Authors' : '') %}
+{% if researchers|length or related_people|length %}
+  {% set label_single = 'Researcher' %}
+  {% set label_plural  = 'Researchers' %}
+{% elseif authors|length %}
+  {% set label_single = 'Author' %}
+  {% set label_plural  = 'Authors' %}
+{% endif %}
 
 {% if people|length %}
   <div class="researchers">
-    <span class="title">{{ label|lower }}:</span>
+    <span class="title">{{ people|length == 1 ? label_single : label_plural }}:</span>
+
     {% for person in people %}
       {% set person_post = get_post(person) %}
       <a href="{{ person_post.link }}">
         {{ person_post.post_title }}
-      </a>
+      </a>{% if not loop.last %}, {% endif %}
     {% endfor %}
   </div>
 {% endif %}
