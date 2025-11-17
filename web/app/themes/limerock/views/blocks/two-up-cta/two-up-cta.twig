@@ -6,17 +6,17 @@
 
           <div class="col-12 col-md-6 cta-item" data-bs-theme="{{ row.background_color.slug }}">
             {% if row.background_image %}
-              <a href="{{row.button.url}}" alt="{{row.button.alt}}" class="img-holder" data-bs-theme="{{ row.background_color.slug }}">
+              <div class="img-holder" data-bs-theme="{{ row.background_color.slug }}">
                 {% include '@partial/media-item.twig' with { image: row.background_image } only %}
-              </a>
+              </div>
             {% endif %}
 
-            {% if row.text %}
+            {% if row.text or row.buttons %}
               <div class="wrap">
 
-                <a class="text-holder" href="{{row.button.url}}" alt="{{row.button.alt}}">
+                <div class="text-holder">
                   {{row.text}}
-                </a>
+                </div>
 
                 <div class="btn-holder">
                   {% for row in row.buttons %}

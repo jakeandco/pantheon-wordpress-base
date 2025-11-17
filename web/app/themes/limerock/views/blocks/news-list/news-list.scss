@@ -85,6 +85,10 @@
       }
     }
 
+    a {
+      text-decoration: none;
+    }
+
     .btn {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         position: absolute;

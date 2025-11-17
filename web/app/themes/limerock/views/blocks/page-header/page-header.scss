@@ -451,8 +451,6 @@
   a {
     position: relative;
     text-decoration: none;
-    display: flex;
-    align-items: center;
 
     &:hover {
 
@@ -464,6 +462,7 @@
     svg {
       margin-right: 2px;
       width: 9px;
+      vertical-align: middle;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         margin-right: 9px;
         width: 15px;

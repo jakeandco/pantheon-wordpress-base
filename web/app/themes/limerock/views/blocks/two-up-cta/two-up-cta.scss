@@ -6,6 +6,17 @@
 .cta-item {
   position: relative;
 
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50vw;
+    z-index: 1;
+    background: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+  }
+
   &:nth-child(odd) {
     .img-holder {
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -24,6 +35,10 @@
       }
     }
 
+    &:before {
+      left: auto;
+      right: 0;
+    }
   }
 
   &:nth-child(even) {
@@ -41,12 +56,6 @@
 
   a {
     text-decoration: none;
-  }
-
-  .text-holder {
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   figure {
@@ -68,6 +77,7 @@
     bottom: 0;
     left: 50%;
     width: 100vw;
+    z-index: 1;
     transform: translateX(-50%);
 
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -79,6 +89,7 @@
     &:only-child {
       position: relative;
       padding-bottom: 100%;
+      display: block;
 
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding-bottom: 0;
