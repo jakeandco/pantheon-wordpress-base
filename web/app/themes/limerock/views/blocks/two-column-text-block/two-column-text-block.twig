@@ -1,5 +1,5 @@
 {% set has_sidebar = fields.variation in ['two_cols_sidebar', 'two_cols_heading_sidebar'] %}
-{% set col_class = 'col-12 col-md col-xxl-5' %}
+{% set col_class = 'col-12 col-md d-flex col-xxl-5' %}
 
 {% set extra_classes = [extra_classes, 'block_two-column-text-block']|filter(v => v)|join(' ') %}
 
@@ -24,20 +24,22 @@
       {# col 1 text #}
       {% if fields.variation in ['two_cols', 'two_cols_sidebar'] %}
         <div class="{{ col_class }}">
-          {{ fields.column_1|raw }}
+          <div>{{ fields.column_1|raw }}</div>
         </div>
       {% endif %}
 
       {# col 1 heading #}
       {% if fields.variation in ['two_cols_heading', 'two_cols_heading_sidebar'] %}
         <div class="{{ col_class }}">
-          <h2 class="h5 col-heading-title">{{ fields.column_1_heading }}</h2>
+          <div>
+            <h2 class="h5 col-heading-title">{{ fields.column_1_heading }}</h2>
+          </div>
         </div>
       {% endif %}
 
       {# col 2 #}
       <div class="{{ col_class }}">
-        {{ fields.column_2|raw }}
+        <div>{{ fields.column_2|raw }}</div>
       </div>
     </div>
   </div>

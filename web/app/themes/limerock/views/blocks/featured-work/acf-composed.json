@@ -35,7 +35,8 @@
       "acf_composer_extend": "LimeRockTheme/ACF/fields/post_object",
       "label": "Featured Work",
       "name": "featured_work",
-      "post_type": ["project", "publication", "post"]
+      "post_type": ["project", "publication", "post"],
+      "allow_null": true
     },
     {
       "acf_composer_extend": "LimeRockTheme/ACF/fields/relationship",
