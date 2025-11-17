@@ -286,8 +286,10 @@ function limerock_get_work_query_args($args = []) {
         'post_type'      => ['post', 'project', 'publication'],
         'posts_per_page' => $args['posts_per_page'],
         'paged'          => $paged,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
+        'orderby' => [
+            'date' => 'DESC',
+            'ID'   => 'DESC',
+        ],
         'post__not_in'   => $featured_id,
         'meta_query'     => [
             'relation' => 'OR',
@@ -331,9 +333,12 @@ function limerock_get_work_query_args($args = []) {
 
     // Apply sorting
     $sort_options = get_archive_sort_query_options();
-    if (isset($sort_options[$sort_filter])) {
-        $query_args = array_merge($query_args, $sort_options[$sort_filter]);
-        $hide_featured = true; // Hide featured if not "newest" default sorting
+        if (isset($sort_options[$sort_filter])) {
+        $query_args['orderby'] = array_merge(
+            $sort_options[$sort_filter]['orderby'],
+            ['ID' => 'ASC']
+        );
+        $hide_featured = true;
     }
 
     // Remove featured if needed
@@ -360,8 +365,10 @@ function limerock_get_people_query_args($args = []) {
         'post_type'      => ['person'],
         'posts_per_page' => $args['posts_per_page'],
         'paged'          => $paged,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
+        'orderby' => [
+            'date' => 'DESC',
+            'ID'   => 'DESC',
+        ],
         'post__not_in'   => $args['leadership_ids'],
         'meta_query'     => [
             [
@@ -403,9 +410,12 @@ function limerock_get_people_query_args($args = []) {
 
     // Apply sorting
     $sort_options = get_archive_sort_query_options();
-    if (isset($sort_options[$sort_filter])) {
-        $query_args = array_merge($query_args, $sort_options[$sort_filter]);
-        $hide_featured_leadership = true; // Hide featured if not "newest" default sorting
+        if (isset($sort_options[$sort_filter])) {
+        $query_args['orderby'] = array_merge(
+            $sort_options[$sort_filter]['orderby'],
+            ['ID' => 'ASC']
+        );
+        $hide_featured_leadership = true;
     }
 
     // Remove featured if needed
@@ -491,9 +501,21 @@ function get_archive_sort_options() {
 
 function get_archive_sort_query_options() {
     return [
-        'oldest' => ['orderby' => 'date',  'order' => 'ASC'],
-        'a_z'    => ['orderby' => 'title', 'order' => 'ASC'],
-        'z_a'    => ['orderby' => 'title', 'order' => 'DESC'],
+        'oldest' => [
+            'orderby' => [
+                'date' => 'ASC',
+            ]
+        ],
+        'a_z' => [
+            'orderby' => [
+                'title' => 'ASC',
+            ]
+        ],
+        'z_a' => [
+            'orderby' => [
+                'title' => 'DESC',
+            ]
+        ],
     ];
 }
 
@@ -533,10 +555,14 @@ function customize_search_page_query(WP_Query $query) {
         if (!empty($_GET['sort'])) {
             $sort_options = get_archive_sort_query_options();
             $sort_key = sanitize_text_field(is_array($_GET['sort']) ? reset($_GET['sort']) : $_GET['sort']);
+
             if (isset($sort_options[$sort_key])) {
-                foreach ($sort_options[$sort_key] as $key => $value) {
-                    $query->set($key, $value);
-                }
+                $orderby = array_merge(
+                    $sort_options[$sort_key]['orderby'],
+                    ['ID' => 'ASC']
+                );
+
+                $query->set('orderby', $orderby);
             }
         }
 
