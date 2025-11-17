@@ -26,7 +26,9 @@
         }) %}
       {% endif %}
 
-      {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'card' } only %}
+      {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'card', tease_options: {
+        show_image: fields.variation == 'with_image'
+      } } only %}
     </div>
 
   {% endblock %}

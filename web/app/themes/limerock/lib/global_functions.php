@@ -29,7 +29,7 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 	$context['fields'] = get_fields();
 	$context['field_objects'] = get_field_objects();
 
-    if ($is_preview && empty($fields) && !empty($block['data'])) {
+    if ($is_preview && empty($context['fields']) && !empty($block['data'])) {
         $context['fields'] = $block['data'];
     }
 

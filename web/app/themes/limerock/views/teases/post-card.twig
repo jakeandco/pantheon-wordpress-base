@@ -1,7 +1,7 @@
 {% embed '@views/tease.twig' with {
-  tease_options: {
+  tease_options: tease_options|merge({
     extra_classes:'has-overlay-background tease-card post-card',
-  },
+  }),
   post
 } only %}
   {% block content %}
@@ -13,7 +13,7 @@
     {% set terms = full_post.terms %}
 
     <div class="row">
-      {% if full_post.thumbnail %}
+      {% if tease_options.show_image and full_post.thumbnail is not empty %}
         <div class="col-12 col-md-6 img-holder">
           {% include "@partial/media-item.twig" with { image: full_post.thumbnail } only %}
         </div>
