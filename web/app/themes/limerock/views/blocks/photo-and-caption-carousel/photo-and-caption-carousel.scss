@@ -25,6 +25,13 @@
     line-height: 20px;
   }
 
+  &:has(.media-item_caption) {
+    padding-bottom: 70px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-bottom: 60px;
+    }
+  }
+
   .swiper-slide {
     width: 298px;
     height: auto;
@@ -43,7 +50,7 @@
       left: 0;
       bottom: 0;
       width: 100%;
-      background-color: rgba(243, 239, 236, 0.5);
+      background-color: rgba(var(--bs-primary-rgb), 0.5);
       backdrop-filter: blur(0px);
       z-index: 1;
     }
@@ -81,6 +88,14 @@
   figure {
     margin-bottom: 0;
     margin-top: auto;
+    position: relative;
+  }
+
+  .media-item_caption {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
   }
 
   .media-item_holder {

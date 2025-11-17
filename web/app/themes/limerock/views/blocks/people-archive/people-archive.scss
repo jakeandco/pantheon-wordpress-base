@@ -75,6 +75,8 @@
   }
 
   .block_people-archive {
+    position: relative;
+    z-index: 5;
 
     .filter-title {
       display: none;
@@ -89,6 +91,7 @@
       align-items: flex-start;
       margin-bottom: 51px;
     }
+
   }
 
   .btn[data-bs-toggle=collapse] {
@@ -96,6 +99,8 @@
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       display: inline-block;
       vertical-align: top;
+      position: relative;
+      z-index: 5;
     }
   }
 
@@ -128,6 +133,54 @@
       }
     }
   }
+
+  .all-posts-wrap {
+
+    .block-title {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-bottom: 26px;
+      }
+    }
+
+    .callout-cards {
+
+      .titles {
+        margin-bottom: 0;
+      }
+
+      h3 {
+        margin-bottom: 9px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          font-size: 22px;
+          line-height: 1;
+        }
+      }
+
+      figure {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 22px;
+        }
+      }
+
+      .media-item_holder {
+        padding-bottom: 120%;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          padding-bottom: 117%;
+        }
+      }
+    }
+  }
+
+  .pagination-block-alt {
+    margin-top: 16px;
+    padding-bottom: 19px;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      border-top: 1px solid;
+      margin-top: 34px;
+      padding-top: 36px;
+      padding-bottom: 24px;
+    }
+  }
 }
 
 .pagination-block-alt {
@@ -149,7 +202,7 @@
     line-height: 22px;
     margin: -8px auto 0;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      margin: 0 32px;
+      margin: 0 42px;
     }
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       font-size: 22px;
@@ -189,6 +242,10 @@
 }
 
 .leadership-section {
+  margin-bottom: 21px;
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    margin-bottom: 24px;
+  }
 
   .block-title {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
