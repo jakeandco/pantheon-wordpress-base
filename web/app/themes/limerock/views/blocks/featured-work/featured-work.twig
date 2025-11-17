@@ -20,7 +20,7 @@
         </div>
       {% endif %}
 
-      <div class="block-title-wrap featured-work-title-wrap">
+      <div class="block-title-wrap{% if not fields.show_link_at_bottom and fields.archive_link %} featured-work-title-wrap{% endif %}">
         {% if fields.headline %}
           <h2 class="block-title">{{ fields.headline }}</h2>
         {% endif %}
@@ -29,12 +29,14 @@
         {% endif %}
       </div>
 
-      <div class="featured-post-wrap">
-        {% include '@partial/tease_switcher.twig' with {
-          post: get_post(fields.featured_work),
-          tease_options: { variant: 'featured' }
-        } only %}
-      </div>
+      {% if fields.featured_work %}
+        <div class="featured-post-wrap">
+          {% include '@partial/tease_switcher.twig' with {
+            post: get_post(fields.featured_work),
+            tease_options: { variant: 'featured' }
+          } only %}
+        </div>
+      {% endif %}
 
       <div class="all-posts-wrap post-card-list">
         {% if fields.additional_items is not empty %}
