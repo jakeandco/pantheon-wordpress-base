@@ -45,6 +45,7 @@
 .acf-field-group-block-page-header-jump-links {
   display: none;
 
+  .post-type-publication &,
   .post-type-event &,
   .post-type-project & {
     display: block;
