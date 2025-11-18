@@ -23,7 +23,7 @@
     z-index: 5;
   }
 
-  .filters-wrap {
+  .main-filters-wrap {
     position: relative;
     margin-bottom: 48px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
