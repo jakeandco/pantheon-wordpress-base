@@ -119,6 +119,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ]);
                     break;
 
@@ -128,6 +132,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ];
 
                     if (!empty($fields['related_research_areas'])) {
@@ -169,6 +177,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ]);
                     break;
 
@@ -189,6 +201,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                             'posts_per_page' => $posts_per_page,
                             'paged'          => $paged,
                             'post__not_in'   => [$post_id],
+                            'orderby' => [
+                                'date' => 'DESC',
+                                'ID'   => 'DESC',
+                            ],
                             'tax_query'      => [
                                 [
                                     'taxonomy' => $relation_taxonomy,
