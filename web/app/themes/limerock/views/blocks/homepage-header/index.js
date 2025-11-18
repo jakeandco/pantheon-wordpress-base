@@ -57,6 +57,7 @@ export function setup() {
     effect: "slide",
     slidesPerView: 1,
     loop: true,
+    speed: 1000,
     autoplay: {
       delay: 3000,
       reverseDirection: false,
