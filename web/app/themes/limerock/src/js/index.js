@@ -14,6 +14,7 @@ import * as headerSearch from './headerSearch';
 import * as headerPosition from './headerPosition';
 import * as postsAjax from './postsAjax';
 import * as doiLink from './doi-link';
+import * as detectDevice from './detectDevice';
 
 export function setup() {
   accordion.setup();
@@ -32,6 +33,7 @@ export function setup() {
   headerPosition.setup();
   postsAjax.setup();
   doiLink.setup();
+  detectDevice.setup();
 }
 
 // necessary for storybook to use this file in its entirety
@@ -52,6 +54,7 @@ export function teardown() {
   headerPosition.teardown();
   postsAjax.teardown();
   doiLink.teardown();
+  detectDevice.teardown();
 }
 
 document.addEventListener('DOMContentLoaded', setup, false);

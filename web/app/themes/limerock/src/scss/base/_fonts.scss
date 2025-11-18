@@ -37,6 +37,17 @@
   font-display: block;
 }
 @font-face {
+  font-family: 'FT System Grotesk Safari';
+  src:  url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLight-safari.eot');
+  src:  url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLight-safari.eot') format('embedded-opentype'),
+    url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLight-safari.ttf') format('truetype'),
+    url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLight-safari.woff') format('woff'),
+    url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLight-safari.svg') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
   font-family: 'FT System Grotesk';
   src:  url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLightItalic.eot');
   src:  url('../assets/fonts/FTSystemGrotesk/FTSystem-GroteskLightItalic.eot') format('embedded-opentype'),
