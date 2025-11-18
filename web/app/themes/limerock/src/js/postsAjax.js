@@ -8,6 +8,7 @@ export function setup() {
     let currentController = null;
 
     if (!resultsContainer) return;
+    if (!block.id) return;
 
     resultsContainer.addEventListener('click', function (e) {
       const link = e.target.closest('.pagination-js a');

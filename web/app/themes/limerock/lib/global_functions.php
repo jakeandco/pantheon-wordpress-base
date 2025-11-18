@@ -147,6 +147,65 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         $context['selections'] = $selections;
     }
 
+    if ($slug === 'news-cards') {
+        $post_type = 'post';
+        $fields = $context['fields'];
+        $selections = [];
+
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $posts_per_page = !empty($fields['posts_per_page'])
+            ? intval($fields['posts_per_page'])
+            : 3;
+
+        if (!empty($fields['selection_type'])) {
+            switch ($fields['selection_type']) {
+                case 'manual':
+                    $selections = $fields['selections'] ?? [];
+                    break;
+
+                case 'all':
+                    $selections = Timber::get_posts([
+                        'post_type'      => $post_type,
+                        'post_status'    => ['publish'],
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                    ]);
+                    break;
+
+                case 'related':
+                    $relation_taxonomy = 'tax-research-area';
+
+                    $terms = [];
+                    if (!empty($fields['manually_set_taxonomy']) && !empty($fields['related_taxonomies'])) {
+                        $terms = $fields['related_taxonomies'];
+                    } elseif (!empty($post_id)) {
+                        $terms = wp_get_post_terms($post_id, $relation_taxonomy, ['fields' => 'slugs']);
+                    }
+
+                    if (!empty($terms)) {
+                        $query_args = [
+                            'post_type'      => $post_type,
+                            'post_status'    => ['publish'],
+                            'posts_per_page' => $posts_per_page,
+                            'paged'          => $paged,
+                            'post__not_in'   => [$post_id],
+                            'tax_query'      => [
+                                [
+                                    'taxonomy' => $relation_taxonomy,
+                                    'field'    => 'slug',
+                                    'terms'    => $terms,
+                                ],
+                            ],
+                        ];
+                        $selections = Timber::get_posts($query_args);
+                    }
+                    break;
+            }
+        }
+
+        $context['selections'] = $selections;
+    }
+
     if ($slug === 'events-list') {
         $post_type = 'event';
         $fields = $context['fields'];

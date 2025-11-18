@@ -87,6 +87,14 @@
           }
         ]
       ]
+    },
+    {
+      "label": "Posts per page",
+      "name": "posts_per_page",
+      "type": "number",
+      "min": 1,
+      "step": 1,
+      "default_value": 3
     }
   ],
   "location": [
