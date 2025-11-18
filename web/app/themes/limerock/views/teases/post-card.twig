@@ -37,11 +37,13 @@
       </div>
 
       <div class="col-2 col-md-1 btn-holder d-flex justify-content-end">
-        <a href="{{ actual_link }}" target="{{ actual_target }}" class="btn btn-secondary more-link">
-          <svg width="11" height="11" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.71928 10.0212L0.980469 9.28234L8.22787 2.03494H1.57856V0.979492H10.0221V9.42307H8.96669V2.77375L1.71928 10.0212Z" fill="currentColor"/>
-          </svg>
-        </a>
+        {% if post.meta('is_external_link') and post.meta('external_link') %}
+          <a href="{{ actual_link }}" target="{{ actual_target }}" class="btn btn-secondary more-link">
+            <svg width="11" height="11" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.71928 10.0212L0.980469 9.28234L8.22787 2.03494H1.57856V0.979492H10.0221V9.42307H8.96669V2.77375L1.71928 10.0212Z" fill="currentColor"/>
+            </svg>
+          </a>
+        {% endif %}
       </div>
     </div>
   {% endblock %}
