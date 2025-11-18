@@ -5,6 +5,18 @@
     padding: 57px 0;
   }
 
+  .col-xxl-2 {
+    @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+      width: 18%;
+    }
+  }
+
+  .col-xxl-5 {
+    @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+      width: 41%;
+    }
+  }
+
   .light-text {
     opacity: 0.5;
     color: inherit !important;
@@ -36,7 +48,7 @@
       padding-right: 0;
     }
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-      padding-right: 25px;
+      padding-right: 20px;
     }
 
     .btn {

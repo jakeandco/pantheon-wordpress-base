@@ -12,7 +12,7 @@
     {% if show_post_type %}
       <li class="type">
         <a href="{{post.link}}" class="btn btn-secondary">
-          {{ post.post_type }}
+          {{ post.post_type == 'post' ? 'Insight' : post.post_type|replace({'_': ' '}) }}
         </a>
       </li>
     {% endif %}

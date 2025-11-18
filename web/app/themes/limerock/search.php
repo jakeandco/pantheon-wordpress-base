@@ -29,9 +29,15 @@ foreach ($searchable_post_types as $post_type) {
         continue;
     }
 
+    $label = $post_type->label;
+
+    if ($post_type->name === 'post') {
+        $label = 'Insights';
+    }
+
     $post_type_options[] = [
         'value' => $post_type->name,
-        'label' => $post_type->label,
+        'label' => $label,
     ];
 }
 

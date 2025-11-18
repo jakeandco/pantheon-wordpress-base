@@ -8,7 +8,9 @@
     {% set search_query = fn('get_search_query') %}
     <div class="row justify-content-between">
       <div class="col-7 col-md-8 text-holder">
-        <span class="post-type d-block">{{ post.post_type|replace({'_': ' '}) }}</span>
+        <span class="post-type d-block">
+          {{ post.post_type == 'post' ? 'Insight' : post.post_type|replace({'_': ' '}) }}
+        </span>
         {% set post_title = post.post_title|striptags %}
         {# Highlight search words in title #}
         {% if search_query %}

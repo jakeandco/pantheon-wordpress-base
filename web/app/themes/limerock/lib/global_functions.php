@@ -49,7 +49,7 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
         ]);
 
         $post_type_options = [
-            [ 'value' => 'post', 'label' => 'Post' ],
+            [ 'value' => 'post', 'label' => 'Insight' ],
             [ 'value' => 'project', 'label' => 'Project' ],
             [ 'value' => 'publication', 'label' => 'Publication' ]
         ];
