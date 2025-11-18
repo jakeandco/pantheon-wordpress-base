@@ -119,6 +119,11 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'post__not_in'   => [$post_id],
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ]);
                     break;
 
@@ -128,6 +133,11 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'post__not_in'   => [$post_id],
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ];
 
                     if (!empty($fields['related_research_areas'])) {
@@ -169,6 +179,11 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'post__not_in'   => [$post_id],
+                        'orderby' => [
+                            'date' => 'DESC',
+                            'ID'   => 'DESC',
+                        ],
                     ]);
                     break;
 
@@ -189,6 +204,10 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                             'posts_per_page' => $posts_per_page,
                             'paged'          => $paged,
                             'post__not_in'   => [$post_id],
+                            'orderby' => [
+                                'date' => 'DESC',
+                                'ID'   => 'DESC',
+                            ],
                             'tax_query'      => [
                                 [
                                     'taxonomy' => $relation_taxonomy,
@@ -230,7 +249,7 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
-
+                        'post__not_in'   => [$post_id],
                         'meta_query'     => [
                             'relation' => 'OR',
                             [
@@ -259,7 +278,7 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
-
+                        'post__not_in'   => [$post_id],
                         'meta_query'     => [
                             'relation' => 'AND',
                             [
@@ -296,6 +315,7 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                         'orderby'  => 'meta_value',
                         'meta_key' => 'event_start_date',
                         'order'    => 'ASC',
+                        'post__not_in'   => [$post_id],
                         'meta_query' => [
                             'relation' => 'OR',
                             [
