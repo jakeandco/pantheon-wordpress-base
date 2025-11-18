@@ -15,12 +15,17 @@
 
 .header {
   background: var(--#{$prefix}body-bg);
+  transition: background .2s, background-color .2s;
 
   .container {
     position: relative;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       position: static;
     }
+  }
+
+  .bg-body-tertiary {
+    transition: background .2s, background-color .2s;
   }
 }
 
@@ -156,12 +161,26 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100vw;
+      display: block;
+      top: 100%;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: .2s;
     }
 
     .container {
       padding: 0;
       @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
         padding: 0 25px;
+      }
+    }
+
+    &.show {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        pointer-events: all;
+        opacity: 1;
+        visibility: visible;
       }
     }
   }
