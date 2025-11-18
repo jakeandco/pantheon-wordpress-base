@@ -18,14 +18,35 @@
     }
   }
 
-  .filters {
-    display: flex;
-    white-space: nowrap;
-    overflow-x: scroll;
+  .block_people-archive {
+    position: relative;
+    z-index: 5;
+  }
+
+  .main-filters-wrap {
+    position: relative;
+    margin-bottom: 48px;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      white-space: normal;
-      flex-wrap: wrap;
-      overflow: visible;
+      margin-bottom: 51px;
+    }
+  }
+
+  .people-filters {
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .filter-block.block_people-archive {
+      display: flex;
+      white-space: nowrap;
+      overflow-x: scroll;
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        white-space: normal;
+        flex-wrap: wrap;
+        overflow: visible;
+      }
     }
 
     label {
@@ -50,52 +71,42 @@
       }
 
       input[type="radio"] {
-        position: absolute;
-        left: -99999px;
-        visibility: hidden;
 
         &:checked + span {
           border-top-color: $bright-red;
+          color: inherit;
+          background: transparent;
         }
       }
 
       span {
+        background: transparent;
+        border-radius: 0;
+        border: 0;
         border-top: 1px solid #BCAC9B;
+        padding: 0;
         padding-top: 6px;
         display: block;
+        text-transform: none;
+        font: inherit;
         @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
           padding-top: 10px;
         }
 
         &:hover {
           border-top-color: $black;
+          color: inherit;
+          background: transparent;
         }
       }
     }
-  }
-
-  .block_people-archive {
-    position: relative;
-    z-index: 5;
 
     .filter-title {
       display: none;
     }
   }
 
-  .filters-wrap {
-    position: relative;
-    margin-bottom: 48px;
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 51px;
-    }
-
-  }
-
   .btn[data-bs-toggle=collapse] {
-    display: none;
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
       display: inline-block;
       vertical-align: top;
@@ -106,14 +117,12 @@
 
   .filter-block {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      max-width: calc(100% - 244px);
       padding-top: 7px;
     }
   }
 
   .collapse-holder {
     @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-      background-color: $light-text;
       padding: 25px 0;
     }
 
