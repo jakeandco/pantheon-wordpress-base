@@ -41,5 +41,14 @@
     .swiper-slide {
       overflow: hidden;
     }
+
+    .swiper-slide {
+      transition: .6s;
+    }
+
+    .swiper-slide-next,
+    .swiper-slide-prev {
+      opacity: 0;
+    }
   }
 }
