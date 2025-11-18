@@ -144,6 +144,11 @@
   }
 }
 
+.rotate-svg {
+  position: relative;
+  transform: scale(1.19);
+}
+
 .research-area-wrapper {
   &--cards {
     padding: 0 25px;
