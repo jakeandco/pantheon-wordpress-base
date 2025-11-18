@@ -154,4 +154,60 @@
     margin-bottom: 16px;
     margin-right: 16px;
   }
+
+  .text-holder {
+
+    &:only-child {
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin: auto 0;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 57px;
+      }
+
+      h5 {
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          margin-bottom: 32px;
+        }
+      }
+
+      h6 {
+        padding-top: 20px;
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          padding-top: 50px;
+        }
+      }
+    }
+  }
+
+  h6 {
+    font-family: 'FT System Grotesk';
+    margin-bottom: 1px;
+    opacity: 0.6;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  .name {
+    font-family: 'Season';
+    font-weight: 470;
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 0;
+  }
+
+  a[href*="mailto:"] {
+    font-family: 'FT System Grotesk';
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    text-decoration: underline;
+    display: inline-block;
+    vertical-align: top;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

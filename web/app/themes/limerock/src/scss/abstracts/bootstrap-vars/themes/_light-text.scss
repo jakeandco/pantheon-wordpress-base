@@ -9,6 +9,12 @@
   $dynamic-btn-color: 'light-text';
   $dynamic-btn-hover-bg: 'bright-red';
   $dynamic-btn-hover-color: 'light-text';
+
+  $dynamic-btn-secondary-bg: 'warm-light';
+  $dynamic-btn-secondary-color: 'black';
+  $dynamic-btn-secondary-hover-bg: 'black';
+  $dynamic-btn-secondary-hover-color: 'white';
+
   $dynamic-entry-point-card-hover-bg: 'white';
 
   @include dynamic-theme(
@@ -21,6 +27,12 @@
     $dynamic-btn-hover-bg,
     $dynamic-btn-color,
     $dynamic-btn-hover-color,
+
+    $dynamic-btn-secondary-bg,
+    $dynamic-btn-secondary-hover-bg,
+    $dynamic-btn-secondary-color,
+    $dynamic-btn-secondary-hover-color,
+
     $dynamic-entry-point-card-hover-bg
   );
 }

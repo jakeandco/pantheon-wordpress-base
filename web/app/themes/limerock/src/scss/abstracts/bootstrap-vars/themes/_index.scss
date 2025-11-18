@@ -14,6 +14,10 @@
   $dynamic-btn-hover-bg,
   $dynamic-btn-color,
   $dynamic-btn-hover-color,
+  $dynamic-btn-secondary-bg,
+  $dynamic-btn-secondary-hover-bg,
+  $dynamic-btn-secondary-color,
+  $dynamic-btn-secondary-hover-color,
   $dynamic-entry-point-card-hover-bg) {
     [data-bs-theme='#{$dynamic-color-label}'] {
       --#{$prefix}body-color: #{map-get($theme-colors, $dynamic-text-color)};
@@ -159,6 +163,30 @@
       --#{$prefix}btn-hover-color: #{map-get(
         $theme-colors,
         $dynamic-btn-hover-color )
+      };
+
+      --#{$prefix}btn-secondary-bg: #{map-get($theme-colors, $dynamic-btn-secondary-bg)};
+      --#{$prefix}btn-secondary-bg: #{map-get(
+        $theme-colors,
+        $dynamic-btn-secondary-bg )
+      };
+
+      --#{$prefix}btn-secondary-hover-bg: #{map-get($theme-colors, $dynamic-btn-secondary-hover-bg)};
+      --#{$prefix}btn-secondary-hover-bg: #{map-get(
+        $theme-colors,
+        $dynamic-btn-secondary-hover-bg )
+      };
+
+      --#{$prefix}btn-secondary-color: #{map-get($theme-colors, $dynamic-btn-secondary-color)};
+      --#{$prefix}btn-secondary-color: #{map-get(
+        $theme-colors,
+        $dynamic-btn-secondary-color )
+      };
+
+      --#{$prefix}btn-secondary-hover-color: #{map-get($theme-colors, $dynamic-btn-secondary-hover-color)};
+      --#{$prefix}btn-secondary-hover-color: #{map-get(
+        $theme-colors,
+        $dynamic-btn-secondary-hover-color )
       };
 
       --#{$prefix}entry-point-card-hover-bg: #{map-get($theme-colors, $dynamic-entry-point-card-hover-bg)};
