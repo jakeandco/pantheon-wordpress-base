@@ -14,14 +14,16 @@
             {% set source = post.meta('external_link').title %}
           {% endif %}
 
-          {% set is_external = post.meta('is_external_link') and post.meta('external_link') %}
-          {% set block_link = is_external ? post.meta('external_link').url : post.link %}
+          {% set is_external_link = post.meta('is_external_link') %}
+          {% set external_link = post.meta('external_link') %}
+          {% set actual_link =  is_external_link ? external_link.url : post.path %}
+          {% set actual_target =  is_external_link ? '_blank' : '_self' %}
 
           {{ source }}
           <span class="mark"> · </span>
           {{ post.date|date('F j, Y') }}
         </div>
-        <h2 class="h5"><a href="{{block_link}}">{{post.post_title}}</a></h2>
+        <h2 class="h5"><a href="{{ actual_link }}" target="{{ actual_target }}">{{post.post_title}}</a></h2>
 
         {% include '@partial/post-taxonomy-list.twig' with {
           post: post,
@@ -30,7 +32,7 @@
       </div>
 
       <div class="col-2 col-md-4 col-xl-3 img-holder">
-        <a href="{{block_link}}">
+        <a href="{{ actual_link }}" target="{{ actual_target }}">
 
           {% if post.thumbnail %}
             <div class="d-none d-md-block">
