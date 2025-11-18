@@ -12,9 +12,9 @@
       "name": "selection_type",
       "type": "select",
       "choices": {
-        "all": "All",
+        "all": "Upcoming",
+        "related": "Upcoming - Related",
         "past": "Past",
-        "related": "Related",
         "manual": "Manual"
       }
     },

@@ -164,37 +164,94 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
                     break;
 
                 case 'all':
+                    $today = date('Y-m-d H:i:s');
+
                     $selections = Timber::get_posts([
                         'post_type'      => $post_type,
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+
+                        'meta_query'     => [
+                            'relation' => 'OR',
+                            [
+                                'key'     => 'event_start_date',
+                                'value'   => $today,
+                                'compare' => '>=',
+                                'type'    => 'DATETIME',
+                            ],
+                            [
+                                'key'     => 'event_end_date',
+                                'value'   => $today,
+                                'compare' => '>=',
+                                'type'    => 'DATETIME',
+                            ],
+                        ],
+                        'orderby' => 'meta_value',
+                        'meta_key' => 'event_start_date',
+                        'order' => 'ASC',
                     ]);
                     break;
 
                 case 'past':
-                    $today = date('Y-m-d');
+                    $today = date('Y-m-d H:i:s');
                     $selections = Timber::get_posts([
                         'post_type'      => $post_type,
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+
                         'meta_query'     => [
+                            'relation' => 'AND',
                             [
                                 'key'     => 'event_start_date',
                                 'value'   => $today,
-                                'compare' => 'LIKE',
+                                'compare' => '<=',
+                                'type'    => 'DATETIME',
+                            ],
+                            [
+                                'relation' => 'OR',
+                                [
+                                    'key'     => 'event_end_date',
+                                    'compare' => 'NOT EXISTS',
+                                ],
+                                [
+                                    'key'     => 'event_end_date',
+                                    'value'   => $today,
+                                    'compare' => '<',
+                                    'type'    => 'DATETIME',
+                                ],
                             ],
                         ],
                     ]);
                     break;
 
                 case 'related':
+                    $today = date('Y-m-d H:i:s');
+
                     $query_args = [
                         'post_type'      => $post_type,
                         'post_status'    => ['publish', 'future'],
                         'posts_per_page' => $posts_per_page,
                         'paged'          => $paged,
+                        'orderby'  => 'meta_value',
+                        'meta_key' => 'event_start_date',
+                        'order'    => 'ASC',
+                        'meta_query' => [
+                            'relation' => 'OR',
+                            [
+                                'key'     => 'event_start_date',
+                                'value'   => $today,
+                                'compare' => '>=',
+                                'type'    => 'DATETIME',
+                            ],
+                            [
+                                'key'     => 'event_end_date',
+                                'value'   => $today,
+                                'compare' => '>=',
+                                'type'    => 'DATETIME',
+                            ],
+                        ],
                     ];
 
                     $tax_query = ['relation' => 'OR'];

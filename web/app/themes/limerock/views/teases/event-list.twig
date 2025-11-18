@@ -21,11 +21,11 @@
         {% set event_start = acf_event_datetime(post.meta('event_start_date')) %}
         {% set event_end   = acf_event_datetime(post.meta('event_end_date')) %}
 
-        {% if event_start and event_end %}
+        {% if event_start %}
           <div class="date">
             {{ event_start|date("l F, j") }}
             <span class="mark">/</span>
-            {{ event_start|date("g:ia") }} to {{ event_end|date("g:ia") }} Pacific Time
+            {{ event_start|date("g:ia") }} {% if event_end %}to {{ event_end|date("g:ia") }}{% endif %} Pacific Time
           </div>
         {% endif %}
 
