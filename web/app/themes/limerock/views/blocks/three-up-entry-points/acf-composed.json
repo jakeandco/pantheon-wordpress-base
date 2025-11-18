@@ -6,27 +6,40 @@
       "label": "Entry Points",
       "name": "entry_points",
       "type": "repeater",
+      "layout": "block",
       "sub_fields": [
         {
           "label": "Image",
           "name": "image",
-          "type": "image"
-        },
-        {
-          "label": "Link",
-          "name": "link",
-          "type": "link"
+          "type": "image",
+          "wrapper": {
+            "width": 30
+          }
         },
         {
           "label": "Description",
           "name": "description",
-          "type": "wysiwyg"
+          "type": "wysiwyg",
+          "wrapper": {
+            "width": 70
+          }
+        },
+        {
+          "label": "Link",
+          "name": "link",
+          "type": "link",
+          "wrapper": {
+            "width": 50
+          }
         },
         {
           "label": "Button Text",
           "name": "button_text",
           "type": "text",
-          "instructions": "If included, a standard button with additional extra text will be added to the bottom of the card"
+          "instructions": "If included, a standard button with additional extra text will be added to the bottom of the card",
+          "wrapper": {
+            "width": 50
+          }
         }
       ]
     },
