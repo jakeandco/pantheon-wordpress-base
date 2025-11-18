@@ -23,7 +23,7 @@
     }
   }
 
-  [data-bs-theme="green"] {
+  [data-bs-theme]:not([data-bs-theme="white"]) {
     &>.block_page-header {
 
       .form-holder {
@@ -303,7 +303,8 @@
   }
 }
 
-.works-wrap[data-bs-theme="green"] {
+.block_featured-work[data-bs-theme]:not([data-bs-theme="white"]),
+.works-wrap[data-bs-theme]:not([data-bs-theme="white"]) {
   .post-card-list {
 
     .tease-archive-holder {
