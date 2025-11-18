@@ -110,4 +110,8 @@
       }
     }
   }
+
+  .collapse-button[aria-expanded="true"] {
+    display: none;
+  }
 }

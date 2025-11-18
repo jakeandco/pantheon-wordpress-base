@@ -1,35 +1,48 @@
-{% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_news-cards' } %}
-  {% block content %}
-    <div class="container">
-      {% set post_type = 'post' %}
-      <span class="d-block block-title mb-0">{{fields.title}}</span>
+{% if is_preview or selections is not empty %}
+  {% embed '@partial/block_wrapper.twig' with { extra_classes: 'block_news-cards ajax-posts-js' } %}
+    {% block content %}
+      <div class="container">
+        {% if fields.title %}
+          <span class="d-block block-title mb-0">{{ fields.title }}</span>
+        {% endif %}
+        {% if selections is not empty %}
+          <div class="ajax-results-js">
+            {% if fields.selection_type == 'manual' %}
+              <div class="visible-posts">
+                {% set visible_posts = selections|slice(0, fields.posts_per_page) %}
+                {% include '@partial/post-repeater.twig' with { posts: visible_posts, variant: 'card', tease_options: {
+                  show_image: fields.variation == 'with_image'
+                } } only %}
+              </div>
 
+              {% set hidden_posts = selections|slice(fields.posts_per_page) %}
+              {% if hidden_posts is not empty %}
+                <div class="collapse hidden-posts" id="hiddenPosts-{{ block.anchor|default(block.id) }}">
+                  {% include '@partial/post-repeater.twig' with { posts: hidden_posts, variant: 'card', tease_options: {
+                    show_image: fields.variation == 'with_image'
+                  } } only %}
+                </div>
 
-      {% set selections = [] %}
-      {% if fields.selection_type == 'manual' %}
-        {% set selections = fields.selections %}
-      {% elseif fields.selection_type == 'all' %}
-        {% set selections = get_posts({ post_type }) %}
-      {% elseif fields.selection_type == 'related' %}
-        {% set relation_taxonomy = 'tax-research-area' %}
-        {% set terms = fields.manually_set_taxonomy ? fields.related_taxonomies : post.terms(relation_taxonomy)|default([])|map(t => t.slug) %}
-        {% set selections = get_posts({
-          post_type,
-          post__not_in: [post.ID],
-          tax_query: [
-              {
-                taxonomy: relation_taxonomy,
-                field: 'slug',
-                terms
-              },
-            ],
-        }) %}
-      {% endif %}
-
-      {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'card', tease_options: {
-        show_image: fields.variation == 'with_image'
-      } } only %}
-    </div>
-
-  {% endblock %}
-{% endembed %}
+                <div class="text-center">
+                  <button class="btn btn-primary collapse-button mt-8" type="button" data-bs-toggle="collapse" data-bs-target="#hiddenPosts-{{ block.anchor|default(block.id) }}" aria-expanded="false" aria-controls="hiddenPosts-{{ block.anchor|default(block.id) }}">
+                    Expand all ({{ hidden_posts|length }})
+                  </button>
+                </div>
+              {% endif %}
+            {% else %}
+              {% include '@partial/post-repeater.twig' with { posts: selections, variant: 'card', tease_options: {
+                show_image: fields.variation == 'with_image'
+              } } only %}
+              <div class="mt-4">
+                {% include '@partial/pagination-alt.twig' with { posts: selections } only %}
+              </div>
+            {% endif %}
+            {% include '@partial/loader.twig' %}
+          </div>
+        {% elseif is_preview %}
+          <p class="no-posts">No posts found.</p>
+        {% endif %}
+      </div>
+    {% endblock %}
+  {% endembed %}
+{% endif %}
