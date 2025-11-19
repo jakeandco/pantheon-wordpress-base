@@ -28,23 +28,16 @@
         </div>
       </div>
       <div class="col-12 col-md-6 text-holder">
-        <div class="date">
-          {% set before_mark = [start_day] %}
-          {% set after_mark = [] %}
+        {% set event_start = acf_event_datetime(post.meta('event_start_date')) %}
+        {% set event_end   = acf_event_datetime(post.meta('event_end_date')) %}
 
-          {% if start_day == end_day %}
-            {% set after_mark = after_mark|merge([start_time])  %}
-
-            {% if start_time != end_time %}
-              {% set after_mark = after_mark|merge(['to', end_time])  %}
-            {% endif %}
-            {% set after_mark = after_mark|merge(['Pacific Time'])  %}
-          {% else %}
-            {% set before_mark = before_mark|merge(['to', end_day])  %}
-          {% endif %}
-
-          {{ [before_mark|join(' '), after_mark|join(' ')]|filter(v => v)|join('<span class="mark">/</span>') }}
-        </div>
+        {% if event_start %}
+          <div class="date">
+            {{ event_start|date("l F, j") }}
+            <span class="mark">/</span>
+            {{ event_start|date("g:ia") }} {% if event_end %}to {{ event_end|date("g:ia") }}{% endif %} Pacific Time
+          </div>
+        {% endif %}
         <h2 class="h5">
           <a href="{{post.link}}">{{post.post_title}}</a>
         </h2>
