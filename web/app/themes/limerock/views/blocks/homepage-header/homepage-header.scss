@@ -37,7 +37,14 @@
     overflow: hidden;
     width: 100%;
     transition: height .18s ease;
+    top: 2px;
 
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      top: 4px;
+    }
+    @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+      top: 6px;
+    }
     .swiper-slide {
       overflow: hidden;
     }
@@ -51,14 +58,58 @@
       opacity: 0;
     }
   }
+
+  .animating-text {
+
+    &>span {
+      display: block;
+      position: relative;
+      top: -2px;
+
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        top: -4px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+        top: -6px;
+      }
+    }
+  }
 }
 
 body.apple-device {
 
   .block_homepage-header {
 
-    h1 {
-      font-family: 'FT System Grotesk Safari';
+    .animating-text-holder {
+      position: relative;
+      top: 8px;
+
+      @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        top: 15px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+        top: 17px;
+      }
+      @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+        top: 21px;
+      }
+    }
+
+    .animating-text {
+
+      &>span {
+        top: -8px;
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+          top: -15px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+          top: -17px;
+        }
+        @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+          top: -21px;
+        }
+      }
     }
   }
 }
