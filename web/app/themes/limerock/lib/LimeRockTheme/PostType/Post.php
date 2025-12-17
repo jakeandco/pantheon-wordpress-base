@@ -10,14 +10,13 @@ class Post extends PostTypeClass
   public static string $post_slug = 'post';
   public static ?int $posts_per_page = 15;
 
-  // public static $post_type_template = [];
+  // public static array $post_type_template = [];
 
   public static function init()
   {
     parent::init();
     add_action('init', function () {
       unregister_taxonomy_for_object_type('post_tag', 'post');
-      unregister_taxonomy_for_object_type('category', 'post');
     });
   }
 

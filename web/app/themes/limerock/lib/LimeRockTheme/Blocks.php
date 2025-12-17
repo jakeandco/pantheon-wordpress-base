@@ -4,19 +4,33 @@ namespace LimeRockTheme;
 
 use ACFComposer;
 use LimeRockTheme;
+use WP_Post;
 
 /**
  * Class Blocks
  */
 class Blocks
 {
+	public static $categories = [];
 	public static $added_block_types = [];
 
 	public static function init()
 	{
+		add_filter('block_categories_all', 'LimeRockTheme\Blocks::register_block_categories', 10, 2);
+
 		add_action('init', 'LimeRockTheme\Blocks::register_acf_blocks');
 		add_filter('allowed_block_types_all', 'LimeRockTheme\Blocks::filter_allowed_block_types');
 	}
+
+	public static function register_block_categories($categories, $editor_context)
+	{
+		if (!empty(static::$categories) && $editor_context->post instanceof WP_Post) {
+			$categories = array_merge(static::$categories, $categories);
+		}
+
+		return $categories;
+	}
+
 
 	public static function register_acf_blocks()
 	{
@@ -37,6 +51,10 @@ class Blocks
 					);
 				}
 
+				if (file_exists($item->getPathname() . '/hooks.php')) {
+					require_once $item->getPathname() . '/hooks.php';
+				}
+
 				if ($registration_response) {
 					static::$added_block_types = array_merge(static::$added_block_types, [$registration_response->name]);
 				}
@@ -44,13 +62,15 @@ class Blocks
 		);
 	}
 
-	public static function filter_allowed_block_types()
+	public static function filter_allowed_block_types($block_types)
 	{
-		return array_values(
+		$thing = array_merge(array_values(
 			array_filter(
 				static::$added_block_types,
 				fn($block_name) => $block_name !== 'limerock/example-block'
 			)
-		);
+		));
+
+		return $thing;
 	}
 }

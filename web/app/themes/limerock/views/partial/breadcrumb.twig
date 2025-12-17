@@ -1,13 +1,37 @@
-{% set parent = post.parent %}
-{% if parent is empty and post.post_type != 'page' %}
-  {% set parent = get_post_type_archive(post.post_type) %}
+{% set post_type = post_type|default(post.post_type) %}
+{% set breadcrumbs = [] %}
+
+{% set ancestors = fn('get_post_ancestors', post)|default([]) %}
+{% set archive_page = null %}
+{% set archive_ancestors = [] %}
+
+{% if post_type != 'page' %}
+  {% set archive_page = get_post_type_archive(post_type) %}
+  {% if archive_page %}
+    {% set archive_ancestors = fn('get_post_ancestors', archive_page.post_id)|default([]) %}
+  {% endif %}
 {% endif %}
 
-{% if parent is not empty %}
-  <div class="breadcrumb">
-    <a href="{{ parent.path }}">
-      <span class="icon"><-</span>
-      {{parent.title}}
-    </a>
-  </div>
+{% if ancestors is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge(get_posts(ancestors)|default([])) %}
+{% endif %}
+{% if archive_page is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge([archive_page]) %}
+{% endif %}
+{% if archive_ancestors is not empty %}
+  {% set breadcrumbs = breadcrumbs|merge(get_posts(archive_ancestors)|default([])) %}
+{% endif %}
+
+{% if breadcrumbs is not empty %}
+  <nav class="back-link" aria-label="breadcrumb">
+    <ol class="list-group-horizontal list-group list-unstyled">
+      {% for breadcrumb in breadcrumbs|reverse %}
+        <li class="list-group-item border-0">
+          <a href="{{ breadcrumb.path }}">
+            <span class="arrow-ic">← </span>{{breadcrumb.title}}
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
 {% endif %}

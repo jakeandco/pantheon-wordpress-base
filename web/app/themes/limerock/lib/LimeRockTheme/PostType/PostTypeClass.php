@@ -39,7 +39,16 @@ class PostTypeClass
    */
   public static function register_template()
   {
-    static::get_object()->template = static::$post_type_template;
+    if (!empty(static::$post_type_template)) {
+      // $post_labels = static::get_object()->labels;
+      // register_block_pattern("limerock/" . static::$post_slug, array(
+      //   'title'      => __($post_labels->singular_name, 'themeslug'),
+      //   'categories' => ['featured'],
+      //   'source'     => 'theme',
+      //   'content'    => '<!-- Block pattern goes here. -->'
+      // ));
+      static::get_object()->template = static::$post_type_template;
+    }
   }
 
   /**
@@ -71,7 +80,8 @@ class PostTypeClass
     return $query;
   }
 
-  public static function is_archive_query($query) {
+  public static function is_archive_query($query)
+  {
     return !is_admin()
       && $query->is_main_query()
       && (is_post_type_archive(static::$post_slug) || static::$post_slug == 'post' && is_home());

@@ -1,0 +1,53 @@
+{
+  "name": "Positioning",
+  "title": "positioning",
+  "fields": [
+    {
+      "label": "Focal Point",
+      "instructions": "Select the focal point used for positioning and responsive cropping (maps to CSS background-position). Choose the option that keeps the subject visible when images are resized or used as background/hero images.",
+      "name": "focal_point",
+      "type": "group",
+      "layout": "table",
+      "sub_fields": [
+        {
+          "label": "Vertical",
+          "name": "vertical",
+          "type": "select",
+          "choices": {
+            "top": "Top",
+            "center": "Center",
+            "bottom": "Bottom"
+          },
+          "default_value": "center"
+        },
+        {
+          "label": "Horizontal",
+          "name": "horizontal",
+          "type": "select",
+          "choices": {
+            "left": "Left",
+            "center": "Center",
+            "right": "Right"
+          },
+          "default_value": "center"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "attachment",
+        "operator": "==",
+        "value": "image"
+      }
+    ],
+    [
+      {
+        "param": "attachment",
+        "operator": "==",
+        "value": "video"
+      }
+    ]
+  ]
+}

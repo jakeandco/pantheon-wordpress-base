@@ -48,15 +48,16 @@ class TimberCustomizer
 	 */
 	public static function add_to_context($context)
 	{
+		if (!empty($_GET)) $context['request']['get'] = $_GET;
+		if (!empty($_POST)) $context['request']['post'] = $_POST;
+
 		$context['site']  = WordpressSite::$instance;
 		$context['UrlHelper'] = new URLHelper();
 		$context['current_page'] = self::buildCurrentPageContext();
-		$context['archives']  = [
-		];
+		$context['archives']  = [];
 
 		$context['options']  = [
-			'footer' => get_fields('footer_options'),
-			'site' => get_fields('site_options'),
+			'site' => get_fields('site-settings'),
 		];
 
 		return $context;

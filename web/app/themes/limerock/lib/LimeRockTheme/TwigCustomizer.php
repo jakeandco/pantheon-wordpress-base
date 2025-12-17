@@ -34,20 +34,41 @@ class TwigCustomizer
 
 		$twig->addExtension(new Twig\Extra\Intl\IntlExtension());
 		$twig->addExtension(new Twig\Extra\Html\HtmlExtension());
+
+		$twig->addFilter(new \Twig\TwigFilter('file_get_contents_raw', function ($url) {
+			$uploads = wp_upload_dir();
+			$baseurl = $uploads['baseurl'];   // URL to the uploads folder
+			$basedir = $uploads['basedir'];   // Physical path to the uploads folder
+
+			$relative_path = str_replace($baseurl, '', $url); // /2025/10/research-area-icon-1.svg
+			$path = $basedir . $relative_path;
+
+			return file_exists($path) ? file_get_contents($path) : '';
+		}));
+
 		$twig->addFilter(new Twig\TwigFilter('console_log', fn(...$args) => Util::console_log(...$args)));
 
 		$twig->addFilter(new Twig\TwigFilter(
 			'datetime',
-			function($datetime, $to_format = 'Y.m.d', $from_format = 'd/m/Y') {
+			function ($datetime, $to_format = 'Y.m.d', $from_format = 'd/m/Y') {
 				if (Util::array_value($datetime, 'prefix') == 'acf') {
 					$from_format = Util::array_value($datetime, 'return_format');
 					$datetime = Util::array_value($datetime, 'value');
 				}
 
+				if (empty($datetime)) return '';
+
 				$formatter = DateTimeImmutable::createFromFormat($from_format, $datetime);;
 				return $formatter->format($to_format);
 			}
 		));
+
+		$twig->addFunction(new Twig\TwigFunction('get_field_objects', function (...$args) {
+			return get_field_objects(...$args);
+		}));
+		$twig->addFunction(new Twig\TwigFunction('get_field_object', function (...$args) {
+			return get_field_object(...$args);
+		}));
 
 		$twig->addFunction(new Twig\TwigFunction('get_post_type_archive', function ($post_type) {
 			if (!empty($post_type) && post_type_exists($post_type)) {
@@ -55,17 +76,27 @@ class TwigCustomizer
 
 				$archive_link  = get_post_type_archive_link($post_type);
 				$archive_title = $object->labels->menu_name;
-				$archive_path  = wp_make_link_relative($archive_link);
 
+				$options = get_fields('site-settings');
+				$post_type_link = Util::array_value($options, ['post_types', $post_type, 'archive_link']);
 
-				$archive_post_id = url_to_postid($archive_link);
-				if (!empty($archive_post_id)) {
-					$archive_post  = Timber\Timber::get_post($archive_post_id);
-					$archive_post_id  = $archive_post->id;
+				if (!empty($post_type_link)) {
+					$archive_link = Util::array_value($post_type_link, 'url');
+					$archive_title = Util::array_value($post_type_link, 'title');
+					$archive_path  = wp_make_link_relative($archive_link);
+					$archive_post_id = url_to_postid($archive_link);
+				} elseif (!empty($archive_link)) {
+					$archive_path  = wp_make_link_relative($archive_link);
 
-					$archive_title = $archive_post->title;
-					$archive_link  = $archive_post->link;
-					$archive_path  = $archive_post->path;
+					$archive_post_id = url_to_postid($archive_link);
+					if (!empty($archive_post_id)) {
+						$archive_post  = Timber\Timber::get_post($archive_post_id);
+						$archive_post_id  = $archive_post->id;
+
+						$archive_title = $archive_post->title;
+						$archive_link  = $archive_post->link;
+						$archive_path  = $archive_post->path;
+					}
 				}
 
 				return [

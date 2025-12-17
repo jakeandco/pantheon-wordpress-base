@@ -1,33 +1,97 @@
 {% set autoplay = autoplay is null ? true : autoplay %}
 {% set playsinline = playsinline is null ? true : playsinline %}
 
-{% set primary_media_item = video|default(image) %}
+{% set is_external_video = video_link is defined and video_link %}
+{% set primary_media_item = is_external_video ? image : video|default(image) %}
+
+{% if not is_external_video %}
+  {% set primary_media_item = primary_media_item.type == 'video'
+    ? primary_media_item
+    : get_image(primary_media_item)
+  %}
+{% endif %}
 
 {% if primary_media_item is not empty %}
+  {% if is_external_video %}
+    {% set media_type = 'video' %}
+  {% else %}
+    {% set attachment_post = get_attachment(primary_media_item.id) %}
+    {% set media_type = attachment_post.post_mime_type|split('/')|first %}
+  {% endif %}
+
+  {% set focal_point = attachment_post.meta('focal_point') %}
+  {% set focal_point_class = [focal_point.vertical,  focal_point.horizontal]|filter(v => v)|join('-') %}
+  {% set media_item_classes = html_classes(
+        'media-item',
+        ('media-item--' ~ (media_type ?: 'image')),
+        focal_point_class,
+      ) %}
+
+  {% set video_url = is_external_video
+    ? video_link
+    : primary_media_item.url|default(primary_media_item.src)
+  %}
+
+  {% if not is_external_video and attachment_post is defined %}
+    {% set duration = function('wp_read_video_metadata', attachment_post.file_loc).length_formatted %}
+  {% else %}
+    {% set duration = null %}
+  {% endif %}
+
+  {% set video_overlay_args = {
+    media_type: media_type,
+    overlay_title: overlay_title,
+    video_url: video_url,
+    caption: primary_media_item.caption|default(''),
+    duration: duration
+  } %}
+
+  {% macro video_overlay(args) %}
+    {% if args.media_type == 'video' %}
+      <div class="video-toggle {{ args.outer_class }}">
+        {% if args.overlay_title %}
+          <p class="h5 media-item_overlay-title">{{ args.overlay_title }}</p>
+        {% endif %}
+
+        <a class="btn btn-primary toggler"
+          data-fancybox
+          href="{{ args.video_url }}"
+          data-caption="{{ args.caption|default('') }}">
+
+          <svg width="7" height="10" viewbox="0 0 7 10" fill="currentColor">
+            <path d="M6.35645 5L0.356445 9.33013L0.356446 0.669872L6.35645 5Z"/>
+          </svg>
+
+          Watch video
+          {% if args.duration %}
+            <span class="video-duration">({{ args.duration }})</span>
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  {% endmacro %}
+
   <figure>
-    <div class="media-item_holder">
-      {% if primary_media_item.type == 'video' %}
-        <video class="media-item media-item--{{ primary_media_item.type }}" muted loop data-video {{ playsinline != false ? 'playsinline' : '' }} {{ autoplay != false ? 'autoplay' : '' }} {% if video is not empty and image is not empty %} poster="{{ image.url|default(image.src) }}" {% endif %}>
+    <div class="media-item_holder{% if media_type == 'video' and not is_external_video %} video-gradient-overlay{% endif %}">
+      {% if media_type == 'video' and not is_external_video %}
+        <video class="{{ media_item_classes }}" muted loop data-video data-hover-play {{ playsinline != false ? 'playsinline' : '' }} poster="{{ attachment_post.meta('poster_image').url|default(image.url)|default(image.src) }}">
           <source src="{{ primary_media_item.url|default(primary_media_item.src) }}" type="{{primary_media_item.mime_type}}">
           Your browser does not support the video tag.
         </video>
 
-        {% if not autoplay %}
-          <div class="video-toggle">
-            <button class="btn toggler" aria-pressed="false">
-              Play Video
-              <svg width="7" height="10" viewbox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.35645 5L0.356445 9.33013L0.356446 0.669872L6.35645 5Z" fill="black"/>
-              </svg>
-            </button>
-          </div>
-        {% endif %}
       {% else %}
-        <img class="media-item media-item--{{ primary_media_item.type }}" src="{{ primary_media_item.url|default(primary_media_item.src) }}" alt='{{primary_media_item.alt}}'/>
+        {% set img_src = size is defined and size ?  primary_media_item.src(size) :  primary_media_item.url|default(primary_media_item.src) %}
+        {% set img_srcset = primary_media_item.srcset(size is defined and size ? size : 'full' ) %}
+
+        <img style="background-image: url({{ primary_media_item.src('thumbnail') }});" class="{{ media_item_classes }}" src="{{ img_src }}" alt="{{primary_media_item.alt}}" srcset="{{ img_srcset }}"/>
       {% endif %}
+
+      {{ _self.video_overlay(video_overlay_args|merge({ outer_class: 'd-none d-md-block video-toggle--overlay' })) }}
     </div>
     {% if not hide_caption and primary_media_item.caption is not empty %}
-      <figcaption class="container media-item_caption">{{primary_media_item.caption}}</figcaption>
+      <figcaption class="media-item_caption">{{primary_media_item.caption}}</figcaption>
     {% endif %}
+
+    {{ _self.video_overlay(video_overlay_args|merge({ outer_class: 'd-md-none' })) }}
   </figure>
 {% endif %}
