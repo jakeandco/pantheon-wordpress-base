@@ -10,6 +10,8 @@ use LimeRockTheme;
  * Class ACF
  */
 
+acf_add_filter_variations('acf/pre_format_value', array('type', 'name', 'key'), 3);
+
 class ACF
 {
 	static $disallowed_field_names = [
@@ -28,8 +30,8 @@ class ACF
 			remove_submenu_page('edit.php?post_type=acf-field-group', 'edit.php?post_type=acf-ui-options-page');
 		});
 
+		add_filter('acf/prepare_field_for_import', 'LimeRockTheme\ACF::prepare_field_for_import');
 		add_filter('acf/prepare_field', 'LimeRockTheme\ACF::add_video_selection_to_image_fields');
-		add_filter('acf/pre_format_value', 'LimeRockTheme\ACF::remove_wpautop', 10, 5);
 		add_filter('acf/validate_save_post', 'LimeRockTheme\ACF::validate_save_post');
 	}
 
@@ -107,21 +109,37 @@ class ACF
 		return is_array($field) && array_key_exists('limerock_base_type', $field) && $field['limerock_base_type'] == $type;
 	}
 
+	public static function prepare_field_for_import($field)
+	{
+		$field_key = $field['key'];
+		if (static::is_custom_option($field, 'autop', false)) {
+			add_filter("acf/pre_format_value/key=$field_key", 'LimeRockTheme\ACF::remove_wpautop', 10, 5);
+			add_filter("acf/format_value/key=$field_key", 'LimeRockTheme\ACF::cleanup_remove_wpautop', 10, 3);
+		}
+		return $field;
+	}
+
+
 	public static function remove_wpautop($skip_format, $value, $post_id, $field, $escape_html)
 	{
-		if (static::is_custom_option($field, 'autop', false)) {
-			remove_filter('acf_the_content', 'wpautop');
-			add_filter('acf/format_value', 'LimeRockTheme\ACF::cleanup_remove_wpautop', 100, 4);
+		if (static::is_custom_option($field, 'autop', false) && !$skip_format) {
+			// taken from acf_format_value to make sure we only remove the autop on non-cached content
+			$field_name = $field['name'];
+			$cache_name = $escape_html ? "$post_id:$field_name:escaped" : "$post_id:$field_name:formatted";
+
+			// Check store.
+			$store = acf_get_store('values');
+
+			if (!$store->has($cache_name)) {
+				remove_filter('acf_the_content', 'wpautop');
+			}
 		}
 		return $skip_format;
 	}
 
-	public static function cleanup_remove_wpautop($value, $post_id, $field, $escape_html)
+	public static function cleanup_remove_wpautop($value, $post_id, $field)
 	{
-		if (static::is_custom_option($field, 'autop', false)) {
-			add_filter('acf_the_content', 'wpautop');
-			remove_filter('acf/format_value', 'LimeRockTheme\ACF::cleanup_remove_wpautop');
-		}
+		add_filter('acf_the_content', 'wpautop');
 
 		return $value;
 	}
@@ -141,26 +159,38 @@ class ACF
 			$metadata = wp_get_attachment_metadata($attachment_id);
 
 			if (str_contains($metadata['mime_type'], 'video')) {
-				$width = $metadata['width'];
-				$height = $metadata['height'];
-				$title = str_replace(' ', '_', get_the_title($attachment_id));
-				$fontsize = max(24, $height / 10);
+				if (
+					$poster_image = get_field('poster_image', get_post($attachment_id))
+				) {
+					return [
+						wp_get_attachment_url($poster_image['id']),
+						$poster_image['width'],
+						$poster_image['height'],
+						false
+					];
+				} else {
 
-				return [
-					implode('', [
-						"https://place-hold.it/",
+					$width = $metadata['width'];
+					$height = $metadata['height'];
+					$title = str_replace(' ', '_', get_the_title($attachment_id));
+					$fontsize = max(24, $height / 10);
+
+					return [
+						implode('', [
+							"https://place-hold.it/",
+							$width,
+							"x",
+							$height,
+							"/f1f1f1/&text=",
+							rawurlencode($title),
+							"&fontsize=",
+							$fontsize
+						]),
 						$width,
-						"x",
 						$height,
-						"/f1f1f1/&text=",
-						rawurlencode($title),
-						"&fontsize=",
-						$fontsize
-					]),
-					$width,
-					$height,
-					false
-				];
+						false
+					];
+				}
 			}
 		}
 		return $image;

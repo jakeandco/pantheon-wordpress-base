@@ -1,0 +1,14 @@
+<a
+  role="button"
+  class="btn btn-{{shortcode_attrs.type}}"
+  href="{{shortcode_attrs.href}}"
+  target="{{shortcode_attrs.target}}"
+  label="{{shortcode_attrs.label}}"
+  aria-label="{{shortcode_attrs['aria-label']|default(shortcode_attrs.label)}}"
+  title="{{ shortcode_attrs.title }}"
+  rel="{{ shortcode_attrs.target == '_blank' ? 'noopener' : 'nofollow' }}"
+>{{shortcode_attrs.text}}
+  {% if shortcode_attrs.type == 'primary' or shortcode_attrs.type == 'secondary' %}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="337.789 240.415 12.456 4.212" width="12.456px" height="4.212px"><path d="M 347.239 244.627 C 347.419 244.243 347.593 243.907 347.761 243.619 C 347.941 243.331 348.115 243.091 348.283 242.899 L 337.789 242.899 L 337.789 242.143 L 348.283 242.143 C 348.115 241.939 347.941 241.693 347.761 241.405 C 347.593 241.117 347.419 240.787 347.239 240.415 L 347.869 240.415 C 348.625 241.291 349.417 241.939 350.245 242.359 L 350.245 242.683 C 349.417 243.091 348.625 243.739 347.869 244.627 L 347.239 244.627 Z" fill="currentColor" style="stroke-width: 1;" id="object-0" transform="matrix(1, 0, 0, 1, 0, 1.4210854715202004e-14)"/></svg>
+  {% endif %}
+</a>

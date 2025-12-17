@@ -1,0 +1,11 @@
+{% if svg_file %}
+  {% set chars = 'abcdefghijklmnopqrstuvwxyz0123456789'|split('') %}
+  {% set unique_prefix = 'svg-' ~ (range(1, 6)|map(i => random(chars))|join) %}
+
+  {% set svg_raw = svg_file|file_get_contents_raw %}
+  {% set svg_unique = svg_raw|replace({
+    'id="': 'id="' ~ unique_prefix ~ '-',
+    'url(#': 'url(#' ~ unique_prefix ~ '-'
+  }) %}
+  {{ svg_unique|raw }}
+{% endif %}

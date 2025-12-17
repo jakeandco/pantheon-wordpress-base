@@ -27,6 +27,11 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 
 	// Store field values. These are the fields from your ACF field group for the block.
 	$context['fields'] = get_fields();
+	$context['field_objects'] = get_field_objects();
+
+    if ($is_preview && empty($context['fields']) && !empty($block['data'])) {
+        $context['fields'] = $block['data'];
+    }
 
 	if (! empty($block['data']['is_example'])) {
 		$context['is_example'] = true;
@@ -39,8 +44,34 @@ function LimeRockTheme_block_render_callback($block, $content = '', $is_preview 
 
 	$context['block']      = $block;
 	// Render the block.
-	Timber\Timber::render(
-		'@blocks/' . $slug . '/' . $slug . '.twig',
-		$context
-	);
+
+    $filepath = '@blocks/' . $slug . '/' . $slug . '.twig';
+
+    $context = apply_filters('limerock/block_context', $context, $filepath);
+    $context = apply_filters('limerock/block_context/' . $slug, $context, $filepath);
+
+    if ($is_preview && !empty($block['title'])) {
+        echo
+        '<div class="limerock-gutenberg-block-title">Block: '
+        . esc_html($block['title'])
+        . '</div>';
+    }
+
+	Timber\Timber::render($filepath, $context);
 }
+
+// Enable pages for 'styleguide' post
+function custom_template_redirect() {
+
+    if(is_singular('styleguide')) {
+        global $wp_query;
+        $page = (int)$wp_query->get('page');
+        if($page > 1) {
+            $wp_query->set('page', 1);
+            $wp_query->set('paged', $page);
+        }
+        remove_action('template_redirect', 'redirect_canonical');
+    }
+}
+
+add_action('template_redirect', 'custom_template_redirect', 0);
